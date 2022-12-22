@@ -1,0 +1,56 @@
+; mult13.a
+; from Apple Assembly Line March 1986: http://www.txbobsc.com/aal/1986/aal8603.html#a5
+;
+; 8 bit x 8 bit multiply, 16 bit result
+; Average cycles: 54
+; 1075 bytes
+
+
+temp_m2   = $02
+prod_low  = $03
+
+* = $0200
+
+; align tables to start of a page
+squares_low
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+squares_high
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ----------------------------------------------------------------------------------
+; Calculate A*X (aka m1 * m2) with the product returned in prod_low(low) and A (high)
+; unsigned.
+; ----------------------------------------------------------------------------------
+mult
+    tay                             ; save m1 in y
+    stx temp_m2                     ; save m2
+    sec                             ; set carry for subtract
+    sbc temp_m2                     ; find difference
+    bcs +                           ; was m1 > m2 ?
+    eor #$ff                        ; invert it
+    adc #1                          ; and add 1
++
+    tax                             ; use abs(m1-m2) as index
+    clc                             ;
+    tya                             ; get m1 back
+    adc temp_m2                     ; find m1 + m2
+    tay                             ; use m1+m2 as index
+    bcc +                           ; m1+m2 < 255 ?
+    lda squares_low+256,y           ; find sum squared low if > 255
+    sbc squares_low,x               ; subtract diff squared
+    sta prod_low                    ; save in product
+    lda squares_high+256,y          ; hi byte
+    sbc squares_high,x              ;
+    rts                             ; done
++
+    sec                             ; set carry for subtract
+    lda squares_low,y               ; find sum of squares low if < 255
+    sbc squares_low,x               ; subtract diff squared
+    sta prod_low                    ; save in product
+    lda squares_high,y              ; hi byte
+    sbc squares_high,x              ;
+    rts                             ;

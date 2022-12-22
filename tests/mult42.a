@@ -1,0 +1,140 @@
+; mult42.a
+; based on the 8 bit multiply of mult16.a
+; I combined the results of four calls to this to get the 16x16 bit multiply
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 404.59
+; 648 bytes
+
+inputA = $02        ; 2 bytes (a0,a1)
+inputB = $04        ; 2 bytes (b0,b1)
+result = $06        ; 4 bytes
+
+fac = $0a
+rlo = $0b
+
+
+* = $0200
+
+; align tables to start of a page
+sqrlo
+    !for i, 0, 255 {
+        !byte <(i*i)
+    }
+sqrhi
+    !for i, 0, 255 {
+        !byte >(i*i)
+    }
+
+; ***************************************************************************************
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+;
+; On Entry:
+;   inputA: multiplier   (2 bytes)
+;   inputB: multiplicand (2 bytes)
+;
+; On Exit:
+;   result: product (4 bytes)
+mult
+    lda inputA          ;
+    ldx inputB          ;
+    jsr mult8           ; (a0*b0)
+    sta result          ; a is low byte
+    stx result+1        ; x is high byte
+
+    lda inputA+1        ;
+    ldx inputB          ;
+    jsr mult8           ; (a1*b0)
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+
+    txa                 ;
+    adc #0              ;
+    sta result+2        ;
+
+    lda inputA          ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a0*b1)
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+    txa                 ;
+    adc result+2        ;
+    sta result+2        ;
+
+    lda #0              ;
+    adc #0              ; remember the carry for result+3
+    sta result+3        ;
+
+    lda inputA+1        ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a1*b1)
+    clc                 ;
+    adc result+2        ;
+    sta result+2        ;
+    txa                 ;
+    adc result+3        ;
+    sta result+3        ;
+    rts                 ;
+
+
+; ***************************************************************************************
+; mult16.a tweaked for output parameters
+; Calculate A*X with the product returned in A(low) and X (high)
+; unsigned.
+;
+; 8 bit x 8 bit multiply, 16 bit result
+;
+; On Entry:
+;   A: multiplier
+;   X: multiplicand
+;
+; On Exit:
+;   A: low byte of product
+;   X: high byte of product
+mult8
+    stx fac
+    cmp fac
+    bcs l1
+
+    sta fac         ; if AC<fac
+    sec
+    txa
+l1
+    tax
+    sbc fac
+    lsr
+    tay
+    txa
+    clc
+    adc fac
+    ror
+    tax
+    lda sqrlo,x
+    bcc l2
+
+    sbc sqrlo,y     ; odd
+    sta rlo
+    lda sqrhi,x
+    sbc sqrhi,y
+    tax
+    clc
+    lda fac
+    adc rlo
+    sta rlo
+    bcc +
+    inx
++
+    lda rlo
+    rts
+
+l2
+    sec             ; even
+    sbc sqrlo,y
+    sta rlo
+    lda sqrhi,x
+    sbc sqrhi,y
+    tax
+    lda rlo
+    rts

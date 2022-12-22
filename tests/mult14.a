@@ -1,0 +1,52 @@
+; mult14.a
+; from codebase64: https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
+;
+; 8 bit x 8 bit multiply, 16 bit result
+; Average cycles: 46.99
+; 2078 bytes
+
+
+PRODUCT = $03
+
+* = $200
+
+; Tables must be aligned to page boundary
+square1_low
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+square1_high
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+square2_low
+    !for i, 0, 511 {
+        !byte <(((i-255)*(i-255))/4)
+    }
+square2_high
+    !for i, 0, 511 {
+        !byte >(((i-255)*(i-255))/4)
+    }
+
+; ----------------------------------------------------------------------------------
+; multiplies A*X
+; result is in PRODUCT (low byte) and A (high byte)
+mult
+    sta sm1
+    sta sm3
+    eor #$ff
+    sta sm2
+    sta sm4
+
+    sec
+sm1 = * + 1
+    lda square1_low,x
+sm2 = * + 1
+    sbc square2_low,x
+    sta PRODUCT+0               ; could store in Y instead
+sm3 = * + 1
+    lda square1_high,x
+sm4 = * + 1
+    sbc square2_high,x
+    rts

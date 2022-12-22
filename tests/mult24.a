@@ -1,0 +1,73 @@
+; mult24.a
+; 'tepples unrolled' from https://www.nesdev.org/wiki/8-bit_Multiply
+; slightly tweaked
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 110.62
+; 70 bytes
+
+
+prodlo  = $02
+factor2 = $03
+
+* = $0200
+
+; On Entry:
+;   A: multiplier
+;   Y: multiplicand
+; On Exit:
+;   A: low byte of product
+;   Y: high byte of product
+mult
+    lsr
+    sta prodlo
+    tya
+    beq mul8_early_return
+    dey
+    sty factor2
+    lda #0
+
+    bcc +
+    adc factor2
+    ror
++
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    ror prodlo
+    bcc +
+    adc factor2
++
+    ror
+    tay
+    lda prodlo
+    ror
+mul8_early_return
+    rts

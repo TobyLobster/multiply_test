@@ -1,0 +1,68 @@
+; mult36.a
+; from 'ASSEMBLER ROUTINES FOR THE 6502' by David Barrow: https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 973.01
+; 62 bytes
+
+
+mplr = $02
+mcnd = $04
+prod = $06
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   mplr: multiplier   (2 bytes)
+;   mcnd: multiplicand (2 bytes)
+; On Exit:
+;   prod: product (4 bytes)
+dubmul
+    txa         ; Save X for use as bit count.
+    pha
+    cld         ; Ensure binary additions.
+    lda #0      ; Clear product-accumulator
+    tay         ; highest two bytes A and Y, and
+    sta prod+1  ; lowest two bytes, M1
+    sta prod    ; and M0.
+    ldx #16     ; Set count for 16 multiplier bits.
+
+nextbt
+    asl prod    ; Shift product up one bit,
+    rol prod+1  ; moving next bit out to Carry.
+    pha         ; Save product hi-byte and
+    tya         ; enable product next highest byte.
+    rol         ; Shift product byte up one bit
+    tay         ; Save next highest byte and
+    pla         ; re-enable hi-byte. Full product
+    rol         ; shift up to next bit place.
+
+    asl mplr    ; Shift multiplier up one bit,
+    rol mplr+1  ; moving next bit out to Carry.
+    bcc endtst  ; Skip if no add this bit place.
+
+    clc         ; Prepare to add, no carry in.
+    pha         ; Save product hi-byte.
+    lda prod    ; Add multiplicand Lowest
+    adc mcnd    ; byte to product lowest
+    sta prod    ; zbyte.
+    lda prod+1  ; Add multiplicand next Lowest
+    adc mcnd+1  ; byte to product next lowest
+    sta prod+1  ; byte.
+    pla         ; Re-enable product hi-byte.
+    bcc endtst  ; Skip if no carry to hi-bytes.
+    iny         ; Add in carry by increment which
+                ; doesn't affect Carry flag.
+    bne endtst  ; Skip if no carry to hi-byte,
+    adc #0      ; else use C = 1 from lo-bytes.
+
+endtst
+    dex         ; Repeat for all 16 bits
+    bne nextbt  ; of multiplier.
+    sta prod+3  ; Store product highest two bytes
+    sty prod+2  ; to page zero output variable.
+    pla         ; Restore X from stack
+    tax         ; via A
+    lda prod+3  ; Recover product hi-byte to A.
+    rts         ; Exit, multiplication completed.

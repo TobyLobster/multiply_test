@@ -1,0 +1,32 @@
+; mult11.a
+; from codebase64: https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product
+;
+; 8 bit x 8 bit multiply, 16 bit result
+; Average cycles: 162
+; 17 bytes
+
+
+FAC1     = $02
+FAC2     = $03
+
+* = $0200
+
+; Multiply FAC1 * FAC2
+;
+; On Exit:
+;   A    (high byte)
+;   FAC1 (low byte)
+mult
+    lda #0
+    ldx #8
+    clc
+m0
+    bcc m1
+    clc
+    adc FAC2
+m1
+    ror
+    ror FAC1
+    dex
+    bpl m0
+    rts

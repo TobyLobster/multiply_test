@@ -1,0 +1,38 @@
+; mult35.a
+; from the second faster version at https://www.atariarchives.org/roots/chapter_10.php
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 191.00
+; 22 bytes
+
+
+mpr   = $02
+mpd   = $03
+prodl = $04
+prodh = $05
+
+*=$0200
+
+; ***************************************************************************************
+; On Entry:
+;   mpr: multiplier
+;   mpd: multiplicand
+; On Exit:
+;   prodl: low byte of product
+;   prodh: high byte of product
+values
+    lda #0
+    sta prodl
+    ldx #8
+loop
+    lsr mpr
+    bcc noadd
+    clc
+    adc mpd
+noadd
+    ror
+    ror prodl
+    dex
+    bne loop
+    sta prodh
+    rts

@@ -1,0 +1,75 @@
+; mult12.a
+; from codebase64: https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
+; slightly tweaked
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 108.64
+; 71 bytes
+
+
+mul1 = $02
+mul2 = $03
+
+* = $0200
+
+; mul 8x8 16 bit result for when you can't afford big tables
+; by djmips
+;
+; inputs are mul1 and X.  mul1 and mul2 should be zp locations
+; output is 16 bit in A (high byte) and mul1 (low byte)
+;
+; inner loop credits Damon Slye CALL APPLE, JUNE 1983, P45-48.
+
+mult
+    lda #0      ; 'A should be zero entering'
+    cpx #0
+    beq zro
+    dex         ; decrement mul2 because we will be adding with carry set for speed (an extra one)
+    stx mul2
+    lsr mul1
+    bcc b1
+    adc mul2
+    ror
+b1
+    ror mul1
+    bcc b2
+    adc mul2
+b2
+    ror
+    ror mul1
+    bcc b3
+    adc mul2
+b3
+    ror
+    ror mul1
+    bcc b4
+    adc mul2
+b4
+    ror
+    ror mul1
+    bcc b5
+    adc mul2
+b5
+    ror
+    ror mul1
+    bcc b6
+    adc mul2
+b6
+    ror
+    ror mul1
+    bcc b7
+    adc mul2
+b7
+    ror
+    ror mul1
+    bcc b8
+    adc mul2
+b8
+    ror
+    ror mul1
+;    inc mul2
+    rts
+
+zro
+    stx mul1
+    rts

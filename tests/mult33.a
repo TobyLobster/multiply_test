@@ -1,0 +1,455 @@
+; mult33.a
+; from https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt
+; with test code removed, and tables page aligned
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 609.86
+; 1277 bytes
+
+;
+; UNUSUALLY FOR 6502, THIS ROUTINE STORES NUMBERS IN MSB FIRST ORDER - BEWARE!
+;
+a16           = $02      ; input                (2 bytes)
+b16           = $04      ; input                (2 bytes)
+p32           = $06      ; final product        (4 bytes)
+
+multiplicand8 = $0a      ;
+multiplier8   = $0b      ;
+sum8          = $0c      ;
+temp_sum2     = $0d      ;                      (4 bytes)
+temp_sum      = $11      ; (ah*bl)              (4 bytes)
+p32_1         = $15      ; (al*bl)              (4 bytes)
+p32_2         = $19      ; (ah*bl+al*bh)*256    (4 bytes)
+p32_3         = $1d      ; (ah*bh)*65536        (4 bytes)
+
+* = $0200
+
+square_high
+
+    ;squares 0...510 high bytes
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 0 , 0 , 0
+    !byte  0 , 0 , 1 , 1 , 1
+    !byte  1 , 1 , 1 , 1 , 1
+    !byte  1 , 1 , 1 , 1 , 1
+    !byte  1 , 2 , 2 , 2 , 2
+    !byte  2 , 2 , 2 , 2 , 2
+    !byte  2 , 3 , 3 , 3 , 3
+    !byte  3 , 3 , 3 , 3 , 4
+    !byte  4 , 4 , 4 , 4 , 4
+    !byte  4 , 4 , 5 , 5 , 5
+    !byte  5 , 5 , 5 , 5 , 6
+    !byte  6 , 6 , 6 , 6 , 6
+    !byte  7 , 7 , 7 , 7 , 7
+    !byte  7 , 8 , 8 , 8 , 8
+    !byte  8 , 9 , 9 , 9 , 9
+    ;***************************
+
+
+    !byte  9 , 9 , 10 , 10 , 10
+    !byte  10 , 10 , 11 , 11 , 11
+    !byte  11 , 12 , 12 , 12 , 12
+    !byte  12 , 13 , 13 , 13 , 13
+    !byte  14 , 14 , 14 , 14 , 15
+    !byte  15 , 15 , 15 , 16 , 16
+    !byte  16 , 16 , 17 , 17 , 17
+    !byte  17 , 18 , 18 , 18 , 18
+    !byte  19 , 19 , 19 , 19 , 20
+    !byte  20 , 20 , 21 , 21 , 21
+    !byte  21 , 22 , 22 , 22 , 23
+    !byte  23 , 23 , 24 , 24 , 24
+    !byte  25 , 25 , 25 , 25 , 26
+    !byte  26 , 26 , 27 , 27 , 27
+    !byte  28 , 28 , 28 , 29 , 29
+    !byte  29 , 30 , 30 , 30 , 31
+    !byte  31 , 31 , 32 , 32 , 33
+    !byte  33 , 33 , 34 , 34 , 34
+    !byte  35 , 35 , 36 , 36 , 36
+    !byte  37 , 37 , 37 , 38 , 38
+    ;***************************
+
+
+    !byte  39 , 39 , 39 , 40 , 40
+    !byte  41 , 41 , 41 , 42 , 42
+    !byte  43 , 43 , 43 , 44 , 44
+    !byte  45 , 45 , 45 , 46 , 46
+    !byte  47 , 47 , 48 , 48 , 49
+    !byte  49 , 49 , 50 , 50 , 51
+    !byte  51 , 52 , 52 , 53 , 53
+    !byte  53 , 54 , 54 , 55 , 55
+    !byte  56 , 56 , 57 , 57 , 58
+    !byte  58 , 59 , 59 , 60 , 60
+    !byte  61 , 61 , 62 , 62 , 63
+    !byte  63 , 64 , 64 , 65 , 65
+    !byte  66 , 66 , 67 , 67 , 68
+    !byte  68 , 69 , 69 , 70 , 70
+    !byte  71 , 71 , 72 , 72 , 73
+    !byte  73 , 74 , 74 , 75 , 76
+    !byte  76 , 77 , 77 , 78 , 78
+    !byte  79 , 79 , 80 , 81 , 81
+    !byte  82 , 82 , 83 , 83 , 84
+    !byte  84 , 85 , 86 , 86 , 87
+    ;***************************
+
+
+    !byte  87 , 88 , 89 , 89 , 90
+    !byte  90 , 91 , 92 , 92 , 93
+    !byte  93 , 94 , 95 , 95 , 96
+    !byte  96 , 97 , 98 , 98 , 99
+    !byte  100 , 100 , 101 , 101 , 102
+    !byte  103 , 103 , 104 , 105 , 105
+    !byte  106 , 106 , 107 , 108 , 108
+    !byte  109 , 110 , 110 , 111 , 112
+    !byte  112 , 113 , 114 , 114 , 115
+    !byte  116 , 116 , 117 , 118 , 118
+    !byte  119 , 120 , 121 , 121 , 122
+    !byte  123 , 123 , 124 , 125 , 125
+    !byte  126 , 127 , 127 , 128 , 129
+    !byte  130 , 130 , 131 , 132 , 132
+    !byte  133 , 134 , 135 , 135 , 136
+    !byte  137 , 138 , 138 , 139 , 140
+    !byte  141 , 141 , 142 , 143 , 144
+    !byte  144 , 145 , 146 , 147 , 147
+    !byte  148 , 149 , 150 , 150 , 151
+    !byte  152 , 153 , 153 , 154 , 155
+    ;***************************
+
+
+    !byte  156 , 157 , 157 , 158 , 159
+    !byte  160 , 160 , 161 , 162 , 163
+    !byte  164 , 164 , 165 , 166 , 167
+    !byte  168 , 169 , 169 , 170 , 171
+    !byte  172 , 173 , 173 , 174 , 175
+    !byte  176 , 177 , 178 , 178 , 179
+    !byte  180 , 181 , 182 , 183 , 183
+    !byte  184 , 185 , 186 , 187 , 188
+    !byte  189 , 189 , 190 , 191 , 192
+    !byte  193 , 194 , 195 , 196 , 196
+    !byte  197 , 198 , 199 , 200 , 201
+    !byte  202 , 203 , 203 , 204 , 205
+    !byte  206 , 207 , 208 , 209 , 210
+    !byte  211 , 212 , 212 , 213 , 214
+    !byte  215 , 216 , 217 , 218 , 219
+    !byte  220 , 221 , 222 , 223 , 224
+    !byte  225 , 225 , 226 , 227 , 228
+    !byte  229 , 230 , 231 , 232 , 233
+    !byte  234 , 235 , 236 , 237 , 238
+    !byte  239 , 240 , 241 , 242 , 243
+    ;***************************
+
+
+    !byte  244 , 245 , 246 , 247 , 248
+    !byte  249 , 250 , 251 , 252 , 253
+    !byte  254
+
+    ;***************************
+
+unused1
+    !byte 0 ; to make sure the next table is aligned to a page
+
+
+    ;***************************
+
+square_low
+
+    ;squares 0...510 low bytes
+    !byte  0 , 0 , 1 , 2 , 4
+    !byte  6 , 9 , 12 , 16 , 20
+    !byte  25 , 30 , 36 , 42 , 49
+    !byte  56 , 64 , 72 , 81 , 90
+    !byte  100 , 110 , 121 , 132 , 144
+    !byte  156 , 169 , 182 , 196 , 210
+    !byte  225 , 240 , 0 , 16 , 33
+    !byte  50 , 68 , 86 , 105 , 124
+    !byte  144 , 164 , 185 , 206 , 228
+    !byte  250 , 17 , 40 , 64 , 88
+    !byte  113 , 138 , 164 , 190 , 217
+    !byte  244 , 16 , 44 , 73 , 102
+    !byte  132 , 162 , 193 , 224 , 0
+    !byte  32 , 65 , 98 , 132 , 166
+    !byte  201 , 236 , 16 , 52 , 89
+    !byte  126 , 164 , 202 , 241 , 24
+    !byte  64 , 104 , 145 , 186 , 228
+    !byte  14 , 57 , 100 , 144 , 188
+    !byte  233 , 22 , 68 , 114 , 161
+    !byte  208 , 0 , 48 , 97 , 146
+    ;***************************
+
+
+
+    !byte  196 , 246 , 41 , 92 , 144
+    !byte  196 , 249 , 46 , 100 , 154
+    !byte  209 , 8 , 64 , 120 , 177
+    !byte  234 , 36 , 94 , 153 , 212
+    !byte  16 , 76 , 137 , 198 , 4
+    !byte  66 , 129 , 192 , 0 , 64
+    !byte  129 , 194 , 4 , 70 , 137
+    !byte  204 , 16 , 84 , 153 , 222
+    !byte  36 , 106 , 177 , 248 , 64
+    !byte  136 , 209 , 26 , 100 , 174
+    !byte  249 , 68 , 144 , 220 , 41
+    !byte  118 , 196 , 18 , 97 , 176
+    !byte  0 , 80 , 161 , 242 , 68
+    !byte  150 , 233 , 60 , 144 , 228
+    !byte  57 , 142 , 228 , 58 , 145
+    !byte  232 , 64 , 152 , 241 , 74
+    !byte  164 , 254 , 89 , 180 , 16
+    !byte  108 , 201 , 38 , 132 , 226
+    !byte  65 , 160 , 0 , 96 , 193
+    !byte  34 , 132 , 230 , 73 , 172
+    ;***************************
+
+
+
+    !byte  16 , 116 , 217 , 62 , 164
+    !byte  10 , 113 , 216 , 64 , 168
+    !byte  17 , 122 , 228 , 78 , 185
+    !byte  36 , 144 , 252 , 105 , 214
+    !byte  68 , 178 , 33 , 144 , 0
+    !byte  112 , 225 , 82 , 196 , 54
+    !byte  169 , 28 , 144 , 4 , 121
+    !byte  238 , 100 , 218 , 81 , 200
+    !byte  64 , 184 , 49 , 170 , 36
+    !byte  158 , 25 , 148 , 16 , 140
+    !byte  9 , 134 , 4 , 130 , 1
+    !byte  128 , 0 , 128 , 1 , 130
+    !byte  4 , 134 , 9 , 140 , 16
+    !byte  148 , 25 , 158 , 36 , 170
+    !byte  49 , 184 , 64 , 200 , 81
+    !byte  218 , 100 , 238 , 121 , 4
+    !byte  144 , 28 , 169 , 54 , 196
+    !byte  82 , 225 , 112 , 0 , 144
+    !byte  33 , 178 , 68 , 214 , 105
+    !byte  252 , 144 , 36 , 185 , 78
+    ;***************************
+
+
+
+    !byte  228 , 122 , 17 , 168 , 64
+    !byte  216 , 113 , 10 , 164 , 62
+    !byte  217 , 116 , 16 , 172 , 73
+    !byte  230 , 132 , 34 , 193 , 96
+    !byte  0 , 160 , 65 , 226 , 132
+    !byte  38 , 201 , 108 , 16 , 180
+    !byte  89 , 254 , 164 , 74 , 241
+    !byte  152 , 64 , 232 , 145 , 58
+    !byte  228 , 142 , 57 , 228 , 144
+    !byte  60 , 233 , 150 , 68 , 242
+    !byte  161 , 80 , 0 , 176 , 97
+    !byte  18 , 196 , 118 , 41 , 220
+    !byte  144 , 68 , 249 , 174 , 100
+    !byte  26 , 209 , 136 , 64 , 248
+    !byte  177 , 106 , 36 , 222 , 153
+    !byte  84 , 16 , 204 , 137 , 70
+    !byte  4 , 194 , 129 , 64 , 0
+    !byte  192 , 129 , 66 , 4 , 198
+    !byte  137 , 76 , 16 , 212 , 153
+    !byte  94 , 36 , 234 , 177 , 120
+    ;***************************
+
+
+    !byte  64 , 8 , 209 , 154 , 100
+    !byte  46 , 249 , 196 , 144 , 92
+    !byte  41 , 246 , 196 , 146 , 97
+    !byte  48 , 0 , 208 , 161 , 114
+    !byte  68 , 22 , 233 , 188 , 144
+    !byte  100 , 57 , 14 , 228 , 186
+    !byte  145 , 104 , 64 , 24 , 241
+    !byte  202 , 164 , 126 , 89 , 52
+    !byte  16 , 236 , 201 , 166 , 132
+    !byte  98 , 65 , 32 , 0 , 224
+    !byte  193 , 162 , 132 , 102 , 73
+    !byte  44 , 16 , 244 , 217 , 190
+    !byte  164 , 138 , 113 , 88 , 64
+    !byte  40 , 17 , 250 , 228 , 206
+    !byte  185 , 164 , 144 , 124 , 105
+    !byte  86 , 68 , 50 , 33 , 16
+    !byte  0 , 240 , 225 , 210 , 196
+    !byte  182 , 169 , 156 , 144 , 132
+    !byte  121 , 110 , 100 , 90 , 81
+    !byte  72 , 64 , 56 , 49 , 42
+    ;***************************
+
+
+
+    !byte  36 , 30 , 25 , 20 , 16
+    !byte  12 , 9 , 6 , 4 , 2
+    !byte  1
+
+unused2
+    !byte 0 ; just for my convenience to make the entry point aligned to a page
+
+; ***************************************************************************************
+; On Entry:
+;   a16: multiplier (2 bytes)
+;   b16: multiplicand (2 bytes)
+; On Exit:
+;   p32: product (4 bytes)
+mult
+    lda #0
+    sta temp_sum
+    sta temp_sum+1
+    sta temp_sum+2
+    sta temp_sum+3  ;added!
+    sta p32
+    sta p32+1
+    sta p32+2
+    sta p32+3
+
+    lda a16+1
+    sta multiplier8
+    lda b16+1
+    sta multiplicand8
+
+    jsr multiply_ab_fast
+
+    ; lda multiplier8
+
+    lda sum8
+    sta p32_1+3
+    lda multiplier8
+    sta p32_1+2             ; p32_1 <--- al*bl
+    lda #0
+    sta p32_1+1
+    sta p32_1
+
+
+    lda a16
+    sta multiplier8
+    lda b16+1
+    sta multiplicand8
+
+    jsr multiply_ab_fast
+
+    lda #0
+    sta temp_sum+3          ; 0 because is x256
+    lda sum8
+    sta temp_sum+2
+    lda multiplier8
+    sta temp_sum+1
+    lda #$00
+    sta temp_sum            ; temp_sum <--- ah*bl*256
+
+    lda a16+1
+    sta multiplier8
+    lda b16
+    sta multiplicand8
+
+    jsr multiply_ab_fast
+
+    lda #0
+    sta temp_sum2+3         ; 0 because is x256
+    lda sum8
+    sta temp_sum2+2
+    lda multiplier8
+    sta temp_sum2+1
+    lda #0
+    sta temp_sum2           ; temp_sum2 <--- al*bh*256
+
+    clc
+    lda temp_sum+3
+    adc temp_sum2+3
+    sta p32_2+3
+    lda temp_sum+2
+    adc temp_sum2+2
+    sta p32_2+2
+    lda temp_sum+1
+    adc temp_sum2+1
+    sta p32_2+1
+    lda temp_sum
+    adc temp_sum2
+    sta p32_2               ; p32_2 <--- (ah*bl+al*bh)*256
+
+    lda a16
+    sta multiplicand8
+    lda b16
+    sta multiplier8
+
+    jsr multiply_ab_fast
+
+    lda sum8
+    sta p32_3+1
+    lda multiplier8
+    sta p32_3
+    lda #$00
+    sta p32_3+2
+    sta p32_3+3             ; p32_3 <---65536*ah*bh
+
+    clc
+    lda p32_1+3
+    adc p32_2+3
+    sta p32+3
+    lda p32_1+2
+    adc p32_2+2
+    sta p32+2
+    lda p32_1+1
+    adc p32_2+1
+    sta p32+1
+    lda p32_1
+    adc p32_2
+    sta p32
+
+    clc
+    lda p32+3
+    adc p32_3+3
+    sta p32+3
+    lda p32+2
+    adc p32_3+2
+    sta p32+2
+    lda p32+1
+    adc p32_3+1
+    sta p32+1
+    lda p32
+    adc p32_3
+    sta p32
+    rts
+
+
+; fast multiply 8 bit
+
+multiply_ab_fast
+
+    lda #>square_low
+    sta mod1+2
+    lda #>square_high
+    sta mod2+2
+
+    clc
+    lda multiplicand8
+    adc multiplier8
+    bcc skip_inc
+
+    inc mod1+2
+    inc mod2+2
+
+skip_inc
+    tax
+    sec
+    lda multiplicand8
+    sbc multiplier8
+    bcs no_diff_fix
+
+    sec
+    lda multiplier8
+    sbc multiplicand8
+
+no_diff_fix
+    tay
+
+    sec
+mod1
+    lda square_low,x
+    sbc square_low,y
+    sta sum8
+
+
+mod2
+    lda square_high, x
+    sbc square_high, y
+    sta multiplier8
+
+    rts

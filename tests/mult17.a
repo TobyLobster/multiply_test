@@ -1,0 +1,46 @@
+; mult17.a
+; from Elite: https://www.bbcelite.com/cassette/main/subroutine/mu11.html
+; tweaked to handle X=0 on input
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 150.47
+; 28 bytes
+
+
+T = $02
+P = $03
+
+* = $0200
+
+; ***************************************************************************************
+; 8 bit multiply
+;
+; On Entry:
+;   A: multiplier
+;   P: multiplicand
+; On Exit:
+;   A: high byte of product
+;   P: low byte of product
+mult
+    cpx #0
+    beq zero    ; Special case: handle X=0 separately
+
+    dex
+    stx T
+    lda #0
+    ldx #8
+    lsr P
+loop
+    bcc +
+    adc T
++
+    ror
+    ror P
+    dex
+    bne loop
+    rts
+
+zero
+    txa
+    sta P
+    rts

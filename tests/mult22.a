@@ -1,0 +1,87 @@
+; mult22.a
+; from Niels Möller: https://www.lysator.liu.se/~nisse/misc/6502-mul.html
+; slightly tweaked for speed
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 77.49
+; 563 bytes
+
+
+min         = $02
+result_low  = $03
+temp3       = $04
+
+* = $0200
+
+sqtab_lsb ;<x*x
+    !byte 0,1,4,9,$10,$19,$24,$31,$40,$51,$64,$79,$90,$a9,$c4,$e1
+    !byte 0,$21,$44,$69,$90,$b9,$e4,$11,$40,$71,$a4,$d9,$10,$49,$84,$c1
+    !byte 0,$41,$84,$c9,$10,$59,$a4,$f1,$40,$91,$e4,$39,$90,$e9,$44,$a1
+    !byte 0,$61,$c4,$29,$90,$f9,$64,$d1,$40,$b1,$24,$99,$10,$89,4,$81
+    !byte 0,$81,4,$89,$10,$99,$24,$b1,$40,$d1,$64,$f9,$90,$29,$c4,$61
+    !byte 0,$a1,$44,$e9,$90,$39,$e4,$91,$40,$f1,$a4,$59,$10,$c9,$84,$41
+    !byte 0,$c1,$84,$49,$10,$d9,$a4,$71,$40,$11,$e4,$b9,$90,$69,$44,$21
+    !byte 0,$e1,$c4,$a9,$90,$79,$64,$51,$40,$31,$24,$19,$10,9,4,$1
+    !byte 0,1,4,9,$10,$19,$24,$31,$40,$51,$64,$79,$90,$a9,$c4,$e1
+    !byte 0,$21,$44,$69,$90,$b9,$e4,$11,$40,$71,$a4,$d9,$10,$49,$84,$c1
+    !byte 0,$41,$84,$c9,$10,$59,$a4,$f1,$40,$91,$e4,$39,$90,$e9,$44,$a1
+    !byte 0,$61,$c4,$29,$90,$f9,$64,$d1,$40,$b1,$24,$99,$10,$89,4,$81
+    !byte 0,$81,4,$89,$10,$99,$24,$b1,$40,$d1,$64,$f9,$90,$29,$c4,$61
+    !byte 0,$a1,$44,$e9,$90,$39,$e4,$91,$40,$f1,$a4,$59,$10,$c9,$84,$41
+    !byte 0,$c1,$84,$49,$10,$d9,$a4,$71,$40,$11,$e4,$b9,$90,$69,$44,$21
+    !byte 0,$e1,$c4,$a9,$90,$79,$64,$51,$40,$31,$24,$19,$10,9,4,$1
+
+sqtab_msb ;>x*x
+    !byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    !byte 1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3
+    !byte 4,4,4,4,5,5,5,5,6,6,6,7,7,7,8,8
+    !byte 9,9,9,$a,$a,$a,$b,$b,$c,$c,$d,$d,$e,$e,$f,$f
+    !byte $10,$10,$11,$11,$12,$12,$13,$13,$14,$14,$15,$15,$16,$17,$17,$18
+    !byte $19,$19,$1a,$1a,$1b,$1c,$1c,$1d,$1e,$1e,$1f,$20,$21,$21,$22,$23
+    !byte $24,$24,$25,$26,$27,$27,$28,$29,$2a,$2b,$2b,$2c,$2d,$2e,$2f,$30
+    !byte $31,$31,$32,$33,$34,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e,$3f
+    !byte $40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$4a,$4b,$4c,$4d,$4e,$4f
+    !byte $51,$52,$53,$54,$55,$56,$57,$59,$5a,$5b,$5c,$5d,$5f,$60,$61,$62
+    !byte $64,$65,$66,$67,$69,$6a,$6b,$6c,$6e,$6f,$70,$72,$73,$74,$76,$77
+    !byte $79,$7a,$7b,$7d,$7e,$7f,$81,$82,$84,$85,$87,$88,$8a,$8b,$8d,$8e
+    !byte $90,$91,$93,$94,$96,$97,$99,$9a,$9c,$9d,$9f,$a0,$a2,$a4,$a5,$a7
+    !byte $a9,$aa,$ac,$ad,$af,$b1,$b2,$b4,$b6,$b7,$b9,$bb,$bd,$be,$c0,$c2
+    !byte $c4,$c5,$c7,$c9,$cb,$cc,$ce,$d0,$d2,$d4,$d5,$d7,$d9,$db,$dd,$df
+    !byte $e1,$e2,$e4,$e6,$e8,$ea,$ec,$ee,$f0,$f2,$f4,$f6,$f8,$fa,$fc,$fe
+
+; In: Factors in A and X
+; Out: High byte in A, low byte in result_low
+mult
+    sta min
+    cpx min
+    bcc swap
+    txa
+continue
+    sec
+    sbc min
+    tay
+
+    ; at this point:
+    ;   Y = max(inputs) - min(inputs);
+    ;   X = max(inputs);
+    lda sqtab_lsb,x
+    sbc sqtab_lsb,y
+    sta result_low
+    lda sqtab_msb,x
+    sbc sqtab_msb,y
+    sta temp3
+    clc
+    ldx min
+    lda result_low
+    adc sqtab_lsb,x
+    sta result_low
+    lda temp3
+    adc sqtab_msb,x
+    ror
+    ror result_low
+    rts
+
+swap
+    stx min
+    tax
+    bcc continue            ; ALWAYS branch

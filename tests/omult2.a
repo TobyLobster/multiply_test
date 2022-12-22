@@ -1,0 +1,27 @@
+; omult2.a
+; from The BBC Micro Compendium by Jeremy Ruston: https://archive.org/details/BBCMicroCompendium/page/38/mode/2up
+;
+; 8 bit x 8 bit unsigned multiply, low 8 bit result
+; Average cycles: 145
+; 16 bytes
+
+* = $0200
+
+n1 = $02
+n2 = $03
+
+; A = n1 * n2
+multiply
+  ldx  #8       ; Set  up  loop
+  lda  #0       ; Zero  answer
+start
+  asl           ; Multiply  answer
+  asl  n1       ; Copy  bit  7  to  carry
+  bcc  no_add   ; If  the  bit  was  zero,  skip  addition
+  clc           ; Clear  carry  for  addition
+  adc  n2       ; Add  into  answer
+no_add
+  dex           ; Check  for  end  of  loop
+  bne  start
+  ; sta  ans      ; Store  answer
+  rts

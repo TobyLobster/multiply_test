@@ -1,0 +1,48 @@
+; mult34.a
+; from the first slower version at https://www.atariarchives.org/roots/chapter_10.php
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 280
+; 36 bytes
+
+
+* = $0200
+
+mpr     = $02       ; multiplier
+mpd1    = $03       ; multiplicand
+mpd2    = $04       ; new multiplicand after 8 shifts
+prodl   = $05       ; low byte of product
+prodh   = $06       ; high byte of product
+
+*=$0200
+
+; ***************************************************************************************
+; On Entry:
+;   mpr: multiplier
+;   mpd1: multiplicand
+; On Exit:
+;   prodl: low byte of product
+;   prodh: high byte of product
+mult
+    clc
+    lda #0          ; clear accumulator
+    sta mpd2        ; clear address for shifted multiplicand
+    sta prodl       ; clear low byte of product address
+    sta prodh       ; clear high byte of product address
+    ldx #8          ; we will use the x register as a counter
+loop
+    lsr mpr         ; shift multiplier right; lsb drops into carry bit
+    bcc noadd       ; test carry bit; if zero, branch to noadd
+    clc
+    lda prodl
+    adc mpd1        ; add low byte of product to multiplicand
+    sta prodl       ; result is new low byte of product
+    lda prodh       ; load accumulator with high byte of product
+    adc mpd2        ; add high part of multiplicand
+    sta prodh       ; result is new high byte of product
+noadd
+    asl mpd1        ; shift muliplicand left; bit 7 drops into carry
+    rol mpd2        ; rotate carry bit into bit 7 of mpd2
+    dex             ; decrement contents of x register
+    bne loop        ; if result isn't zero, jump back to loop
+    rts

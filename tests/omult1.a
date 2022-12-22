@@ -1,0 +1,38 @@
+; omult1.a
+; from https://apprize.best/programming/65816/17.html
+;
+; Only returns the lower 16 bits of the result.
+;
+; 16 bit x 16 bit unsigned multiply, lower 16 bit result
+; Average cycles: 649.00
+; 33 bytes
+
+
+mcand1 = $02
+mcand2 = $04
+
+* = $0200
+
+mult
+    ldx #0
+    ldy #0
+mult1
+    lda mcand1
+    ora mcand1+1
+    beq done
+    lsr mcand1+1
+    ror mcand1
+    bcc mult2
+    clc
+    tya
+    adc mcand2
+    tay
+    txa
+    adc mcand2+1
+    tax
+mult2
+    asl mcand2
+    rol mcand2+1
+    jmp mult1
+done
+    rts

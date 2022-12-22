@@ -1,0 +1,35 @@
+; mult21.a
+; from Niels Möller: https://www.lysator.liu.se/~nisse/misc/6502-mul.html
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 150
+; 18 bytes
+
+
+factor1 = $02
+factor2 = $03
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   factor1: multiplier
+;   factor2: multiplicand
+; On Exit:
+;   factor1: low byte of product
+;   A:       high byte of product
+mult
+    lda #0
+    ldx #8
+    lsr factor1
+loop
+    bcc no_add
+    clc
+    adc factor2
+no_add
+    ror
+    ror factor1
+    dex
+    bne loop
+;    sta factor2
+    rts

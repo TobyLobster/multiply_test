@@ -1,0 +1,31 @@
+; mult9
+; from The Fridge: http://www.ffd2.com/fridge/math/mult-div8.s
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 162
+; 17 bytes
+
+
+aux = $02
+acc = $03
+; ext = $04
+
+* = $0200
+
+; MULTIPLY ROUTINE
+; (acc, A) = acc * aux
+mult
+    lda #0
+    ldy #9      ; loop counter
+    clc
+-
+    ror
+    ror acc
+    bcc +
+    clc		    ; decrement aux above to remove CLC
+    adc aux
++
+    dey
+    bne -
+;    sta ext
+    rts

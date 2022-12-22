@@ -1,0 +1,55 @@
+; multB.a
+; from https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up
+
+
+; The following multiplication routine is a modified version of the multiply routine
+; found in the Apple monitor at location $FB63. (Note: this routine is available only
+; in the older version of the Apple monitor. It is not available in the newer Autostart
+; ROM monitor.)
+
+mulplr  = $02
+partial = $04
+mulcnd  = $06
+
+* = $0200
+
+; usmul- unsigned 16-bit multiplication.
+;        32 bit result is returned in locations (mulplr, partial).
+
+usmul
+    pha
+    tya
+    pha
+usmul1
+    ldy #$10            ; set up for 16-bit multiply
+usmul2
+    lda mulplr          ; test l.o. bit to see if set
+    lsr
+    bcc usmul4
+    clc                 ; l.o. bit set, add mulcnd to
+    lda partial         ; partial product
+    adc mulcnd
+    sta partial
+    lda partial+1
+    adc mulcnd +1
+    sta partial+1
+
+    ; shift result into mulplr and get the next bit
+    ; of the multiplier into the low!order bit of
+    ; mulplr
+
+usmul4
+    ror partial+1
+    ror partial
+    ror mulplr +1
+    ror mulplr
+
+    ;
+    ; see if done yet
+    ;
+    dey
+    bne usmul2
+    pla
+    tay
+    pla
+    rts

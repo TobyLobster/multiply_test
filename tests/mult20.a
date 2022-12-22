@@ -1,0 +1,39 @@
+; mult20.a
+; from Becoming Julie: https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html
+; bug fixed.
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 244
+; 27 bytes
+
+
+multiplicand = $02
+product_low  = $03
+product_high = $04
+
+* = $0200
+
+; On Entry:
+;   product_low:  multiplier
+;   multiplicand: multiplicand
+; On Exit:
+;   product_low:  low byte of product
+;   product_high: high byte of product
+mult
+    ldy #8                 ; loop counter
+    lda #0                 ; bug fix: initialise product
+    sta product_high       ;
+mult_1
+    lda product_low
+    and #1                 ; examine bit from multiplier
+    clc                    ; bug fix: clc before beq
+    beq mult_2             ; skip adding if zero
+    lda product_high
+    adc multiplicand       ; if this sets a carry, it will just
+    sta product_high       ; get shifted into the product
+mult_2                     ; shift whole product one bit right
+    ror product_high       ; bring in carry from addition
+    ror product_low        ; discard used bit
+    dey                    ; decrease counter
+    bne mult_1
+    rts

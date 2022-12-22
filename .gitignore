@@ -1,0 +1,4 @@
+build/**
+source/6502.*
+*.csv
+*.bbprojectd/*

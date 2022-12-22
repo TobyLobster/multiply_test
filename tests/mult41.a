@@ -1,0 +1,120 @@
+; mult41.a
+; based on 8 bit multiply of mult13.a
+; I combined the results of four calls to this to get the 16x16 bit multiply
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 350
+; 1150 bytes
+
+inputA = $02        ; 2 bytes (a0,a1)
+inputB = $04        ; 2 bytes (b0,b1)
+result = $06        ; 4 bytes
+
+temp_m2   = $0a
+prod_low  = $0b
+
+* = $0200
+
+; align tables to start of a page
+squares_low
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+squares_high
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ***************************************************************************************
+; On Entry:
+;   inputA: multiplier   (2 bytes)
+;   inputB: multiplicand (2 bytes)
+; On Exit:
+;   result: product (4 bytes)
+mult
+    lda inputA          ;
+    ldx inputB          ;
+    jsr mult8           ; (a0xb0)
+    sta result          ; a is low byte
+    stx result+1        ; x is high byte
+
+    lda inputA+1        ;
+    ldx inputB          ;
+    jsr mult8           ; (a1*b0)
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+
+    txa                 ;
+    adc #0              ;
+    sta result+2        ;
+
+    lda inputA          ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a0,b1)
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+    txa                 ;
+    adc result+2        ;
+    sta result+2        ;
+    lda #0              ;
+    adc #0              ; remember the carry for result+3
+    sta result+3        ;
+
+    lda inputA+1        ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a1*b1)
+    clc                 ;
+    adc result+2        ;
+    sta result+2        ;
+    txa                 ;
+    adc result+3        ;
+    sta result+3        ;
+    rts                 ;
+
+; ***************************************************************************************
+; mult13 tweaked for output parameters
+;
+; 8 bit x 8 bit multiply, 16 bit result
+;
+; On Entry:
+;   A: multiplier
+;   X: multiplicand
+;
+; On Exit:
+;   A: low byte of product
+;   X: high byte of product
+mult8
+    tay                             ; save m1 in y
+    stx temp_m2                     ; save m2
+    sec                             ; set carry for subtract
+    sbc temp_m2                     ; find difference
+    bcs +                           ; was m1 > m2 ?
+    eor #$ff                        ; invert it
+    adc #1                          ; and add 1
++
+    tax                             ; use abs(m1-m2) as index
+    clc                             ;
+    tya                             ; get m1 back
+    adc temp_m2                     ; find m1 + m2
+    tay                             ; use m1+m2 as index
+    bcc +                           ; m1+m2 < 255 ?
+    lda squares_low+256,y           ; find sum squared low if > 255
+    sbc squares_low,x               ; subtract diff squared
+    sta prod_low                    ; save in product
+    lda squares_high+256,y          ; hi byte
+    sbc squares_high,x              ;
+    tax                             ;
+    lda prod_low                    ;
+    rts                             ; done
++
+    sec                             ; set carry for subtract
+    lda squares_low,y               ; find sum of squares low if < 255
+    sbc squares_low,x               ; subtract diff squared
+    sta prod_low                    ; save in product
+    lda squares_high,y              ; hi byte
+    sbc squares_high,x              ;
+    tax                             ;
+    lda prod_low                    ;
+    rts                             ;

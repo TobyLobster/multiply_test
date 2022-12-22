@@ -1,0 +1,46 @@
+; mult25.a
+; 'Bregalad' from https://www.nesdev.org/wiki/8-bit_Multiply
+; bug fixed and tweaked input and output parameter passing
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 243
+; 28 bytes
+
+
+Factor  = $02
+Res     = $03
+Res2    = $04
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   A:      multiplier
+;   Factor: multiplicand
+; On Exit:
+;   Res:    low byte of product
+;   Res2:   high byte of product
+;   X:      preserved
+mult
+;	sty Factor  ; Store input factor
+	ldy #0
+	sty Res
+	sty Res2    ; Clear result
+	ldy #8      ; Number of shifts needed
+-
+    lsr         ; Shift right input number
+	bcc +       ; Check if bit is set
+	pha
+	lda Res2
+	clc
+	adc Factor
+	sta Res2    ; If so add number to result
+	pla
++
+    ror Res2    ; Shift result right        BUG FIX: ror NOT lsr
+	ror Res
+	dey
+	bne -
+;	lda Res
+;	ldy Res2
+	rts

@@ -1,0 +1,44 @@
+; mult28.a
+; from FAST.8X8.RBSC at http://www.txbobsc.com/aal/1986/aal8601.html#a5
+; with slight change to swap output parameters
+; and another change to avoid handling zero as a special case and reducing multiplicand
+;   since this slows the average case down and is longer.
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 130
+; 27 bytes
+
+
+multiplicand    = $02
+multiplier      = $03
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   A:              multiplier
+;   multiplicand:   multiplicand
+; On Exit:
+;   multiplier:     low byte of product
+;   A:              high byte of product
+mult
+    lsr                 ; prepare first bit
+    sta multiplier      ;
+    lda #0              ;
+    ldx #4              ;
+-
+    bcc +               ; no add
+    clc                 ;
+    adc multiplicand    ;
++
+    ror                 ;
+    ror multiplier      ;
+    bcc +               ; no add
+    clc                 ;
+    adc multiplicand    ;
++
+    ror                 ;
+    ror multiplier      ;
+    dex                 ;
+    bne -               ;
+    rts                 ;

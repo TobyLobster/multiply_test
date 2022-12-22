@@ -1,0 +1,42 @@
+; mult37.a
+; from Andrew Blance: https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 278.00
+; 35 bytes
+
+mpr     = $02
+mpd     = $03
+result  = $04
+tmp     = $06
+
+* = $200
+
+; ***************************************************************************************
+; On Entry:
+;   mpr: multiplier
+;   mpd: multiplicand
+; On Exit:
+;   result: product   (2 bytes)
+start
+    lda     #0              ; zero accumulator
+    sta     tmp             ; clear address
+    sta     result          ; clear
+    sta     result+1        ; clear
+    ldx     #8              ; x is a counter
+mult
+    lsr     mpr             ; shift mpr right - pushing a bit into C
+    bcc     noadd           ; test carry bit
+    lda     result          ; load A with low part of result
+    clc
+    adc     mpd             ; add mpd to res
+    sta     result          ; save result
+    lda     result+1        ; add rest off shifted mpd
+    adc     tmp
+    sta     result+1
+noadd
+    asl     mpd             ; shift mpd left, ready for next "loop"
+    rol     tmp             ; save bit from mpd into temp
+    dex                     ; decrement counter
+    bne     mult            ; go again if counter 0
+    rts

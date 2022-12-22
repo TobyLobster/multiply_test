@@ -1,0 +1,132 @@
+; mult4.a
+; based on the 8x8 bit multiply from mult39.a
+; then I add four 8 bit multiplications to make a 16 bit multiply:
+;
+;   (a0 + 256*a1) * (b0 + 256*b1) = a0*b0 + 256*a1*b0 + 256*a0*b1 + 65536*a1*b1
+;
+; 16 bit x 16 bit multiply, 32 bit result
+; Average cycles: 567
+; 137 bytes
+
+
+inputA = $02        ; 2 bytes (a0,a1)
+inputB = $04        ; 2 bytes (b0,b1)
+result = $06        ; 4 bytes
+
+; for 8 bit multiply:
+u    = $0a
+t    = $0b
+
+* = $0200
+
+; ***************************************************************************************
+; result = inputA * inputB
+mult
+    lda inputA          ;
+    ldx inputB          ;
+    jsr mult8           ; (a0xb0)
+    sta result          ; a is low byte
+    stx result+1        ; x is high byte
+
+    lda inputA+1        ;
+    ldx inputB          ;
+    jsr mult8           ; (a1*b0)
+    adc result+1        ;
+    sta result+1        ;
+
+    txa                 ;
+    adc #0              ;
+    sta result+2        ;
+
+    lda inputA          ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a0,b1)
+    adc result+1        ;
+    sta result+1        ;
+    txa                 ;
+    adc result+2        ;
+    sta result+2        ;
+    php                 ; remember the carry for result+3
+
+    lda inputA+1        ;
+    ldx inputB+1        ;
+    jsr mult8           ; (a1,b1)
+    adc result+2        ;
+    sta result+2        ;
+    txa                 ;
+    adc #0              ;
+    plp                 ; recall carry
+    adc #0              ;
+    sta result+3        ;
+    rts                 ;
+
+; ***************************************************************************************
+; Unsigned 8 bit Multiply
+; Based on mult39.a, tweaked for input / output params
+;
+; 8 bit x 8 bit multiply, 16 bit result
+;
+; On Entry:
+;   A: factor1
+;   X: factor2
+;
+; On Exit:
+;   A: low byte
+;   X: high byte
+;   Carry: clear
+;   Y: preserved
+mult8
+    stx u
+    lsr
+    sta t
+    lda #0
+    bcc +
+    txa
+    lsr
++
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    tax
+    lda t
+    rts

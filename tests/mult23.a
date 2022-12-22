@@ -1,0 +1,40 @@
+; mult23.a
+; 'tepples' from https://www.nesdev.org/wiki/8-bit_Multiply
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 153
+; 21 bytes
+
+
+prodlo  = $02
+factor2 = $03
+
+* = $0200
+
+; On Entry:
+;   A: multiplier
+;   Y: multiplicand
+; On Exit:
+;   A:      high byte of product
+;   prodlo: low byte of product
+;   X:      preserved
+mult
+  ; Factor 1 is stored in the lower bits of prodlo; the low byte of
+  ; the product is stored in the upper bits.
+  lsr    ; prime the carry bit for the loop
+  sta prodlo
+  sty factor2
+  lda #0
+  ldy #8
+loop
+  ; At the start of the loop, one bit of prodlo has already been
+  ; shifted out into the carry.
+  bcc noadd
+  clc
+  adc factor2
+noadd
+  ror
+  ror prodlo  ; pull another bit out for the next iteration
+  dey         ; inc/dec don't modify carry; only shifts and adds do
+  bne loop
+  rts

@@ -1,0 +1,78 @@
+; smult2.a
+; from https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/
+; also https://github.com/MarkusThill/65-C-02-Assembler/blob/master/booth-algorithm/booth-multiplication.asm
+; bug fixed (high byte of result needs to be set to zero at the start)
+; tweaked for speed:
+;   uses zp variable instead of X register;
+;   doesn't use stack as storage for carry;
+;   uses X register for high byte of result;
+;   faster sign preservation;
+;   first enters loop further down.
+;
+; Uses Booth's algorithm. (slower than the regular shift-and-add algorithm, but interesting)
+; See https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 329.67
+; 49 bytes
+
+
+prod_low = $02       ; 1 byte.
+factor   = $03       ; 1 byte.
+as_mask  = $04       ; bitmask. only add/subtract if bit is set.
+
+* = $0200
+
+; On Entry:
+;   A:      multiplier
+;   factor: multiplicand
+; On Exit:
+;   prod_low: low byte of result
+;   X:        high byte of result
+mult
+    sta prod_low    ; Save first operand in prod_low.
+    tax             ;
+    beq return      ; stop if first operand is 0.
+    asl             ; Determine positions where additions or subtractions have to
+    eor prod_low    ; be performed by using XOR. For every 1 in the as_mask an
+    sta as_mask     ; addition or subtraction has to be performed!
+    ldy #8          ; Loop-Counter
+    ldx #0          ; X register holds the high byte of result.
+    clc             ; no carry the first time around the loop.
+    bcc enter_loop  ;
+
+loop
+    bvs overflow    ; If adding or subtracting 'factor' overflowed, ignore sign!
+    cpx #$80        ; Set carry to the sign bit of the result to preserve the sign during
+                    ; the next roll.
+overflow
+    txa             ; Roll result to the right. Remember that the first operand is in
+    ror             ; prod_low; by shifting the next prod_low bit into the carry flag we
+    tax             ; can determine later which operation has to be performed (addition
+enter_loop
+    ror prod_low    ; or subtraction).
+
+    ror             ; Save the Carry-Flag in top bit of A, because it will be changed by
+                    ; the following line. [(*1)]
+    lsr as_mask     ; Shift mask to the right. By doing this we can check if any
+                    ; operation has to be performed (Addition/Subtraction). This is the
+                    ; case if the Carry-Flag is equal to 1.
+    bcc no_add_sub  ; Branch if no addition/subtraction has to be done...
+    asl             ; Retrieve the carry flag from (*1).
+    txa             ; Load result so far
+    bcc add         ; We can now decide if we have to add or subtract. Branch if we add.
+    sbc factor      ; Do a subtraction. We do not have to set the Carry-flag explicitly,
+                    ; because we are sure the C-Flag is already set (based on the branch).
+    tax             ; Store result of addition/subtraction.
+no_add_sub
+    dey             ; Decrement loop-counter.
+    bpl loop        ; Do loop exactly 9 times.
+return
+    rts             ; leave this subroutine. The result is in the variable R.
+
+add
+    adc factor      ; Perform an addition. We do not have to reset the Carry-flag
+    tax             ; Store result of addition/subtraction.
+    dey             ; Decrement loop-counter.
+    bpl loop        ; Do loop exactly 9 times.
+    rts             ; leave this subroutine. The result is in the variable R.

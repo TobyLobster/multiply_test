@@ -1,0 +1,9 @@
+{
+    "results": {
+        "title": "smult2",
+        "bytes": "49",
+        "AverageCycles": "329.67",
+        "MinCycles": "14",
+        "MaxCycles": "373"
+    }
+}

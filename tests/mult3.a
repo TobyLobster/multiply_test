@@ -1,0 +1,40 @@
+; mult3.a
+; from Neil Parker: https://llx.com/Neil/a2/mult.html
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 711
+; 36 bytes
+
+
+num1   = $02            ; 2 bytes
+num2   = $04            ; 2 bytes
+result = $06            ; 4 bytes
+
+* = $0200
+
+; result = num1 * num2
+mult
+    lda #0              ; initialize result to 0
+    sta result+2        ;
+    ldx #16             ; there are 16 bits in num2
+loop
+    lsr num2+1          ; get low bit of num2
+    ror num2            ;
+    bcc +               ; 0 or 1?
+    tay                 ; if 1, add num1 (high byte of result is in a)
+    clc                 ;
+    lda num1            ;
+    adc result+2        ;
+    sta result+2        ;
+    tya                 ;
+    adc num1+1          ;
++
+    ror                 ; "stairstep" shift
+    ror result+2        ;
+    ror result+1        ;
+    ror result          ;
+    dex                 ;
+    bne loop            ;
+
+    sta result+3        ;
+    rts                 ;

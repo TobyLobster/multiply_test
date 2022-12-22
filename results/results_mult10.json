@@ -1,0 +1,9 @@
+{
+    "results": {
+        "title": "mult10",
+        "bytes": "27",
+        "AverageCycles": "221.08",
+        "MinCycles": "25",
+        "MaxCycles": "297"
+    }
+}

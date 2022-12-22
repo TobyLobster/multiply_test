@@ -1,0 +1,30 @@
+; mult19.a
+; from Neil Parker: https://www.llx.com/Neil/a2/mult.html
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 185
+; 18 bytes
+
+
+NUM1    = $02
+NUM2    = $03
+RESULT  = $04
+
+* = $0200
+
+; calculate NUM1 * NUM2
+; Result in A (high byte) and RESULT (low byte)
+mult
+    lda #0       ; Initialize RESULT to 0
+    ldx #8       ; There are 8 bits in NUM2
+L1
+    lsr NUM2     ; Get low bit of NUM2
+    bcc L2       ; 0 or 1?
+    clc          ; If 1, add NUM1
+    adc NUM1
+L2
+    ror          ; "Stairstep" shift (catching carry from add)
+    ror RESULT
+    dex
+    bne L1
+    rts

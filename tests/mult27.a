@@ -1,0 +1,54 @@
+; mult27.a
+; from https://sites.google.com/site/h2obsession/programming/6502
+; tweaked slightly
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 51.49
+; 1316 bytes
+
+
+* = $0200
+
+sqrLow
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+
+sqrHigh
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+idTab
+    !for i, 0, 255 {
+        !byte i
+    }
+
+; ***************************************************************************************
+; On Entry:
+;   A = multiplicand
+;   X = multiplier
+; On Exit:
+;   A: low byte of product
+;   X: high byte of product
+mult
+   sta getLow+1
+   sta getHigh+1
+   sec
+   sbc idTab,x
+   bcs doMult
+   sbc #0
+   eor #255
+doMult
+   tay
+getLow
+   lda sqrLow,x
+   sbc sqrLow,y
+   sta temp
+getHigh
+   lda sqrHigh,x
+   sbc sqrHigh,y
+   tax
+temp = *+1
+   lda #0
+   rts

@@ -1,0 +1,52 @@
+; mult26.a
+; 'frantik' from https://www.nesdev.org/wiki/8-bit_Multiply
+; with bug fix
+;
+; 8 bit x 8 bit multiply, 16 bit result
+; Average cycles: 278
+; 47 bytes
+
+
+value1  = $02
+value2  = $03
+ret     = $04              ; return value (2 bytes)
+temp    = $06              ; temp storage
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   value1: multiplier
+;   value2: multiplicand
+; On Exit:
+;   ret:    low byte of product
+;   ret+1:  high byte of product
+mult
+	lda #0          ; clear temporary variables
+	sta ret
+	sta ret+1
+	sta temp
+	lda value2
+	beq end         ; BUGFIX: beq not bne
+	jmp start
+
+loop
+	asl value1      ; double first value
+	rol temp        ; using 16bit precision
+	lsr value2      ; halve second vale
+start
+	lda value2      ;
+	and #1          ; is new 2nd value an odd number?
+	beq loop        ;
+	clc             ; if so, add new 1st value to running total
+	lda ret         ;
+	adc value1      ;
+	sta ret         ;
+	lda ret+1       ;
+	adc temp        ;
+	sta ret+1       ;
+	lda value2      ;
+	cmp #1          ; is 2nd value 1?  if so, we're done
+	bne loop        ; otherwise, loop
+end
+    rts             ;

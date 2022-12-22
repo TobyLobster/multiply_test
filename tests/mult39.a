@@ -1,0 +1,76 @@
+; mult39.a
+; from https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html
+; From 'Revs' for the BBC Micro
+; tweaked a bit for size and speed
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 107
+; 69 bytes
+
+
+t = $02
+u = $03
+
+; (A T) = A * U
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   A: multiplier
+;   u: multiplicand
+; On Exit:
+;   t: low byte of product
+;   A: high byte of product
+Multiply8x8
+    lsr
+    sta t
+    lda #0
+    bcc +
+    lda u
+    lsr
++
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    bcc +
+    clc
+    adc u
++
+    ror
+    ror t
+    rts

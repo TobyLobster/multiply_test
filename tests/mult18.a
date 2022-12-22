@@ -1,0 +1,81 @@
+; mult18.a
+; from Elite: https://www.bbcelite.com/master/main/subroutine/mu11.html
+; tweaked to handle X=0 on input
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 111.62
+; 73 bytes
+
+
+; (A P) = P * X
+
+T = $02
+P = $03
+
+* = 0x0200
+
+; ***************************************************************************************
+; 8 bit multiply
+;
+; On Entry:
+;   P: multiplier
+;   X: multiplicand
+; On Exit:
+;   A: high byte of product
+;   P: low byte of product
+mult
+    cpx #0              ;
+    beq zero            ; Special case: handle X=0 separately
+
+    dex
+    stx T
+    lda #0
+;    tax
+    lsr P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    bcc +
+    adc T
++
+    ror
+    ror P
+    rts
+
+zero
+    txa
+    sta P
+    rts

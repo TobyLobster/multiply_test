@@ -1,0 +1,38 @@
+; mult8.a
+; from Apple Assembly Line, January 1986: FAST.8X8.SLYE at http://www.txbobsc.com/aal/1986/aal8601.html#a5
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 153.52
+; 29 bytes
+
+
+multiplicand    = $02
+multiplier      = $03
+
+* = $0200
+
+; ***************************************************************************************
+; multiply A*X
+; returns product: X is the low byte, A is the high byte
+mult
+    cpx #0              ;
+    beq zero            ; a*0=0
+    dex                 ; decrement multiplicand to avoid the clc before 'adc multiplicand'
+    stx multiplicand    ;
+    lsr                 ; prepare first bit
+    sta multiplier      ;
+    lda #0              ;
+    ldx #8              ;
+loop
+    bcc skip            ; no add
+    adc multiplicand    ;
+skip
+    ror                 ;
+    ror multiplier      ;
+    dex                 ;
+    bne loop            ;
+    ldx multiplier      ;
+    rts                 ;
+zero
+    txa                 ; a = 0
+    rts                 ;

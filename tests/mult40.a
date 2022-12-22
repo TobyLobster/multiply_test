@@ -1,0 +1,44 @@
+; mult40.a
+; from https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc
+; from 'Meteors' for the BBC Micro
+;
+; 8 bit x 8bit unsigned multiply, 16 bit result
+; Average cycles: 278
+; 35 bytes
+
+
+_a = $02        ; two bytes
+_x = $04
+_y = $05        ; two bytes
+
+* = $0200
+
+; ***************************************************************************************
+; On Entry:
+;   _x: multiplier
+;   _y: multiplicand
+; On Exit:
+;   _a:   low byte of product
+;   _a+1: high byte of product
+mult
+    LDA     #0
+    STA     _y+1
+    STA     _a
+    STA     _a+1
+    LDY     #8
+mloop
+    LSR     _x
+    BCC     noadd
+    CLC
+    LDA     _a
+    ADC     _y
+    STA     _a
+    LDA     _a+1
+    ADC     _y+1
+    STA     _a+1
+noadd
+    ASL     _y
+    ROL     _y+1
+    DEY
+    BNE     mloop
+    RTS

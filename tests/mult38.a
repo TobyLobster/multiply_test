@@ -1,0 +1,130 @@
+; mult38.a
+; from https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html
+; from 'Aviator' for the BBC Micro
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 97.00
+; 1345 bytes
+
+
+T = $02
+U = $03
+V = $04
+
+* = 0x0200
+
+highNibble
+    !for i, 0, 255 {
+        !byte i & %11110000
+    }
+lowNibble
+    !for i, 0, 255 {
+        !byte i & %00001111
+    }
+timesTable
+    !for i, 0, 15 {
+        !for j, 0, 15 {
+            !byte i * j
+        }
+    }
+shift4Left
+    !for i, 0, 255 {
+        !byte <(i * 16)
+    }
+shift4Right
+    !for i, 0, 255 {
+        !byte >(i * 16)
+    }
+
+; ***************************************************************************************
+; On Entry:
+;   X: multiplier
+;   Y: multiplicand
+; On Exit:
+;   A: low byte of product
+;   V: high byte of product
+Multiply8x8
+                            ; We start with X = %XXXXxxxx and Y = %YYYYyyyy
+
+     LDA lowNibble,X        ; Set T = (X AND %00001111) OR (Y AND %11110000)
+     ORA highNibble,Y       ;       = %0000xxxx OR %YYYY0000
+     STA T                  ;       = %YYYYxxxx
+
+     AND #%11110000         ; Set U = (A AND %11110000) OR (X >> 4)
+     ORA shift4Right,X      ;       = %YYYY0000 OR %0000XXXX
+     STA U                  ;       = %YYYYXXXX
+
+     AND #%00001111         ; Set Y = (A AND %00001111) OR (Y << 4)
+     ORA shift4Left,Y       ;       = %0000XXXX OR %yyyy0000
+     TAY                    ;       = %yyyyXXXX
+
+     AND #%11110000         ; Set X = (A AND %11110000) OR (X AND %00001111)
+     ORA lowNibble,X        ;       = %yyyy0000 OR %0000xxxx
+     TAX                    ;       = %yyyyxxxx
+
+     LDA timesTable,X       ; Set V = %yyyy * %xxxx
+     STA V
+
+     LDX T                  ; Set X = T = %YYYYxxxx
+
+     LDA timesTable,X       ; Set A = (%YYYY * %xxxx) + (%yyyy * XXXX)
+     CLC                    ;
+     ADC timesTable,Y       ; Call this %AAAAaaaa with carry C
+
+     ROR                    ; Set T = A rotated right by 4 places
+     ROR                    ;       = %aaaCAAAA
+     ROR                    ;
+     ROR                    ; and set the C flag to bit 3 of A
+     STA T
+
+     ROR                    ; Set A = %aaaaCAAA
+
+     AND #%11110000         ; Set A = %aaaa0000
+
+     CLC                    ; Set V = V + A
+     ADC V                  ;       = V + %aaaa0000
+     STA V                  ;       = (%yyyy * %xxxx) + %aaaa0000
+
+     LDA T                  ; Set A = T AND %00011111
+     AND #%00011111         ;       = %aaaCAAAA AND %00011111
+                            ;       = %000CAAAA
+
+     LDX U                  ; Set A = A + %YYYY * %XXXX
+     ADC timesTable,X       ;       = %000CAAAA + (%YYYY * %XXXX)
+
+                            ; So we now have:
+                            ;
+                            ;   (A V) = A << 8 + V
+                            ;
+                            ;         =   (%000CAAAA + (%YYYY * %XXXX)) << 8
+                            ;           + (%yyyy * %xxxx) + %aaaa0000
+                            ;
+                            ;         =   %000CAAAA << 8
+                            ;           + (%YYYY * %XXXX) << 8
+                            ;           + (%yyyy * %xxxx)
+                            ;           + %aaaa0000
+                            ;
+                            ;         =   (%YYYY * %XXXX) << 8
+                            ;           + %000CAAAAaaaa0000
+                            ;           + (%yyyy * %xxxx)
+                            ;
+                            ; We also have the following:
+                            ;
+                            ;   %CAAAAaaaa = (%YYYY * %xxxx) + (%yyyy * XXXX)
+                            ;
+                            ; and:
+                            ;
+                            ;   %000CAAAAaaaa0000 = %CAAAAaaaa << 4
+                            ;
+                            ; so combining them all, we get:
+                            ;
+                            ;   (A V) =   (%YYYY * %XXXX) << 8
+                            ;           + %CAAAAaaaa << 4
+                            ;           + (%yyyy * %xxxx)
+                            ;
+                            ;         =   (%YYYY * %XXXX) << 8
+                            ;             ((%YYYY * %xxxx) + (%yyyy * XXXX)) << 4
+                            ;           + (%yyyy * %xxxx)
+                            ;
+                            ; which is the result we want
+     RTS
