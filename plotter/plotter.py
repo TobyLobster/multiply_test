@@ -5,20 +5,21 @@ import pandas as pd
 import json
 
 class Diagram:
-    def __init__(self, title, xlimit, ylimit, results_list):
+    def __init__(self, title, filename, xlimit, ylimit, results_list):
         self.title = title
+        self.filename = filename
         self.xlimit = xlimit
         self.ylimit = ylimit
         self.results_list = results_list
 
 diagrams = [
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", [0, 2200], [0, 300],
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16", [0, 2200], [0, 300],
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43]),
 
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed (detail)", [0,80], [0,180],
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed (detail)", "6502_8x8=16_detail", [0,80], [0,180],
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43]),
 
-    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", [0, 2300], [0, 1000],
+    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", "6502_16x16=32", [0, 2300], [0, 1000],
         [1, 2, 3, 4, 15, 31, 33, 36, 41, 42]),
         ]
 
@@ -180,4 +181,4 @@ for diagram in diagrams:
     #       ylim=(0, 8), yticks=np.arange(1, 8))
 
     plt.title(f"{diagram.title}")
-    plt.savefig(f"results/{diagram.title}.svg", metadata={'Date': None})
+    plt.savefig(f"results/{diagram.filename}.svg", metadata={'Date': None})

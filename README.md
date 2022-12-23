@@ -95,54 +95,54 @@ I test the following routines:
 
 | Source                     | Bits     | Method                    | From |
 | -------------------------- | :------: | :-----------------------: | :---- |
-| [mult1.a](tests/mult1.a)   | 16x16=32 | shift and add             | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and [*6502 Software Design* by Leo J Scanlon](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) |
-| [mult2.a](tests/mult2.a)   | 16x16=32 | shift and add             | [The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
-| [mult3.a](tests/mult3.a)   | 16x16=32 | shift and add             | [Neil Parker](https://llx.com/Neil/a2/mult.html)
-| [mult4.a](tests/mult4.a)   | 16x16=32 | shift and add             | TobyLobster and mult39 |
+| [mult1.a](tests/mult1.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and [*6502 Software Design* by Leo J Scanlon](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) |
+| [mult2.a](tests/mult2.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
+| [mult3.a](tests/mult3.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [Neil Parker](https://llx.com/Neil/a2/mult.html)
+| [mult4.a](tests/mult4.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | TobyLobster and mult39 |
 | [mult5.a](tests/mult5.a)   | 8x8=16   | tables of squares         | [yerricde at Everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
 | [mult6.a](tests/mult6.a)   | 8x8=16   | tables of squares         | [eurorusty at Everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
-| [mult7.a](tests/mult7.a)   | 8x8=16   | shift and add             | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult8.a](tests/mult8.a)   | 8x8=16   | shift and add             | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult9.a](tests/mult9.a)   | 8x8=16   | shift and add             | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
-| [mult10.a](tests/mult10.a) | 8x8=16   | shift and add             | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product) |
-| [mult11.a](tests/mult11.a) | 8x8=16   | shift and add             | [codebase64](https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product) |
-| [mult12.a](tests/mult12.a) | 8x8=16   | shift and add             | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) |
+| [mult7.a](tests/mult7.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult8.a](tests/mult8.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult9.a](tests/mult9.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
+| [mult10.a](tests/mult10.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product) |
+| [mult11.a](tests/mult11.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product) |
+| [mult12.a](tests/mult12.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) |
 | [mult13.a](tests/mult13.a) | 8x8=16   | tables of squares         | [Apple Assembly Line, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
 | [mult14.a](tests/mult14.a) | 8x8=16   | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult15.a](tests/mult15.a) | 16x16=32 | tables of squares         | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
 | [mult16.a](tests/mult16.a) | 8x8=16   | tables of squares         | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
-| [mult17.a](tests/mult17.a) | 8x8=16   | shift and add             |[*Elite*](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
-| [mult18.a](tests/mult18.a) | 8x8=16   | shift and add             | [*Elite*](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
-| [mult19.a](tests/mult19.a) | 8x8=16   | shift and add             | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
-| [mult20.a](tests/mult20.a) | 8x8=16   | shift and add             | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
-| [mult21.a](tests/mult21.a) | 8x8=16   | shift and add             | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
+| [mult17.a](tests/mult17.a) | 8x8=16   | shift&nbsp;and&nbsp;add   |[*Elite*](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
+| [mult18.a](tests/mult18.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Elite*](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
+| [mult19.a](tests/mult19.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
+| [mult20.a](tests/mult20.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
+| [mult21.a](tests/mult21.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
 | [mult22.a](tests/mult22.a) | 8x8=16   | tables of squares         | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
-| [mult23.a](tests/mult23.a) | 8x8=16   | shift and add             | [tepples at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
-| [mult24.a](tests/mult24.a) | 8x8=16   | shift and add             | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply)
-| [mult25.a](tests/mult25.a) | 8x8=16   | shift and add             | [Bregalad at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
-| [mult26.a](tests/mult26.a) | 8x8=16   | shift and add             | [frantik at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult23.a](tests/mult23.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult24.a](tests/mult24.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply)
+| [mult25.a](tests/mult25.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Bregalad at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult26.a](tests/mult26.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [frantik at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
 | [mult27.a](tests/mult27.a) | 8x8=16   | tables of squares         | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) |
-| [mult28.a](tests/mult28.a) | 8x8=16   | shift and add             | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult29.a](tests/mult29.a) | 8x8=16   | shift and add             | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (loop unrolled) |
-| [mult30.a](tests/mult30.a) | 8x8=16   | shift and add             | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
+| [mult28.a](tests/mult28.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult29.a](tests/mult29.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (loop unrolled) |
+| [mult30.a](tests/mult30.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
 | [mult31.a](tests/mult31.a) | 16x16=32 | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult32.a](tests/mult32.a) | 8x8=16   | 4 bit multiply            | [keldon at Everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
 | [mult33.a](tests/mult33.a) | 16x16=32 | tables of squares         | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
-| [mult34.a](tests/mult34.a) | 8x8=16   | shift and add             | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult35.a](tests/mult35.a) | 8x8=16   | shift and add             | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult36.a](tests/mult36.a) | 16x16=32 | shift and add             | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
-| [mult37.a](tests/mult37.a) | 8x8=16   | shift and add             | [Andrew Blance at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
+| [mult34.a](tests/mult34.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
+| [mult35.a](tests/mult35.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
+| [mult36.a](tests/mult36.a) | 16x16=32 | shift&nbsp;and&nbsp;add   | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
+| [mult37.a](tests/mult37.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Andrew Blance at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
 | [mult38.a](tests/mult38.a) | 8x8=16   | 4 bit multiply            | [*Aviator*](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult39.a](tests/mult39.a) | 8x8=16   | shift and add             | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult40.a](tests/mult40.a) | 8x8=16   | shift and add             | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
+| [mult39.a](tests/mult39.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
+| [mult40.a](tests/mult40.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
 | [mult41.a](tests/mult41.a) | 16x16=32 | tables of squares         | TobyLobster and mult13 |
 | [mult42.a](tests/mult42.a) | 16x16=32 | tables of squares         | TobyLobster and mult16 |
-| [mult43.a](tests/mult43.a) | 8x8=16   | shift and add             | [*6502 assembly language programming* by Lance A. Leventhal](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up)
+| [mult43.a](tests/mult43.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*6502 assembly language programming* by Lance A. Leventhal](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up)
 | [smult1.a](tests/smult1.a) | 8x8=16 (signed)           | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult2.a](tests/smult2.a) | 8x8=16 (signed)           | Booth's algorithm         | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
 | [smult3.a](tests/smult3.a) | 16x16=32 (signed)         | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [omult1.a](tests/omult1.a) | 16x16=16 (partial result) | shift and add             | [Apprize](https://apprize.best/programming/65816/17.html) |
-| [omult2.a](tests/omult2.a) | 8x8=8   (partial result)  | shift and add             | [*The BBC Micro Compendium* by Jeremy Ruston](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) |
+| [omult1.a](tests/omult1.a) | 16x16=16 (partial result) | shift&nbsp;and&nbsp;add   | [Apprize](https://apprize.best/programming/65816/17.html) |
+| [omult2.a](tests/omult2.a) | 8x8=8   (partial result)  | shift&nbsp;and&nbsp;add   | [*The BBC Micro Compendium* by Jeremy Ruston](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) |
 
 
 ## The Results
@@ -152,7 +152,7 @@ All cycle counts/byte counts include the final RTS (1 byte, 6 cycles), but do no
 
 ### 8 bit x 8 bit unsigned multiply with 16 bit result
 
-![Results of 8 x 8 bit unsigned multiply](results/6502 unsigned multiply (16x16=32 bit), Memory vs speed.svg)
+![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
 
 | Source                     | Average Cycles | Memory (bytes) | Changes                                      |
 | -------------------------- | -------------: | -------------: | :------------------------------------------- |
@@ -193,7 +193,7 @@ All cycle counts/byte counts include the final RTS (1 byte, 6 cycles), but do no
 
 ### 16 bit x 16 bit unsigned multiply with 32 bit result
 
-![Results of 16 x 16 bit unsigned multiply](results/6502 unsigned multiply (16x16=32 bit), Memory vs speed.svg)
+![Results of 16 x 16 bit unsigned multiply](results/6502_16x16=32.svg)
 
 | Source                     | Average Cycles | Memory (bytes) | Changes                                                                      |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
@@ -304,4 +304,4 @@ This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decima
 * I use clang to compile the C code (not included).
 
 ## See Also
-See also my [test_sqrt](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
+See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
