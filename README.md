@@ -3,19 +3,19 @@
 
 ## Contents
 
-* [Introduction](#Introduction)
-* [The Algorithms](#TheAlgorithms)
-	* [Binary Multiplication (Shift and Add)](#BinaryMultiplicationShiftandAdd)
-	* [Tables of Squares](#TablesofSquares)
-	* [Logarithms](#Logarithms)
-	* [Four bit multiply](#Fourbitmultiply)
-	* [Booth's Algorithm](#BoothsAlgorithm)
-    * [Hardware support](#Hardwaresupport)
-    * [Repeated addition](#Repeatedaddition)
-* [The Implementations](#TheImplementations)
-* [The Results](#TheResults)
-* [Customising](#Customising)
-* [How to run the tests](#Howtorunthetests)
+* [Introduction](#introduction)
+* [The Algorithms](#the-algorithms)
+	* [Binary Multiplication (Shift and Add)](#1-binary-multiplication-shift-and-add)
+	* [Tables of Squares](#2-tables-of-squares)
+	* [Logarithms](#3-logarithms)
+	* [Four bit multiply](#4-four-bit-multiply)
+	* [Booth's Algorithm](#5-booths-algorithm)
+    * [Hardware support](#6-hardware-support)
+    * [Repeated addition](#7-repeated-addition)
+* [The Implementations](#the-implementations)
+* [The Results](#the-results)
+* [Customising](#customising)
+* [How to run the tests](#how-to-run-the-tests)
 
 
 ## Introduction
