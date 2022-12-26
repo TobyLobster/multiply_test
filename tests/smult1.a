@@ -39,7 +39,7 @@ square2_high
 ;   Y (low byte) and A (high byte): 16-bit signed product
 ;   preserves X
 mult_8bit_signed
-    ; Step 1: unsigned multiply from https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
+    ; Step 1: unsigned multiply from mult14
     sta sm1
     sta sm3
     eor #$ff

@@ -12,8 +12,11 @@ acc = $03
 
 * = $0200
 
-; MULTIPLY ROUTINE
-; (acc, A) = acc * aux
+; Multiply acc * aux
+;
+; On Exit:
+;   acc (low byte)
+;   A   (high byte)
 mult
     lda #0
     ldy #9      ; loop counter

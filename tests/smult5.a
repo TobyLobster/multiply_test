@@ -1,0 +1,56 @@
+; smult5
+; based on mult9, adjusted for signed multiply
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 180.50
+; 35 bytes
+
+
+aux = $02
+acc = $03
+; ext = $04
+
+* = $0200
+
+; ----------------------------------------------------------------------------
+; Multiply acc x aux (signed)
+;
+; On Exit:
+;   acc (low byte)
+;   A   (high byte)
+smult
+    ; Step 0: Remember acc
+    ldx acc
+
+    ; Step 1: Unsigned multiply acc * aux
+    ; (see mult9)
+    ;
+    ; On Exit:
+    ;   acc (low byte)
+    ;   A   (high byte)
+    lda #0
+    ldy #9      ; loop counter
+    clc
+-
+    ror
+    ror acc
+    bcc +
+    clc		    ; decrement aux above to remove CLC
+    adc aux
++
+    dey
+    bne -
+
+    ; Step 2: apply sign (See C=Hacking16 for details).
+    cpx #$80
+    bcc +
+    sbc aux
++
+    bit aux
+    bpl +
+    stx temp
+    sec
+temp = * + 1
+    sbc #0
++
+    rts

@@ -1,0 +1,70 @@
+; mult44.a
+; from 'The Sentinel' for the BBC Micro, http://level7.org.uk/miscellany/the-sentinel-disassembly.txt
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 109
+; 69 bytes
+
+
+multiplicand = $02
+multiplier   = $03
+
+* = $0200
+
+; Multiply multiplier * multiplicand
+;
+; On Exit:
+;   A: high byte
+;   multiplier: low byte
+multiply_A_by_byte
+    lda #0
+    lsr multiplier
+    bcc skip_bit_0
+    clc
+    adc multiplicand
+skip_bit_0
+    ror
+    ror multiplier
+    bcc skip_bit_1
+    clc
+    adc multiplicand
+skip_bit_1
+    ror
+    ror multiplier
+    bcc skip_bit_2
+    clc
+    adc multiplicand
+skip_bit_2
+    ror
+    ror multiplier
+    bcc skip_bit_3
+    clc
+    adc multiplicand
+skip_bit_3
+    ror
+    ror multiplier
+    bcc skip_bit_4
+    clc
+    adc multiplicand
+skip_bit_4
+    ror
+    ror multiplier
+    bcc skip_bit_5
+    clc
+    adc multiplicand
+skip_bit_5
+    ror
+    ror multiplier
+    bcc skip_bit_6
+    clc
+    adc multiplicand
+skip_bit_6
+    ror
+    ror multiplier
+    bcc skip_bit_7
+    clc
+    adc multiplicand
+skip_bit_7
+    ror
+    ror multiplier
+    rts

@@ -1,0 +1,35 @@
+; omult3.a
+; from Elite, https://www.bbcelite.com/cassette/main/subroutine/fmltu.html
+;
+; 8 bit x 8 bit unsigned multiply, 8 bit partial result (high byte)
+; Average cycles: 128.00
+; 24 bytes
+
+
+P = $02
+Q = $03
+
+* = $0200
+
+; multiply A * Q
+; On Exit:
+;   A (high byte)
+FMLTU
+    eor #%11111111
+    sec
+    ror
+    sta P
+    lda #0
+MUL3
+    bcs MU7
+    adc Q
+    ror
+    lsr P
+    bne MUL3
+    rts
+
+MU7
+    lsr
+    lsr P
+    bne MUL3
+    rts

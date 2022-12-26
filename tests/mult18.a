@@ -1,6 +1,6 @@
 ; mult18.a
 ; from Elite: https://www.bbcelite.com/master/main/subroutine/mu11.html
-; tweaked to handle X=0 on input
+; tweaked to handle X=0 on input, and unrolled
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 111.62

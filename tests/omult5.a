@@ -1,0 +1,182 @@
+; omult5.a
+; from 'The Sentinel' for the BBC Micro, http://level7.org.uk/miscellany/the-sentinel-disassembly.txt
+;
+; 16 bit x 16 bit signed multiply, with approximate 16 bit result
+;
+; Given bytes A,B,C,D:
+;
+;        AB
+;      x CD
+;     -----
+;        XX         B*D +
+;       XX0     256*A*D +
+;       XX0     256*B*C +
+;      XX00   65536*A*C
+;
+;   AB*CD/65536 = (B*D + 256*A*D + 256*B*C + 65536*A*C)/65536
+;   AB*CD/65536 ~= (0x80 + A*D + B*C + 256*A*C)/256
+;
+; Average cycles:
+; bytes
+
+
+double_x_low        = $02
+double_x_high       = $03
+double_y_low        = $04
+double_y_high       = $05
+result_low_fraction = $06
+result_low          = $07
+result_high         = $08
+invert_result       = $09
+a                   = $0a
+multiplier          = $0b
+a_fraction          = $0b
+multiplicand        = $0c
+
+* = $0200
+
+multiply_double_by_double           ; Multiply two 16 bit numbers into 16 bit result
+    lda #0                          ; initialisation
+    sta invert_result
+    
+    lda double_y_high
+    bpl skip_y_inversion            ; Is y negative?
+    lda #0                          ; If so, make it positive
+    sec
+    sbc double_y_low
+    sta double_y_low
+    lda #0
+    sbc double_y_high
+    sta double_y_high
+    lda invert_result               ; Zero prior to call
+    eor #$80                        ; Set top bit to invert result at end
+    sta invert_result
+skip_y_inversion
+    lda double_x_low
+    and #1                          ; If lowest bit of double_x_low set,
+    beq skip_x_inversion
+    lda invert_result
+    eor #$80                        ; Flip sign of result
+    sta invert_result
+skip_x_inversion
+    lda double_y_high
+    sta a
+    lda double_x_low
+    jsr multiply_A_by_byte          ; Multiply x_low * y_high
+    sta result_low                  ; Store in result_low and result_low_fraction
+    lda a_fraction
+    clc
+    adc #$80                        ; Round
+    sta result_low_fraction
+    bcc skip_overflow_low
+    inc result_low
+skip_overflow_low
+    lda double_x_high
+    jsr multiply_A_by_byte          ; Multiply x_high * y_high
+    sta result_high                 ; Add to result_high and result_low
+    lda a_fraction
+    clc
+    adc result_low
+    sta result_low
+    bcc skip_overflow_high
+    inc result_high
+skip_overflow_high
+    lda double_y_low
+    sta a
+    lda double_x_high
+    jsr multiply_A_by_byte          ; Multiply x_high * y_low
+    sta a                           ; Add to result_low and result_low_fraction
+    lda a_fraction
+    clc
+    adc result_low_fraction
+    lda a
+    adc result_low
+    sta a_fraction
+    bcc skip_overflow_high2
+    inc result_high
+skip_overflow_high2
+    lda result_high                 ; Leave with A = result_high, a_fraction = result_low
+    bit invert_result               ; Top bit set if final result should be inverted
+invert_A_and_a_fraction_if_negative
+    bpl leave
+invert_A_and_a_fraction
+    sta a
+    lda #0
+    sec
+    sbc a_fraction
+    sta a_fraction
+    lda #0
+    sbc a
+leave
+    rts
+
+; See mult44.a
+multiply_A_by_byte      
+    lda #0
+    lsr multiplier
+    bcc skip_bit_0
+    clc
+    adc multiplicand
+skip_bit_0
+    ror 
+    ror multiplier
+    bcc skip_bit_1
+    clc
+    adc multiplicand
+skip_bit_1
+    ror 
+    ror multiplier
+    bcc skip_bit_2
+    clc
+    adc multiplicand
+skip_bit_2
+    ror 
+    ror multiplier
+    bcc skip_bit_3
+    clc
+    adc multiplicand
+skip_bit_3
+    ror 
+    ror multiplier
+    bcc skip_bit_4
+    clc
+    adc multiplicand
+skip_bit_4
+    ror 
+    ror multiplier
+    bcc skip_bit_5
+    clc
+    adc multiplicand
+skip_bit_5
+    ror 
+    ror multiplier
+    bcc skip_bit_6
+    clc
+    adc multiplicand
+skip_bit_6
+    ror 
+    ror multiplier
+    bcc skip_bit_7
+    clc
+    adc multiplicand
+skip_bit_7
+    ror 
+    ror multiplier
+    rts
+
+
+;multiply_double_by_byte             ; Multiply 16 bit and 8 bit number into 16 bit result
+;    jsr multiply_byte_by_byte       ; Multiply multiplier_low * multiplicand
+;    sta tmp                         ; (a_fraction is discarded)
+;    lda multiplier_high
+;    jsr multiply_A_by_byte          ; Multiply multiplier_high * multiplicand
+;    sta result_high
+;    lda tmp                
+;    clc
+;    adc result_low
+;    sta result_low
+;    bcc skip_overflow
+;    inc result_high
+;skip_overflow
+;    rts                             ; Leave with A = result_low, a = result_high
+

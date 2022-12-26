@@ -1,0 +1,66 @@
+; smult4.a
+; from https://llx.com/Neil/a2/mult.html
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 242.52
+; 67 bytes
+
+
+NUM1    = $02       ;
+NUM2    = $03       ;
+RESULT  = $04       ; 2 bytes
+
+* = $0200
+
+; input in NUM1,NUM2
+; output in RESULT, RESULT+1
+mult
+    LDA NUM1        ; Compute sign of result
+    EOR NUM2
+    PHP             ; Save it on the stack
+    LDA NUM1        ; Is NUM1 negative?
+    BPL T1
+    EOR #$FF        ; If so, make it positive
+    CLC
+    ADC #1
+    STA NUM1
+T1
+    LDA NUM2        ; Is NUM2 negative?
+    BPL T2
+    EOR #$FF        ; If so, make it positive
+    CLC
+    ADC #1
+    STA NUM2
+T2
+    JSR MUL1BYTE    ; Do the unsigned multiplication
+    STA RESULT+1
+    PLP             ; Get sign of result
+    BPL T3
+    LDA #0          ; If negative, negate result
+    SEC
+    SBC RESULT
+    STA RESULT
+    LDA #0
+    SBC RESULT+1
+    STA RESULT+1
+T3
+    RTS
+
+; ---------------------------------------------------------------------------------------
+MUL1BYTE
+; See mult19.a
+; calculate NUM1 * NUM2
+; Result in A (high byte) and RESULT (low byte)
+    lda #0       ; Initialize RESULT to 0
+    ldx #8       ; There are 8 bits in NUM2
+L1
+    lsr NUM2     ; Get low bit of NUM2
+    bcc L2       ; 0 or 1?
+    clc          ; If 1, add NUM1
+    adc NUM1
+L2
+    ror          ; "Stairstep" shift (catching carry from add)
+    ror RESULT
+    dex
+    bne L1
+    rts

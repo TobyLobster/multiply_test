@@ -4,6 +4,8 @@
 ## Contents
 
 * [Introduction](#introduction)
+* [The Implementations](#the-implementations)
+* [The Results](#the-results)
 * [The Algorithms](#the-algorithms)
 	* [Binary Multiplication (Shift and Add)](#1-binary-multiplication-shift-and-add)
 	* [Tables of Squares](#2-tables-of-squares)
@@ -12,15 +14,156 @@
 	* [Booth's Algorithm](#5-booths-algorithm)
     * [Hardware support](#6-hardware-support)
     * [Repeated addition](#7-repeated-addition)
-* [The Implementations](#the-implementations)
-* [The Results](#the-results)
 * [Customising](#customising)
 * [How to run the tests](#how-to-run-the-tests)
 
 
 ## Introduction
 
-This document compares the runtime performance and memory use of many different multiplication routines for the 6502 CPU. Each implementation is executed exhaustively over every possible input, correctness is verified, and cycle counts are tallied. The results are shown in graphs below.
+This document compares the runtime performance and memory usage of a wide variety of the available multiplication routines for the 6502 CPU.
+
+The most common routines are unsigned: either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. However there is a section on how to customise these routines for different bit sizes, signedness etc.
+
+Each implementation below is executed exhaustively over *every* possible input to verify correctness and tally cycle counts. The results are shown below.
+
+## The Implementations
+
+I test the following routines:
+
+| Source                     | Bits     | Method                    | From |
+| -------------------------- | :------: | :-----------------------: | :---- |
+| [mult1.a](tests/mult1.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and (earlier) [*6502 Software Design* by Leo J Scanlon](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) (1980) |
+| [mult2.a](tests/mult2.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)   | [The Fridge, from the Merlin 128 Macro Assembler disk](http://www.ffd2.com/fridge/math/mult-div.s)
+| [mult3.a](tests/mult3.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://llx.com/Neil/a2/mult.html) |
+| [mult4.a](tests/mult4.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster combining the results of mult39 |
+| [mult5.a](tests/mult5.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [yerricde at Everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
+| [mult6.a](tests/mult6.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [eurorusty at Everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
+| [mult7.a](tests/mult7.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult8.a](tests/mult8.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult9.a](tests/mult9.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
+| [mult10.a](tests/mult10.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)| [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product) |
+| [mult11.a](tests/mult11.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product) |
+| [mult12.a](tests/mult12.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) |
+| [mult13.a](tests/mult13.a) | 8x8=16   | [tables of squares](#2-tables-of-squares) | [Apple Assembly Line, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
+| [mult14.a](tests/mult14.a) | 8x8=16   | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [mult15.a](tests/mult15.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
+| [mult16.a](tests/mult16.a) | 8x8=16   | [tables of squares](#2-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
+| [mult17.a](tests/mult17.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[*Elite*](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
+| [mult18.a](tests/mult18.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite*](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
+| [mult19.a](tests/mult19.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
+| [mult20.a](tests/mult20.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
+| [mult21.a](tests/mult21.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
+| [mult22.a](tests/mult22.a) | 8x8=16   | [tables of squares](#2-tables-of-squares) | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
+| [mult23.a](tests/mult23.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult24.a](tests/mult24.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply)
+| [mult25.a](tests/mult25.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Bregalad at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult26.a](tests/mult26.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [frantik at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
+| [mult27.a](tests/mult27.a) | 8x8=16   | [tables of squares](#2-tables-of-squares) | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) |
+| [mult28.a](tests/mult28.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult29.a](tests/mult29.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (loop unrolled) |
+| [mult30.a](tests/mult30.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
+| [mult31.a](tests/mult31.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [mult32.a](tests/mult32.a) | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [keldon at Everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
+| [mult33.a](tests/mult33.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
+| [mult34.a](tests/mult34.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
+| [mult35.a](tests/mult35.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
+| [mult36.a](tests/mult36.a) | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
+| [mult37.a](tests/mult37.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Andrew Blance at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
+| [mult38.a](tests/mult38.a) | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator*](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
+| [mult39.a](tests/mult39.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
+| [mult40.a](tests/mult40.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
+| [mult41.a](tests/mult41.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster combining the results of mult13 |
+| [mult42.a](tests/mult42.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster combining the results of mult16 |
+| [mult43.a](tests/mult43.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming* by Lance A. Leventhal](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) |
+| [mult44.a](tests/mult44.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel*](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
+| [smult1.a](tests/smult1.a) | 8x8=16 (signed)           | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult2.a](tests/smult2.a) | 8x8=16 (signed)           | [Booth's algorithm](#5-booths-algorithm) | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
+| [smult3.a](tests/smult3.a) | 16x16=32 (*signed*)         | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult4.a](tests/smult4.a) | 8x8=16 (*signed*)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
+| [smult5.a](tests/smult5.a) | 8x8=16 (*signed*)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster converting mult9 to a signed multiply |
+| [omult1.a](tests/omult1.a) | 16x16=16 (*partial result*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
+| [omult2.a](tests/omult2.a) | 8x8=8   (*partial result*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium* by Jeremy Ruston](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) |
+
+
+## The Results
+
+In the diagrams below, grey dots are the also rans. They are are beaten for both cycles and memory by the orange dots. 
+
+All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
+
+### 8 bit x 8 bit unsigned multiply with 16 bit result
+
+![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
+
+| Source                     | Average Cycles | Memory (bytes) | Changes                                      |
+| -------------------------- | -------------: | -------------: | :------------------------------------------- |
+| [mult5.a](tests/mult5.a)   | 93.55          | 834            |                                              |
+| [mult6.a](tests/mult6.a)   | 137.92         | 620            |                                              |
+| [mult7.a](tests/mult7.a)   | 133.53         | 36             | with slight change to swap output parameters |
+| [mult8.a](tests/mult8.a)   | 153.45         | 29             |                                              |
+| [mult9.a](tests/mult9.a)   | 162.00         | 17             |                                              |
+| [mult10.a](tests/mult10.a) | 221.08         | 27             |                                              |
+| [mult11.a](tests/mult11.a) | 162.00         | 17             |                                              |
+| [mult12.a](tests/mult12.a) | 108.64         | 71             | slightly tweaked                             |
+| [mult13.a](tests/mult13.a) | 54.00          | 1075           |                                              |
+| [mult14.a](tests/mult14.a) | 46.99          | 2078           |                                              |
+| [mult16.a](tests/mult16.a) | 67.48          | 574            |                                              |
+| [mult17.a](tests/mult17.a) | 150.47         | 28             | tweaked to handle X=0 on input               |
+| [mult18.a](tests/mult18.a) | 111.62         | 73             | tweaked to handle X=0 on input  and unrolled |
+| [mult19.a](tests/mult19.a) | 185.00         | 18             |                                              |
+| [mult20.a](tests/mult20.a) | 244.00         | 27             | *bug fixed*                                  |
+| [mult21.a](tests/mult21.a) | 150.00         | 18             |                                              |
+| [mult22.a](tests/mult22.a) | 77.49          | 563            |                                              |
+| [mult23.a](tests/mult23.a) | 153.00         | 21             |                                              |
+| [mult24.a](tests/mult24.a) | 110.63         | 70             | slightly tweaked                             |
+| [mult25.a](tests/mult25.a) | 243.00         | 28             | *bug fixed*, tweaked parameter passing       |
+| [mult26.a](tests/mult26.a) | 278.14         | 47             | *bug fixed*                                  |
+| [mult27.a](tests/mult27.a) | 51.49          | 1316           | slightly tweaked                             |
+| [mult28.a](tests/mult28.a) | 130.00         | 27             | tweaked                                      |
+| [mult29.a](tests/mult29.a) | 120.00         | 43             | tweaked                                      |
+| [mult30.a](tests/mult30.a) | 114.00         | 74             | tweaked                                      |
+| [mult32.a](tests/mult32.a) | 117.14         | 592            |                                              |
+| [mult34.a](tests/mult34.a) | 280.00         | 36             |                                              |
+| [mult35.a](tests/mult35.a) | 191.00         | 22             |                                              |
+| [mult37.a](tests/mult37.a) | 278.00         | 35             |                                              |
+| [mult38.a](tests/mult38.a) | 97.00          | 1345           |                                              |
+| [mult39.a](tests/mult39.a) | 107.00         | 69             | tweaked slightly                             |
+| [mult40.a](tests/mult40.a) | 278.00         | 35             |                                              |
+| [mult43.a](tests/mult43.a) | 208.90         | 26             |                                              |
+| [mult44.a](tests/mult44.a) | 109.00         | 69             |                                              |
+
+
+### 16 bit x 16 bit unsigned multiply with 32 bit result
+
+![Results of 16 x 16 bit unsigned multiply](results/6502_16x16=32.svg)
+
+| Source                     | Average Cycles | Memory (bytes) | Changes                                                                      |
+| -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
+| [mult1.a](tests/mult1.a)   | 751            | 38             |                                                                              |
+| [mult2.a](tests/mult2.a)   | 578            | 33             | optimised slightly                                                           |
+| [mult3.a](tests/mult3.a)   | 711            | 36             |                                                                              |
+| [mult4.a](tests/mult4.a)   | 567            | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
+| [mult15.a](tests/mult15.a) | 206.60         | 2181           |                                                                              |
+| [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
+| [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
+| [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
+| [mult41.a](tests/mult41.a) | 350            | 1150           | I use mult13 and combine to make 16x16                                       |
+| [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       |
+
+### Miscellaneous Examples
+
+Some signed multiply routines, and multiply with partial results.
+
+| Source                     | Average cycles | Memory (bytes) | Notes               |
+| -------------------------- | -------------: | -------------: | ------------------- |
+| [smult1.a](tests/smult1.a) | 62.99          | 2095           | 8 x 8 bit *signed* multiply (16 bit result), tweaked for size and speed (based on mult14.a) |
+| [smult2.a](tests/smult2.a) | 329.67         | 49             | 8 x 8 bit *signed* multiply (16 bit result), Booth's Algorithm, *bug fixed* and optimised |
+| [smult3.a](tests/smult3.a) | 277.57         | 2253           | 16 x 16 bit *signed* multiply (32 bit result), tweaked slightly (based on the mult31.a) |
+| [smult4.a](tests/smult4.a) | 242.52         | 67             | 8 x 8 bit *signed* multiply (16 bit result) based on mult19                  |
+| [smult5.a](tests/smult5.a) | 180.50         | 35             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult9      |
+| [omult1.a](tests/omult1.a) | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                      |
+| [omult2.a](tests/omult2.a) | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                         |
+| [omult3.a](tests/omult3.a) | 128.00         | 24             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                        |
 
 ## The Algorithms
 
@@ -87,138 +230,7 @@ This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'sh
 Some hardware has support for multiplication in silicon. These are likely to be the fastest and smallest code of all, where available. For instance, the SNES has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
 
 ### 7. Repeated addition ###
-The *supidly slow* method. To multiply m x n, just add m, n times. Avoid!
-
-## The Implementations
-
-I test the following routines:
-
-| Source                     | Bits     | Method                    | From |
-| -------------------------- | :------: | :-----------------------: | :---- |
-| [mult1.a](tests/mult1.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and [*6502 Software Design* by Leo J Scanlon](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) |
-| [mult2.a](tests/mult2.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
-| [mult3.a](tests/mult3.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | [Neil Parker](https://llx.com/Neil/a2/mult.html)
-| [mult4.a](tests/mult4.a)   | 16x16=32 | shift&nbsp;and&nbsp;add   | TobyLobster and mult39 |
-| [mult5.a](tests/mult5.a)   | 8x8=16   | tables of squares         | [yerricde at Everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
-| [mult6.a](tests/mult6.a)   | 8x8=16   | tables of squares         | [eurorusty at Everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
-| [mult7.a](tests/mult7.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult8.a](tests/mult8.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult9.a](tests/mult9.a)   | 8x8=16   | shift&nbsp;and&nbsp;add   | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
-| [mult10.a](tests/mult10.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product) |
-| [mult11.a](tests/mult11.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product) |
-| [mult12.a](tests/mult12.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) |
-| [mult13.a](tests/mult13.a) | 8x8=16   | tables of squares         | [Apple Assembly Line, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
-| [mult14.a](tests/mult14.a) | 8x8=16   | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [mult15.a](tests/mult15.a) | 16x16=32 | tables of squares         | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
-| [mult16.a](tests/mult16.a) | 8x8=16   | tables of squares         | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
-| [mult17.a](tests/mult17.a) | 8x8=16   | shift&nbsp;and&nbsp;add   |[*Elite*](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
-| [mult18.a](tests/mult18.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Elite*](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
-| [mult19.a](tests/mult19.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
-| [mult20.a](tests/mult20.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
-| [mult21.a](tests/mult21.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
-| [mult22.a](tests/mult22.a) | 8x8=16   | tables of squares         | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
-| [mult23.a](tests/mult23.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
-| [mult24.a](tests/mult24.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply)
-| [mult25.a](tests/mult25.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Bregalad at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
-| [mult26.a](tests/mult26.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [frantik at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
-| [mult27.a](tests/mult27.a) | 8x8=16   | tables of squares         | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) |
-| [mult28.a](tests/mult28.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult29.a](tests/mult29.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (loop unrolled) |
-| [mult30.a](tests/mult30.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
-| [mult31.a](tests/mult31.a) | 16x16=32 | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [mult32.a](tests/mult32.a) | 8x8=16   | 4 bit multiply            | [keldon at Everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
-| [mult33.a](tests/mult33.a) | 16x16=32 | tables of squares         | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
-| [mult34.a](tests/mult34.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult35.a](tests/mult35.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult36.a](tests/mult36.a) | 16x16=32 | shift&nbsp;and&nbsp;add   | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
-| [mult37.a](tests/mult37.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [Andrew Blance at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
-| [mult38.a](tests/mult38.a) | 8x8=16   | 4 bit multiply            | [*Aviator*](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult39.a](tests/mult39.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult40.a](tests/mult40.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
-| [mult41.a](tests/mult41.a) | 16x16=32 | tables of squares         | TobyLobster and mult13 |
-| [mult42.a](tests/mult42.a) | 16x16=32 | tables of squares         | TobyLobster and mult16 |
-| [mult43.a](tests/mult43.a) | 8x8=16   | shift&nbsp;and&nbsp;add   | [*6502 assembly language programming* by Lance A. Leventhal](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up)
-| [smult1.a](tests/smult1.a) | 8x8=16 (signed)           | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [smult2.a](tests/smult2.a) | 8x8=16 (signed)           | Booth's algorithm         | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
-| [smult3.a](tests/smult3.a) | 16x16=32 (signed)         | tables of squares         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [omult1.a](tests/omult1.a) | 16x16=16 (partial result) | shift&nbsp;and&nbsp;add   | [Apprize](https://apprize.best/programming/65816/17.html) |
-| [omult2.a](tests/omult2.a) | 8x8=8   (partial result)  | shift&nbsp;and&nbsp;add   | [*The BBC Micro Compendium* by Jeremy Ruston](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) |
-
-
-## The Results
-
-In the diagrams below, greyed out dots are beaten for cycles and memory by the orange dots.
-All cycle counts/byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
-
-### 8 bit x 8 bit unsigned multiply with 16 bit result
-
-![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
-
-| Source                     | Average Cycles | Memory (bytes) | Changes                                      |
-| -------------------------- | -------------: | -------------: | :------------------------------------------- |
-| [mult5.a](tests/mult5.a)   | 93.55          | 834            |                                              |
-| [mult6.a](tests/mult6.a)   | 137.92         | 620            |                                              |
-| [mult7.a](tests/mult7.a)   | 133.53         | 36             | with slight change to swap output parameters |
-| [mult8.a](tests/mult8.a)   | 153.45         | 29             |                                              |
-| [mult9.a](tests/mult9.a)   | 162.00         | 17             |                                              |
-| [mult10.a](tests/mult10.a) | 221.08         | 27             |                                              |
-| [mult11.a](tests/mult11.a) | 162.00         | 17             |                                              |
-| [mult12.a](tests/mult12.a) | 108.64         | 71             | slightly tweaked                             |
-| [mult13.a](tests/mult13.a) | 54.00          | 1075           |                                              |
-| [mult14.a](tests/mult14.a) | 46.99          | 2078           |                                              |
-| [mult16.a](tests/mult16.a) | 67.48          | 574            |                                              |
-| [mult17.a](tests/mult17.a) | 150.47         | 28             | tweaked to handle X=0 on input               |
-| [mult18.a](tests/mult18.a) | 111.62         | 73             | tweaked to handle X=0 on input               |
-| [mult19.a](tests/mult19.a) | 185.00         | 18             |                                              |
-| [mult20.a](tests/mult20.a) | 244.00         | 27             | *bug fixed*                                  |
-| [mult21.a](tests/mult21.a) | 150.00         | 18             |                                              |
-| [mult22.a](tests/mult22.a) | 77.49          | 563            |                                              |
-| [mult23.a](tests/mult23.a) | 153.00         | 21             |                                              |
-| [mult24.a](tests/mult24.a) | 110.63         | 70             | slightly tweaked                             |
-| [mult25.a](tests/mult25.a) | 243.00         | 28             | *bug fixed*, tweaked parameter passing       |
-| [mult26.a](tests/mult26.a) | 278.14         | 47             | *bug fixed*                                  |
-| [mult27.a](tests/mult27.a) | 51.49          | 1316           | slightly tweaked                             |
-| [mult28.a](tests/mult28.a) | 130.00         | 27             | tweaked                                      |
-| [mult29.a](tests/mult29.a) | 120.00         | 43             | tweaked                                      |
-| [mult30.a](tests/mult30.a) | 114.00         | 74             | tweaked                                      |
-| [mult32.a](tests/mult32.a) | 117.14         | 592            |                                              |
-| [mult34.a](tests/mult34.a) | 280.00         | 36             |                                              |
-| [mult35.a](tests/mult35.a) | 191.00         | 22             |                                              |
-| [mult37.a](tests/mult37.a) | 278.00         | 35             |                                              |
-| [mult38.a](tests/mult38.a) | 97.00          | 1345           |                                              |
-| [mult39.a](tests/mult39.a) | 107.00         | 69             | tweaked slightly                             |
-| [mult40.a](tests/mult40.a) | 278.00         | 35             |                                              |
-| [mult43.a](tests/mult43.a) | 208.90         | 26             |                                              |
-
-
-### 16 bit x 16 bit unsigned multiply with 32 bit result
-
-![Results of 16 x 16 bit unsigned multiply](results/6502_16x16=32.svg)
-
-| Source                     | Average Cycles | Memory (bytes) | Changes                                                                      |
-| -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
-| [mult1.a](tests/mult1.a)   | 751            | 38             |                                                                              |
-| [mult2.a](tests/mult2.a)   | 578            | 33             | optimised slightly                                                           |
-| [mult3.a](tests/mult3.a)   | 711            | 36             |                                                                              |
-| [mult4.a](tests/mult4.a)   | 567            | 137            | I use the 8x8 multiply 'mult39' (from *Revs*) and combine to make 16x16      |
-| [mult15.a](tests/mult15.a) | 206.60         | 2181           |                                                                              |
-| [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
-| [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
-| [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
-| [mult41.a](tests/mult41.a) | 350            | 1150           | I use the 8x8 multiply 'mult13' and combine to make 16x16                    |
-| [mult42.a](tests/mult42.a) | 404.59         | 648            | I use the 8x8 multiply 'mult16' and combine to make 16x16                    |
-
-### Miscellaneous Examples
-
-Some signed multiply routines, and multiply with partial results.
-
-| Source                     | Average cycles | Memory (bytes) | Notes               |
-| -------------------------- | -------------: | -------------: | ------------------- |
-| [smult1.a](tests/smult1.a) | 62.99          | 2095           | 8 x 8 bit *signed* multiply (16 bit result), tweaked for size and speed (based on the unsigned mult14.a) |
-| [smult2.a](tests/smult2.a) | 329.67         | 49             | 8 x 8 bit *signed* multiply (16 bit result), Booth's Algorithm, *bug fixed* and optimised                |
-| [smult3.a](tests/smult3.a) | 277.57         | 2253           | 16 x 16 bit *signed* multiply (32 bit result), tweaked slightly (based on the unsigned mult31.a)         |
-| [omult1.a](tests/omult1.a) | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY lower 16 bit* result                                                |
-| [omult2.a](tests/omult2.a) | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY lower 8 bit* result                                                   |
+To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general.
 
 
 ## Customising
@@ -242,21 +254,23 @@ Just as binary multiplication works in base 2, this works in base 256. Each byte
 Adding the four partial results as shown.
 
 ### In and Out Parameters
-Routines can gather input values either from registers or from memory. It can also return results in registers and/or memory.
+Routines can take input values either from registers or from memory. 
+It can also return results in registers and/or memory.
 
 #### 8 bit x 8 bit = 16 bit
-The routines presented here will use whichever parameter method is fastest for the routine. Often the most useful from the point of view of the calling code is to use registers for both input and output, so you may want to adjust this depending on your usage. Also, if the low byte of the result is in A it can be used as the starting point for a subsequent add or subtract.
+The 8 bit routines I have presented here will generally use whichever parameter method is fastest. 
+
+However, the calling code can often set up parameters for the multiply most efficiently by using registers for both input and output. So you may want to adjust the in/out parameters of the routine depending on your usage. 
+
+If on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract e.g. when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
 
 #### 16bit x 16 bit = 32 bit
-These routines mostly use memory locations for most or all of the in/out parameters, as there are too many values to hold in the registers.
+These routines mostly use memory locations for in/out parameters, as there are too many values to hold in the registers.
 
 ### Partial results only
-For speed, some routines only provide a partial answer. e.g. it may return only the high byte of the result (as an approximation, often used with fixed point calculations) or the low byte (for multiplying small numbers that don't overflow).
+For speed, some routines only provide a partial answer. e.g. it may return only the high byte of the result (as an approximation, often used with fixed point calculations) or the low byte (for multiplying small numbers that don't lead to results larger than one byte).
 
-For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note that negative numbers will need special treatment.
-
-### Self modifying code
-Some of the implementations use self modifying code for speed, so won't work without change from ROM code. If you can use self-modifying code, putting the code itself in zero page will make it run a little faster, if you have the space!
+For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment, see *Signed Multiply* below.
 
 ### Signed multiply
 I will assume here the standard two's compliment representation is used. There are two methods of dealing with signed numbers; one fairly obvious, the other less obvious but better.
@@ -271,10 +285,34 @@ The more obvious method is to remove the signs from the inputs, do an unsigned m
 The craftier method is:
 
 1. do a regular unsigned multiply
-2. If the first input is negative, subtract the second input from the result.
-3. If the second input is negative, subtract the first input from the result.
+2. If the first input is negative, subtract the second input from the high byte of the result.
+3. If the second input is negative, subtract the first input from the high byte of the result.
 
-That's it. This takes less memory and fewer cycles than the more obvious method so should be preferred.
+That's it. This takes less memory and fewer cycles than the more obvious method so should be preferred. See C=Hacking16 for more details.
+
+The code to do this can be optimised to be quite small. For instance smult1 has:
+
+```
+    ; Step 1: Unsigned multiply
+    ; <do an unsigned multiply here>
+    ; At this point: X=one input; A=high byte of result; Y = low byte of result
+
+    ; Step 2: apply sign.
+    cpx #$80             ; check the sign of one input              2 cycles
+    bcc +                ; branch if positive.                      2/3/4
+    sbc sm1              ; take off the other input.                3
++
+    bit sm1              ; check the sign with of the other input.  3
+    bpl +                ; branch if positive.                      2/3/4
+    stx temp             ; store the amount to subtract.            4
+    sec                  ; prepare carry for subtract.              2 
+temp = * + 1
+    sbc #0               ; subtract (self modifying code).          2
++
+```
+
+### Self modifying code
+Some of the implementations use self modifying code for speed, so won't work without change from ROM code. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
 
 ### Multiply using Binary Coded Decimal (BCD)
 
@@ -305,3 +343,5 @@ This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decima
 
 ## See Also
 See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
+
+

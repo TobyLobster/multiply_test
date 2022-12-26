@@ -53,10 +53,18 @@ function test() {
 #test "mult41" 0x600
 #test "mult42" 0x400
 #test "mult43" 0x200
+#test "mult44" 0x200
 
 #test "smult1" 0xa00
 #test "smult2" 0x200
 #test "smult3" 0xa00
+#test "smult4" 0x200
+#test "smult5" 0x200
 
 #test "omult1" 0x200
-test "omult2" 0x200
+#test "omult2" 0x200
+#test "omult3" 0x200
+
+#test "omult4" 0x200
+test "omult5" 0x200
+#test "omult6" 0x200

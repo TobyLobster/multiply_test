@@ -1,0 +1,68 @@
+; omult4.a
+; from Elite, https://www.bbcelite.com/cassette/main/subroutine/mult3.html
+;
+; 24 bit x 8 bit signed multiply, 32 bit result
+; Average cycles:
+; bytes
+
+
+P = $02     ; input (2 bytes)
+Q = $04     ; multiplicand
+R = $05     ; temp
+T = $06     ; temp
+K = $07     ; output (4 bytes)
+
+* = $0200
+
+; Signed multiply (A,P+1,P) * Q
+;
+; On Exit:
+;   K: product (4 bytes)
+;   A: high byte of K
+;   Carry clear
+MULT3
+    sta R               ; remember sign
+    and #%01111111      ; remove sign
+    sta K+2             ; 
+    lda Q               ;
+    and #%01111111      ; remove sign 
+    beq MU5             ;
+    sec                 ;
+    sbc #1              ;
+    sta T               ;
+    lda P+1             ;
+    lsr K+2             ;
+    ror                 ;
+    sta K+1             ;
+    lda P               ;
+    ror                 ;
+    sta K               ;
+    lda #0              ;
+    ldx #24             ; loop counter
+
+MUL2
+    bcc +               ;
+    adc T               ;
++
+    ror                 ;
+    ror K+2             ;
+    ror K+1             ;
+    ror K               ;
+    dex                 ;
+    bne MUL2            ;
+    sta T               ;
+    lda R               ;
+    eor Q               ;
+    and #%10000000      ; sign of result
+    ora T               ;
+    sta K+3             ;
+    rts                 ;
+
+MU5
+    sta K               ;
+    sta K+1             ;
+    sta K+2             ;
+    sta K+3             ; 
+
+    clc                 ;
+    rts                 ;

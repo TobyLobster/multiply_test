@@ -1,0 +1,33 @@
+; omult6.a
+; from 'Nightshade' for the BBC Micro, http://level7.org.uk/miscellany/nightshade-disassembly.txt
+;
+; 8 bit x 8 bit unsigned multiply, 8 bit partial result (low byte)
+; Average cycles: 151
+; 20 bytes
+
+
+acc = $02
+x   = $03
+
+* = $0200
+
+; *************************************************************************************
+; Multiply A * X
+;
+; On Exit:
+;   A: low byte of product
+multiply_A_and_X
+    sta acc
+    stx x
+    ldx #8
+    lda #0
+multiply_A_and_X_loop
+    asl 
+    asl acc
+    bcc skip_power
+    clc
+    adc x
+skip_power
+    dex
+    bne multiply_A_and_X_loop
+    rts
