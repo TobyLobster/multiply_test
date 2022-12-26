@@ -20,11 +20,11 @@
 
 ## Introduction
 
-This document compares the runtime performance and memory usage of a wide variety of the available multiplication routines for the 6502 CPU.
+This document compares the runtime performance and memory usage of a wide variety of available multiplication routines for the 6502 CPU.
 
-The most common routines are unsigned: either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. However there is a section on how to customise these routines for different bit sizes, signedness etc.
+The most common routines are unsigned: either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. However there is a section that discusses how to customise these routines for different bit sizes, signedness etc.
 
-Each implementation below is executed exhaustively over *every* possible input to verify correctness and tally cycle counts. The results are shown below.
+Each implementation below is executed exhaustively over *every* possible input to verify correctness and tally the exact cycle counts. The results are shown below.
 
 ## The Implementations
 
@@ -32,12 +32,12 @@ I test the following routines:
 
 | Source                     | Bits     | Method                    | From |
 | -------------------------- | :------: | :-----------------------: | :---- |
-| [mult1.a](tests/mult1.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and (earlier) [*6502 Software Design* by Leo J Scanlon](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) (1980) |
-| [mult2.a](tests/mult2.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)   | [The Fridge, from the Merlin 128 Macro Assembler disk](http://www.ffd2.com/fridge/math/mult-div.s)
+| [mult1.a](tests/mult1.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and (earlier) [*6502 Software Design*](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) by Leo J Scanlon (1980) |
+| [mult2.a](tests/mult2.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)   | [The Fridge, as found on the Merlin 128 Macro Assembler disk](http://www.ffd2.com/fridge/math/mult-div.s)
 | [mult3.a](tests/mult3.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://llx.com/Neil/a2/mult.html) |
-| [mult4.a](tests/mult4.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster combining the results of mult39 |
-| [mult5.a](tests/mult5.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [yerricde at Everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
-| [mult6.a](tests/mult6.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [eurorusty at Everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
+| [mult4.a](tests/mult4.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, combining the results of mult39 |
+| [mult5.a](tests/mult5.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [yerricde at everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
+| [mult6.a](tests/mult6.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [eurorusty at everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
 | [mult7.a](tests/mult7.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
 | [mult8.a](tests/mult8.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
 | [mult9.a](tests/mult9.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
@@ -63,7 +63,7 @@ I test the following routines:
 | [mult29.a](tests/mult29.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (loop unrolled) |
 | [mult30.a](tests/mult30.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
 | [mult31.a](tests/mult31.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [mult32.a](tests/mult32.a) | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [keldon at Everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
+| [mult32.a](tests/mult32.a) | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [keldon at everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
 | [mult33.a](tests/mult33.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
 | [mult34.a](tests/mult34.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
 | [mult35.a](tests/mult35.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
@@ -72,9 +72,9 @@ I test the following routines:
 | [mult38.a](tests/mult38.a) | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator*](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
 | [mult39.a](tests/mult39.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
 | [mult40.a](tests/mult40.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
-| [mult41.a](tests/mult41.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster combining the results of mult13 |
-| [mult42.a](tests/mult42.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster combining the results of mult16 |
-| [mult43.a](tests/mult43.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming* by Lance A. Leventhal](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) |
+| [mult41.a](tests/mult41.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult13 |
+| [mult42.a](tests/mult42.a) | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult16 |
+| [mult43.a](tests/mult43.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming*](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) by Lance A. Leventhal |
 | [mult44.a](tests/mult44.a) | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel*](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
 | [smult1.a](tests/smult1.a) | 8x8=16 (signed)           | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult2.a](tests/smult2.a) | 8x8=16 (signed)           | [Booth's algorithm](#5-booths-algorithm) | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
@@ -82,12 +82,12 @@ I test the following routines:
 | [smult4.a](tests/smult4.a) | 8x8=16 (*signed*)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [smult5.a](tests/smult5.a) | 8x8=16 (*signed*)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster converting mult9 to a signed multiply |
 | [omult1.a](tests/omult1.a) | 16x16=16 (*partial result*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
-| [omult2.a](tests/omult2.a) | 8x8=8   (*partial result*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium* by Jeremy Ruston](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) |
+| [omult2.a](tests/omult2.a) | 8x8=8   (*partial result*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston |
 
 
 ## The Results
 
-In the diagrams below, grey dots are the also rans. They are are beaten for both cycles and memory by the orange dots. 
+In the diagrams below, grey dots are the also-rans. They are are beaten for both cycles and memory by the orange dots. 
 
 All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
 
@@ -95,7 +95,12 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 
 ![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
 
-| Source                     | Average Cycles | Memory (bytes) | Changes                                      |
+To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
+
+![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
+
+
+| Source                     | Average Cycles | Memory (bytes) | My Changes                                      |
 | -------------------------- | -------------: | -------------: | :------------------------------------------- |
 | [mult5.a](tests/mult5.a)   | 93.55          | 834            |                                              |
 | [mult6.a](tests/mult6.a)   | 137.92         | 620            |                                              |
@@ -148,7 +153,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
 | [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
 | [mult41.a](tests/mult41.a) | 350            | 1150           | I use mult13 and combine to make 16x16                                       |
-| [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       |
+| [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       | 
 
 ### Miscellaneous Examples
 
@@ -169,7 +174,7 @@ Some signed multiply routines, and multiply with partial results.
 
 ### 1. Binary Multiplication (Shift and Add)
 
-This is the classic algorithm found in all good textbooks. A friendly introduction is found [here](https://www.llx.com/Neil/a2/mult.html). In short, one number is shifted left (doubled) each time around a loop, and the binary bits of the other number are used to determine whether to add this shifted number to a running total.
+This is the classic algorithm found in all good textbooks, similar to pen and paper 'long multiplication', but in base 2. A friendly introduction is found [here](https://www.llx.com/Neil/a2/mult.html). In short, one number is shifted left (doubled) each time around a loop, and the binary bits of the other number are used to determine whether to add this shifted number to a running total.
 
 This is the method used by most programs that need multiplication. It has the advantage that the code is small and it performs reasonably well. Also known as [Ancient Egyptian multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication).
 
@@ -179,7 +184,7 @@ By storing tables of square numbers, we can speed up multiplication. This uses:
 
     a*b = f(a+b) - f(a-b),   where f(x) = x^2/4
 
-So using two table lookups, an addition and two subtractions, we can multiply. This is fast! The downside is how much memory needed to store the data. For 8 bit multiplication, the amount of data varies depending on the exact implementation, but is either 2k of data (fastest), or 1k (only marginally slower), or 512 bytes (slightly slower again).
+So using two table lookups, an addition and two subtractions, we can multiply. This is faster than 'shift and add'. The downside is how much memory needed to store the data. For 8 bit multiplication, the amount of data varies depending on the exact implementation, but is either 2k of data (fastest), or 1k (only marginally slower), or 512 bytes (slightly slower again).
 
 An added feature of the 1k and 2k routines particularly is that if many multiplications are being done with one of the inputs unchanging then some setup code can be skipped, for even better performance. For example if a number of points are being rotated by some known angle.
 
@@ -200,7 +205,7 @@ This method is described further [here](https://codebase64.org/doku.php?id=base:
 ### 4. Four bit multiply
 Instead of 'binary multiplication' using base 2 (as described above), we use base 16 (hexadecimal). We use a 256 byte table that stores the result of multiplying two 4 bit numbers together.
 
-To get an 8 bit x 8 bit multiply, we think of our two 8 bit numbers as being two pairs of hex digits AB and CD. We multiply each pair of hex digits together using the lookup table, and add them together as shown below. This is the same method as regular pen and paper multiplication:
+To get an 8 bit x 8 bit multiply, we think of our two 8 bit numbers as being two pairs of hex digits AB and CD. We multiply each pair of hex digits together using the lookup table, and add them together as shown below. This is the same method as regular pen and paper 'long multiplication':
 
 ```
         AB
