@@ -66,5 +66,6 @@ function test() {
 #test "omult3" 0x200
 
 #test "omult4" 0x200
-test "omult5" 0x200
+#test "omult5" 0x200 !TODO
 #test "omult6" 0x200
+test "omult7" 0x500

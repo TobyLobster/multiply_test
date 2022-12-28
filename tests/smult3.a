@@ -44,9 +44,10 @@ square2_hi
 ;
 ; Clobbered: PRODUCT, X, A, C
 multiply_16bit_signed
+    ; Step 1: unsigned multiply
     jsr multiply_16bit_unsigned
 
-    ; Apply sign (See C=Hacking16 for details).
+    ; Step 2: Apply sign (See C=Hacking16 for details).
     bit T1+1
     bpl +
     sec
