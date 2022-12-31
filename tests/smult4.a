@@ -1,5 +1,6 @@
 ; smult4.a
 ; from https://llx.com/Neil/a2/mult.html
+; this has inefficient dealing with sign. See smult5.a for a more efficient solution
 ;
 ; 8 bit x 8 bit signed multiply, 16 bit result
 ; Average cycles: 242.52
@@ -15,36 +16,36 @@ RESULT  = $04       ; 2 bytes
 ; input in NUM1,NUM2
 ; output in RESULT, RESULT+1
 mult
-    LDA NUM1        ; Compute sign of result
-    EOR NUM2
-    PHP             ; Save it on the stack
-    LDA NUM1        ; Is NUM1 negative?
-    BPL T1
-    EOR #$FF        ; If so, make it positive
-    CLC
-    ADC #1
-    STA NUM1
+    lda NUM1        ; Compute sign of result
+    eor NUM2
+    php             ; Save it on the stack
+    lda NUM1        ; Is NUM1 negative?
+    bpl T1
+    eor #$FF        ; If so, make it positive
+    clc
+    adc #1
+    sta NUM1
 T1
-    LDA NUM2        ; Is NUM2 negative?
-    BPL T2
-    EOR #$FF        ; If so, make it positive
-    CLC
-    ADC #1
-    STA NUM2
+    lda NUM2        ; Is NUM2 negative?
+    bpl T2
+    eor #$FF        ; If so, make it positive
+    clc
+    adc #1
+    sta NUM2
 T2
-    JSR MUL1BYTE    ; Do the unsigned multiplication
-    STA RESULT+1
-    PLP             ; Get sign of result
-    BPL T3
-    LDA #0          ; If negative, negate result
-    SEC
-    SBC RESULT
-    STA RESULT
-    LDA #0
-    SBC RESULT+1
-    STA RESULT+1
+    jsr MUL1BYTE    ; Do the unsigned multiplication
+    sta RESULT+1
+    plp             ; Get sign of result
+    bpl T3
+    lda #0          ; If negative, negate result
+    sec
+    sbc RESULT
+    sta RESULT
+    lda #0
+    sbc RESULT+1
+    sta RESULT+1
 T3
-    RTS
+    rts
 
 ; ---------------------------------------------------------------------------------------
 MUL1BYTE

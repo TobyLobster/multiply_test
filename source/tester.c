@@ -144,7 +144,6 @@ int main(int argc, char *argv[]) {
         exit(exit_code);
     }
 
-    test_cleanup();
     return EXIT_SUCCESS;
 }
 
@@ -382,7 +381,7 @@ void *thread_main(void *context) {
         if (!is_correct(threadContext, i, actual_result, &expected)) {
             if (errors < 100) {
                 pthread_mutex_lock(&mut);
-                printf("thread %llu: for input %llu, expected %llu but got %llu\n", threadContext->thread_index, i, (uint64_t) expected, (uint64_t) actual_result);
+                printf("thread %llu: for input %llu (0x%llx), expected %llu but got %llu\n", threadContext->thread_index, i, i, (uint64_t) expected, (uint64_t) actual_result);
 
                 // Run again for debugging purposes, through a debugger:
                 {
@@ -426,7 +425,7 @@ void *thread_main(void *context) {
                             }
                             j = j/2;
                         }
-                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x P=%s mem[2 to 9]=$%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x",
+                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x P=%s mem[2 to c]=$%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x",
                             threadContext->machine.state.a,
                             threadContext->machine.state.x,
                             threadContext->machine.state.y,
@@ -438,7 +437,11 @@ void *thread_main(void *context) {
                             memory[6],
                             memory[7],
                             memory[8],
-                            memory[9] );
+                            memory[9],
+                            memory[10],
+                            memory[11],
+                            memory[12]
+                            );
 
                         // show pc, instruction and results
                         printf("%04x:  %s %s\n", pc, disassembler.output, registers);

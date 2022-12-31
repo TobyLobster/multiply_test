@@ -1,9 +1,10 @@
 ; omult4.a
 ; from Elite, https://www.bbcelite.com/cassette/main/subroutine/mult3.html
 ;
-; 24 bit x 8 bit signed multiply, 32 bit result
-; Average cycles:
-; bytes
+; 24 bit x 8 bit sign-magnitude multiply, 32 bit sign-magnitude result
+; Numbers are 'sign-magnitude' (top bit is the sign and the rest is the magnitude, i.e. not the same as regular 2's compliment numbers)
+; Average cycles: 686.88
+; 70 bytes
 
 
 P = $02     ; input (2 bytes)
@@ -23,13 +24,13 @@ K = $07     ; output (4 bytes)
 MULT3
     sta R               ; remember sign
     and #%01111111      ; remove sign
-    sta K+2             ; 
+    sta K+2             ;
     lda Q               ;
-    and #%01111111      ; remove sign 
+    and #%01111111      ; remove sign
     beq MU5             ;
     sec                 ;
     sbc #1              ;
-    sta T               ;
+    sta T               ; store multiplier-1
     lda P+1             ;
     lsr K+2             ;
     ror                 ;
@@ -62,7 +63,7 @@ MU5
     sta K               ;
     sta K+1             ;
     sta K+2             ;
-    sta K+3             ; 
+    sta K+3             ;
 
     clc                 ;
     rts                 ;

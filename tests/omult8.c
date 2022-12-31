@@ -1,4 +1,4 @@
-// omult7.c
+// omult8.c
 
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;

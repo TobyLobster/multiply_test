@@ -4,11 +4,14 @@
 static const uint64_t INPUT_START = 0UL;
 static const uint64_t INPUT_END   = 65536UL * 65536UL;
 
+
+const int close_enough = 1;
+
 // **************************************************************************************
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    memory[2] = input & 255UL;
+    memory[2] = (input & 255UL) & 255;
     memory[3] = (input / 256UL) & 255UL;
     memory[4] = (input/65536UL) & 255UL;
     memory[5] = (input/65536UL) / 256UL;
@@ -38,14 +41,33 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     }
 
     int64_t e = a*b;
-    if (e < 0) {
-        e = e + 65536UL*65536UL;
-    }
-    e = e / 65536;
-    
-    *expected = e;
 
-    return actual_result == e;
+    // Rounding
+//    if (e < 0) {
+//        e = e - 32768;
+//    } else {
+//        e = e + 32768;
+//   }
+    e = e / 65536;
+//    if (e < 0) {
+//        e = e + 65536UL;
+//    }
+    int test = actual_result;
+    if (actual_result >= 32768) {
+        test = actual_result - 65536;
+    }
+
+    *expected = e;
+    if (abs(test - (int) e) <= close_enough) {
+        return -1;
+    }
+    if (abs((int) actual_result - (int) e) <= close_enough) {
+        printf("QUESTIONABLE: A: %lld, B: %lld, e: %lld, test=%d\n", a, b, e, test);
+        return -1;
+    }
+    printf("A: %lld, B: %lld, e: %lld, test=%d\n", a, b, e, test);
+    return 0;
+//    return actual_result == e;
 }
 
 

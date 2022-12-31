@@ -8,9 +8,9 @@ static const uint64_t INPUT_END   = 65536UL * 65536UL;
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    threadContext->machine.state.a = input & 255UL;
-    memory[2] = (input / 256UL) & 255UL;
-    memory[3] = (input/65536UL) & 255UL;
+    memory[2] = input & 255UL;
+    memory[3] = (input / 256UL) & 255UL;
+    threadContext->machine.state.a = (input/65536UL) & 255UL;
     memory[4] = (input/65536UL) / 256UL;
 }
 
@@ -31,18 +31,27 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     int64_t a = input & ((256UL*65536UL)-1);
     int64_t b = input / (256UL*65536UL);
 
-    if (a >= (128UL*65536UL)) {
-        a = a - (128UL*65536UL);
-    }
-    if (b >= 128) {
-        b = b - 128;
+    int signA = (a & (128UL*65536UL)) != 0;
+    int signB = (b & 128) != 0;
+
+    int64_t e = (a & ~(128UL*65536UL))*(b & 127UL);
+    if (signA != signB) {
+        e |= (128UL*256UL*65536UL);
     }
 
-    int64_t e = a*b;
-    if (e < 0) {
-        e = e + 65536UL*65536UL;
+    if ((actual_result == 0) && (e == 2147483648UL)) {
+        e = 0;
+    } else if ((actual_result == 2147483648UL) && (e == 0)) {
+        e = 2147483648UL;
     }
+
     *expected = e;
+
+    // DEBUG!
+    if (actual_result != e) {
+        printf("A:%llu, B:%llu, abs(A):%llu, abs(B):%llu, e:%llu, actual_result:%llu\n", a, b, (a & ~(128UL*65536UL)), (b & 127UL), e, actual_result);
+        printf("signA:%d, signB:%d\n", signA, signB);
+    }
 
     return actual_result == e;
 }

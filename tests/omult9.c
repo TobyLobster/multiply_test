@@ -1,4 +1,4 @@
-// omult7.c
+// omult9.c
 
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;
@@ -15,8 +15,8 @@ int hist[array_length] = { 0,0,0,0,0,0, 0, 0,0,0,0,0,0 };
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    threadContext->machine.state.a = input & 255UL;
-    memory[2] = (input / 256UL) & 255UL;
+    threadContext->machine.state.x = input & 255UL;
+    threadContext->machine.state.y = (input / 256UL) & 255UL;
 
     test_input = input;
 }
@@ -62,35 +62,14 @@ void test_cleanup()
         }
     }
 
+    double deviation = 0.0;
     if (from >= 0) {
         for(int index = from; index <= to; index++) {
             int err = index - close_enough;
             printf("Error %d: %d\n", err, hist[index]);
+            deviation += err*err*hist[index];
         }
     }
-/*
-    FILE* out_file = fopen("in_outs.csv", "w");
-    if (out_file) {
-        fprintf(out_file, "a,b,a*b\n");
-        for(uint64_t input = INPUT_START; input < INPUT_END; input++)
-        {
-            uint64_t a = input & 255UL;
-            uint64_t b = (input / 256UL) & 255UL;
-
-            uint64_t e = (a*b) / 256;
-
-            fprintf(out_file, "%llu,%llu,%d,%d\n",
-                    a,
-                    b,
-                    result[input],
-                    (e-result[input])>1);
-            if ((e-result[input])>5) {
-                printf("%d\n", (e-result[input]));
-            }
-        }
-
-        fclose(out_file);
-        out_file = NULL;
-    }
-*/
+    deviation = sqrt(deviation);
+    printf("Root-mean-square deviation: %.2f (smaller is better)\n", (float) deviation);
 }

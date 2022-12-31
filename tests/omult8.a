@@ -1,0 +1,145 @@
+; omult8.a
+; from Elite for the BBC Micro, Second Processor version, https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html
+; Uses log and exp tables to get an approximate result.
+;
+; I corrected two entries in the log tables: $5fff changed to $6000 and $bfff changed to $c000 for slightly improved accuracy.
+;
+; 8 bit x 8 bit unsigned multiply, result is approximately A = A*Q/256 (approximate 8 bit result)
+; Average cycles: 49.20
+; 1075 bytes
+;
+; Over all 65536 possible inputs, I record how many results are correct, out by one, by two etc:
+;
+; Error -3: 90
+; Error -2: 1981
+; Error -1: 19341
+; Error 0: 44124
+;
+; Root-mean-square deviation: 167.60 (smaller is better)
+
+
+Q       = $02    ; multiplier
+widget  = $03
+
+* = $0200
+
+logL
+    ; First byte is unused, then:
+    ;
+    ; for i in range(1,256):
+    ;     entry[i] = int(0.5 + 32*math.log(i, 2)*256) % 255
+    !byte $00,$00,$00,$b8,$00,$4d,$b8,$d5,$00,$70,$4d,$b3,$b8,$6a,$d5,$05
+    !byte $00,$cc,$70,$ef,$4d,$8d,$b3,$c1,$b8,$9a,$6a,$28,$d5,$74,$05,$88
+    !byte $00,$6b,$cc,$23,$70,$b3,$ef,$22,$4d,$71,$8d,$a3,$b3,$bd,$c1,$bf
+    !byte $b8,$ab,$9a,$84,$6a,$4b,$28,$00,$d5,$a7,$74,$3e,$05,$c8,$88,$45
+    !byte $00,$b7,$6b,$1d,$cc,$79,$23,$ca,$70,$13,$b3,$52,$ef,$89,$22,$b8
+    !byte $4d,$e0,$71,$00,$8d,$19,$a3,$2c,$b3,$39,$bd,$3f,$c1,$40,$bf,$3c
+    !byte $b8,$32,$ab,$23,$9a,$10,$84,$f7,$6a,$db,$4b,$ba,$28,$94,$00,$6b
+    !byte $d5,$3e,$a7,$0e,$74,$da,$3e,$a2,$05,$67,$c8,$29,$88,$e7,$45,$a3
+    !byte $00,$5b,$b7,$11,$6b,$c4,$1d,$75,$cc,$23,$79,$ce,$23,$77,$ca,$1d
+    !byte $70,$c1,$13,$63,$b3,$03,$52,$a1,$ef,$3c,$89,$d6,$22,$6d,$b8,$03
+    !byte $4d,$96,$e0,$28,$71,$b8,$00,$47,$8d,$d4,$19,$5f,$a3,$e8,$2c,$70
+    !byte $b3,$f6,$39,$7b,$bd,$fe,$3f,$80,$c1,$01,$40,$80,$bf,$fd,$3c,$7a
+    !byte $b8,$f5,$32,$6f,$ab,$e7,$23,$5f,$9a,$d5,$10,$4a,$84,$be,$f7,$31
+    !byte $6a,$a2,$db,$13,$4b,$82,$ba,$f1,$28,$5e,$94,$cb,$00,$36,$6b,$a0
+    !byte $d5,$0a,$3e,$73,$a7,$da,$0e,$41,$74,$a7,$da,$0c,$3e,$70,$a2,$d3
+    !byte $05,$36,$67,$98,$c8,$f8,$29,$59,$88,$b8,$e7,$16,$45,$74,$a3,$d1
+
+log
+    ; First byte is unused, then:
+    ;
+    ; for i in range(1,256):
+    ;     entry[i] = int(0.5 + 32*math.log(i, 2)*256) // 256
+    !byte $00,$00,$20,$32,$40,$4a,$52,$59,$60,$65,$6a,$6e,$72,$76,$79,$7d
+    !byte $80,$82,$85,$87,$8a,$8c,$8e,$90,$92,$94,$96,$98,$99,$9b,$9d,$9e
+    !byte $a0,$a1,$a2,$a4,$a5,$a6,$a7,$a9,$aa,$ab,$ac,$ad,$ae,$af,$b0,$b1
+    !byte $b2,$b3,$b4,$b5,$b6,$b7,$b8,$b9,$b9,$ba,$bb,$bc,$bd,$bd,$be,$bf
+    !byte $c0,$c0,$c1,$c2,$c2,$c3,$c4,$c4,$c5,$c6,$c6,$c7,$c7,$c8,$c9,$c9
+    !byte $ca,$ca,$cb,$cc,$cc,$cd,$cd,$ce,$ce,$cf,$cf,$d0,$d0,$d1,$d1,$d2
+    !byte $d2,$d3,$d3,$d4,$d4,$d5,$d5,$d5,$d6,$d6,$d7,$d7,$d8,$d8,$d9,$d9
+    !byte $d9,$da,$da,$db,$db,$db,$dc,$dc,$dd,$dd,$dd,$de,$de,$de,$df,$df
+    !byte $e0,$e0,$e0,$e1,$e1,$e1,$e2,$e2,$e2,$e3,$e3,$e3,$e4,$e4,$e4,$e5
+    !byte $e5,$e5,$e6,$e6,$e6,$e7,$e7,$e7,$e7,$e8,$e8,$e8,$e9,$e9,$e9,$ea
+    !byte $ea,$ea,$ea,$eb,$eb,$eb,$ec,$ec,$ec,$ec,$ed,$ed,$ed,$ed,$ee,$ee
+    !byte $ee,$ee,$ef,$ef,$ef,$ef,$f0,$f0,$f0,$f1,$f1,$f1,$f1,$f1,$f2,$f2
+    !byte $f2,$f2,$f3,$f3,$f3,$f3,$f4,$f4,$f4,$f4,$f5,$f5,$f5,$f5,$f5,$f6
+    !byte $f6,$f6,$f6,$f7,$f7,$f7,$f7,$f7,$f8,$f8,$f8,$f8,$f9,$f9,$f9,$f9
+    !byte $f9,$fa,$fa,$fa,$fa,$fa,$fb,$fb,$fb,$fb,$fb,$fc,$fc,$fc,$fc,$fc
+    !byte $fd,$fd,$fd,$fd,$fd,$fd,$fe,$fe,$fe,$fe,$fe,$ff,$ff,$ff,$ff,$ff
+
+antilog
+    ; for i in range(0,256):
+    ;     entry[i] = int(pow(2, i/32 + 8) / 256)
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
+    !byte $02,$02,$02,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
+    !byte $04,$04,$04,$04,$04,$04,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05
+    !byte $05,$05,$05,$06,$06,$06,$06,$06,$06,$06,$07,$07,$07,$07,$07,$07
+    !byte $08,$08,$08,$08,$08,$08,$09,$09,$09,$09,$09,$0a,$0a,$0a,$0a,$0b
+    !byte $0b,$0b,$0b,$0c,$0c,$0c,$0c,$0d,$0d,$0d,$0e,$0e,$0e,$0e,$0f,$0f
+    !byte $10,$10,$10,$11,$11,$11,$12,$12,$13,$13,$13,$14,$14,$15,$15,$16
+    !byte $16,$17,$17,$18,$18,$19,$19,$1a,$1a,$1b,$1c,$1c,$1d,$1d,$1e,$1f
+    !byte $20,$20,$21,$22,$22,$23,$24,$25,$26,$26,$27,$28,$29,$2a,$2b,$2c
+    !byte $2d,$2e,$2f,$30,$31,$32,$33,$34,$35,$36,$38,$39,$3a,$3b,$3d,$3e
+    !byte $40,$41,$42,$44,$45,$47,$48,$4a,$4c,$4d,$4f,$51,$52,$54,$56,$58
+    !byte $5a,$5c,$5e,$60,$62,$64,$67,$69,$6b,$6d,$70,$72,$75,$77,$7a,$7d
+    !byte $80,$82,$85,$88,$8b,$8e,$91,$94,$98,$9b,$9e,$a2,$a5,$a9,$ad,$b1
+    !byte $b5,$b8,$bd,$c1,$c5,$c9,$ce,$d2,$d7,$db,$e0,$e5,$ea,$ef,$f5,$fa
+
+antilogODD
+    ; for i in range(0,256):
+    ;     entry[i] = int(pow(2, (i+0.5) / 32 + 8) / 256)
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
+    !byte $02,$02,$02,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
+    !byte $04,$04,$04,$04,$04,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$05
+    !byte $05,$05,$05,$06,$06,$06,$06,$06,$06,$06,$07,$07,$07,$07,$07,$07
+    !byte $08,$08,$08,$08,$08,$09,$09,$09,$09,$09,$0a,$0a,$0a,$0a,$0a,$0b
+    !byte $0b,$0b,$0b,$0c,$0c,$0c,$0d,$0d,$0d,$0d,$0e,$0e,$0e,$0f,$0f,$0f
+    !byte $10,$10,$10,$11,$11,$12,$12,$12,$13,$13,$14,$14,$14,$15,$15,$16
+    !byte $16,$17,$17,$18,$18,$19,$1a,$1a,$1b,$1b,$1c,$1d,$1d,$1e,$1e,$1f
+    !byte $20,$21,$21,$22,$23,$24,$24,$25,$26,$27,$28,$29,$29,$2a,$2b,$2c
+    !byte $2d,$2e,$2f,$30,$31,$32,$34,$35,$36,$37,$38,$3a,$3b,$3c,$3d,$3f
+    !byte $40,$42,$43,$45,$46,$48,$49,$4b,$4c,$4e,$50,$52,$53,$55,$57,$59
+    !byte $5b,$5d,$5f,$61,$63,$65,$68,$6a,$6c,$6f,$71,$74,$76,$79,$7b,$7e
+    !byte $81,$84,$87,$8a,$8d,$90,$93,$96,$99,$9d,$a0,$a4,$a7,$ab,$af,$b3
+    !byte $b6,$ba,$bf,$c3,$c7,$cb,$d0,$d4,$d9,$de,$e3,$e8,$ed,$f2,$f7,$fd
+
+; A ~= A*Q/256
+FMLTU
+;    stx P
+    sta widget
+    tax
+    beq MU3
+    lda logL,X
+    ldx Q
+    beq MU3again
+    clc
+    adc logL,X
+    bmi oddlog
+    lda log,X
+    ldx widget
+    adc log,X
+    bcc MU3again
+    tax
+    lda antilog,X
+;    ldx P
+    rts
+
+oddlog
+    lda log,X
+    ldx widget
+    adc log,X
+    bcc MU3again
+    tax
+    lda antilogODD,X
+MU3
+;    ldx P
+    rts
+
+MU3again
+    lda #0
+;    ldx P
+    rts

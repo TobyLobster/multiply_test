@@ -1,37 +1,34 @@
 ; omult7.a
-; from APPLE II Elite, https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU
-; uses log and exp tables to get an approximate result (not more than 6 wrong)
+; from Elite for the BBC Micro, BBC Master version, https://www.bbcelite.com/master/main/subroutine/fmltu.html
+; also from APPLE II Elite, https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU
+; Uses log and exp tables to get an approximate result.
 ;
 ; 8 bit x 8 bit unsigned multiply, 8 bit approximate high byte of result
 ; Average cycles: 46.72
 ; 802 bytes
+;
+; Over all 65536 possible inputs, I record how many results are correct, out by one, by two etc:
+;
+; Error -6: 10
+; Error -5: 119
+; Error -4: 626
+; Error -3: 2590
+; Error -2: 7082
+; Error -1: 20656
+; Error 0: 34451
+; Error 1: 2
+;
+; Root-mean-square deviation: 292.66 (smaller is better)
 
 
 * = $0200
 
-multipler = $02     ; Q
-temp_a    = $03
+multipler  = $02
+temp_a     = $03
+; remember_x = $04
 
-log
-    !byte $08,$00,$20,$32,$40,$4a,$52,$59,$60,$65,$6a,$6e,$72,$76,$79,$7d
-    !byte $80,$82,$85,$87,$8a,$8c,$8e,$90,$92,$94,$96,$98,$99,$9b,$9d,$9e
-    !byte $a0,$a1,$a2,$a4,$a5,$a6,$a7,$a9,$aa,$ab,$ac,$ad,$ae,$af,$b0,$b1
-    !byte $b2,$b3,$b4,$b5,$b6,$b7,$b8,$b9,$b9,$ba,$bb,$bc,$bd,$bd,$be,$bf
-    !byte $c0,$c0,$c1,$c2,$c2,$c3,$c4,$c4,$c5,$c6,$c6,$c7,$c7,$c8,$c9,$c9
-    !byte $ca,$ca,$cb,$cc,$cc,$cd,$cd,$ce,$ce,$cf,$cf,$d0,$d0,$d1,$d1,$d2
-    !byte $d2,$d3,$d3,$d4,$d4,$d5,$d5,$d5,$d6,$d6,$d7,$d7,$d8,$d8,$d9,$d9
-    !byte $d9,$da,$da,$db,$db,$db,$dc,$dc,$dd,$dd,$dd,$de,$de,$de,$df,$df
-    !byte $e0,$e0,$e0,$e1,$e1,$e1,$e2,$e2,$e2,$e3,$e3,$e3,$e4,$e4,$e4,$e5
-    !byte $e5,$e5,$e6,$e6,$e6,$e7,$e7,$e7,$e7,$e8,$e8,$e8,$e9,$e9,$e9,$ea
-    !byte $ea,$ea,$ea,$eb,$eb,$eb,$ec,$ec,$ec,$ec,$ed,$ed,$ed,$ed,$ee,$ee
-    !byte $ee,$ee,$ef,$ef,$ef,$ef,$f0,$f0,$f0,$f1,$f1,$f1,$f1,$f1,$f2,$f2
-    !byte $f2,$f2,$f3,$f3,$f3,$f3,$f4,$f4,$f4,$f4,$f5,$f5,$f5,$f5,$f5,$f6
-    !byte $f6,$f6,$f6,$f7,$f7,$f7,$f7,$f7,$f8,$f8,$f8,$f8,$f9,$f9,$f9,$f9
-    !byte $f9,$fa,$fa,$fa,$fa,$fa,$fb,$fb,$fb,$fb,$fb,$fc,$fc,$fc,$fc,$fc
-    !byte $fd,$fd,$fd,$fd,$fd,$fd,$fe,$fe,$fe,$fe,$fe,$ff,$ff,$ff,$ff,$ff
-
-logL
-    !byte $03,$00,$00,$b8,$00,$4d,$b8,$d6,$00,$70,$4d,$b4,$b8,$6a,$d6,$05
+logL    ; First byte is unused, then '<(0.5 + 32*log2(i)*256)'
+    !byte $00,$00,$00,$b8,$00,$4d,$b8,$d6,$00,$70,$4d,$b4,$b8,$6a,$d6,$05
     !byte $00,$cc,$70,$ef,$4d,$8e,$b4,$c1,$b8,$9a,$6a,$28,$d6,$75,$05,$89
     !byte $00,$6c,$cc,$23,$70,$b4,$ef,$22,$4d,$71,$8e,$a4,$b4,$bd,$c1,$bf
     !byte $b8,$ac,$9a,$85,$6a,$4b,$28,$01,$d6,$a7,$75,$3f,$05,$c9,$89,$46
@@ -48,7 +45,25 @@ logL
     !byte $d6,$0a,$3f,$73,$a7,$db,$0e,$42,$75,$a7,$da,$0c,$3f,$71,$a2,$d4
     !byte $05,$36,$67,$98,$c9,$f9,$29,$59,$89,$b8,$e8,$17,$46,$75,$a3,$d2
 
-antilog
+log    ; First byte is unused, then '>(0.5 + 32*log2(i)*256)'
+    !byte $00,$00,$20,$32,$40,$4a,$52,$59,$60,$65,$6a,$6e,$72,$76,$79,$7d
+    !byte $80,$82,$85,$87,$8a,$8c,$8e,$90,$92,$94,$96,$98,$99,$9b,$9d,$9e
+    !byte $a0,$a1,$a2,$a4,$a5,$a6,$a7,$a9,$aa,$ab,$ac,$ad,$ae,$af,$b0,$b1
+    !byte $b2,$b3,$b4,$b5,$b6,$b7,$b8,$b9,$b9,$ba,$bb,$bc,$bd,$bd,$be,$bf
+    !byte $c0,$c0,$c1,$c2,$c2,$c3,$c4,$c4,$c5,$c6,$c6,$c7,$c7,$c8,$c9,$c9
+    !byte $ca,$ca,$cb,$cc,$cc,$cd,$cd,$ce,$ce,$cf,$cf,$d0,$d0,$d1,$d1,$d2
+    !byte $d2,$d3,$d3,$d4,$d4,$d5,$d5,$d5,$d6,$d6,$d7,$d7,$d8,$d8,$d9,$d9
+    !byte $d9,$da,$da,$db,$db,$db,$dc,$dc,$dd,$dd,$dd,$de,$de,$de,$df,$df
+    !byte $e0,$e0,$e0,$e1,$e1,$e1,$e2,$e2,$e2,$e3,$e3,$e3,$e4,$e4,$e4,$e5
+    !byte $e5,$e5,$e6,$e6,$e6,$e7,$e7,$e7,$e7,$e8,$e8,$e8,$e9,$e9,$e9,$ea
+    !byte $ea,$ea,$ea,$eb,$eb,$eb,$ec,$ec,$ec,$ec,$ed,$ed,$ed,$ed,$ee,$ee
+    !byte $ee,$ee,$ef,$ef,$ef,$ef,$f0,$f0,$f0,$f1,$f1,$f1,$f1,$f1,$f2,$f2
+    !byte $f2,$f2,$f3,$f3,$f3,$f3,$f4,$f4,$f4,$f4,$f5,$f5,$f5,$f5,$f5,$f6
+    !byte $f6,$f6,$f6,$f7,$f7,$f7,$f7,$f7,$f8,$f8,$f8,$f8,$f9,$f9,$f9,$f9
+    !byte $f9,$fa,$fa,$fa,$fa,$fa,$fb,$fb,$fb,$fb,$fb,$fc,$fc,$fc,$fc,$fc
+    !byte $fd,$fd,$fd,$fd,$fd,$fd,$fe,$fe,$fe,$fe,$fe,$ff,$ff,$ff,$ff,$ff
+
+antilog ; pow(2, i/32 + 8) / 256
     !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
     !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
     !byte $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02

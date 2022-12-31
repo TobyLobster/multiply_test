@@ -1,33 +1,52 @@
 ; omult6.a
-; from 'Nightshade' for the BBC Micro, http://level7.org.uk/miscellany/nightshade-disassembly.txt
+; from The Commodore 64 BASIC/KERNAL ROM at $B357: https://github.com/mist64/c64ref/blob/master/Source/c64disasm/c64disasm_en.txt
+; also in Applesoft II BASIC at $e2b8: https://6502disassembly.com/a2-rom/Applesoft.html
 ;
-; 8 bit x 8 bit unsigned multiply, 8 bit partial result (low byte)
-; Average cycles: 151
-; 20 bytes
+; 16 bit x 16 bit unsigned multiply, 16 bit result (or carry set if overflow occurs)
+; Average cycles: 153.46
+; 38 bytes
 
-
-acc = $02
-x   = $03
 
 * = $0200
 
-; *************************************************************************************
-; Multiply A * X
-;
+multiplier_low      = $02
+multiplier_high     = $03
+multiplicand_low    = $04
+multiplicand_high   = $05
+bit_count           = $06
+
+; On Entry:
+;   multiplier and multiplicand are 16 bit values to multiply
 ; On Exit:
-;   A: low byte of product
-multiply_A_and_X
-    sta acc
-    stx x
-    ldx #8
-    lda #0
-multiply_A_and_X_loop
-    asl 
-    asl acc
-    bcc skip_power
-    clc
-    adc x
-skip_power
-    dex
-    bne multiply_A_and_X_loop
+;   X: low byte of product
+;   Y: high byte of product
+;   carry set if overflow occurs (X and Y undefined)
+mult
+    lda #16                 ; count = 16 (16 bit multiply)
+    sta bit_count           ; save bit count
+    ldx #0                  ; clear result low byte
+    ldy #0                  ; clear result high byte
+loop
+    txa                     ; get result low byte
+    asl                     ; *2
+    tax                     ; save result low byte
+    tya                     ; get result high byte
+    rol                     ; *2
+    tay                     ; save result high byte
+    bcs out_of_memory       ; if overflow go do "Out of memory" error
+    asl multiplicand_low    ; shift element size low byte
+    rol multiplicand_high   ; shift element size high byte
+    bcc skip                ; skip add if no carry
+    clc                     ; else clear carry for add
+    txa                     ; get result low byte
+    adc multiplier_low      ; add dimension size low byte
+    tax                     ; save result low byte
+    tya                     ; get result high byte
+    adc multiplier_high     ; add dimension size high byte
+    tay                     ; save result high byte
+    bcs out_of_memory       ; if overflow go do "Out of memory" error
+skip
+    dec bit_count           ; decrement bit count
+    bne loop                ; loop until all done
+out_of_memory
     rts

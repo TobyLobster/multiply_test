@@ -1,9 +1,9 @@
 {
     "results": {
         "title": "omult5",
-        "bytes": "194",
-        "AverageCycles": "420.00",
-        "MinCycles": "408",
-        "MaxCycles": "432"
+        "bytes": "196",
+        "AverageCycles": "492.96",
+        "MinCycles": "417",
+        "MaxCycles": "559"
     }
 }

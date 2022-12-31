@@ -1,0 +1,157 @@
+; smult6.a
+; from Stellar 7 for the Apple II, https://6502disassembly.com/a2-stellar7/ROCK1.html
+; slightly tweaked for size and speed
+;
+; 16 bit signed x 8 bit sign-magnitude multiply, 16 bit result (divides by 128, not 256)
+; Average cycles: 202.01
+; 179 bytes
+
+* = $0200
+
+tmp1      = $02
+tmp2      = $03
+tmp3      = $04
+result_lo = $05
+
+; 16 bit *signed* x 8 bit *sign-magnitude* multiply, 16 bit result
+; This routine is unusual in that it calculates (XY * A)/128 rather than '/256'
+;
+; On Entry:
+;   X: signed multiplier (low byte)
+;   Y: signed multiplier (high byte)
+;   A: sign-magnitude multiplicand (top bit is sign)
+;   N flag: set if Y is negative (top bit set)
+; On Exit:
+;   Y: low byte of result
+;   A: high byte of result
+Multiply16_8
+    bpl PosVal          ; if (XY value is positive) then branch
+    eor #$80            ; XY value negative, flip sign bit of A
+    lsr
+    sta tmp3
+
+    ; invert multiplier (uses eor, equivalent to negating and subtracting one)
+    txa                 ;
+    eor #$ff            ;
+    sta tmp1            ;
+    tya                 ;
+    eor #$ff            ;
+    sta tmp2            ;
+
+    jmp Common          ; branch skips DEX/DEY below
+
+Zero
+    tya                 ; set A-reg=0
+    rts                 ;  and bail
+
+PosVal
+    ; decrement multiplier in (X, Y)
+    cpx #0              ; is low part zero?
+    bne +               ; no
+    cpy #0              ; is high part zero?
+    beq Zero            ; yes, result is zero
+    dey                 ; decrement high byte of multiplier
++
+    dex                 ; decrement low byte of multiplier
+
+    ; store multiplier
+    stx tmp1
+    sty tmp2
+
+    lsr
+    sta tmp3
+Common
+    lda #0
+    sta result_lo
+    bcc +
+;    tay
+;    lda result_lo
+    adc tmp1
+    sta result_lo
+;    tya
+    lda #0
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tay
+    lda result_lo
+    adc tmp1
+    sta result_lo
+    tya
+    adc tmp2
++
+    ror
+    ror result_lo
+    ror tmp3
+    bcc +
+    tax
+    lda result_lo
+    eor #$ff
+    adc #0
+    tay
+    txa
+    eor #$ff
+    adc #0
+    rts
+
++
+    ldy result_lo
+    rts

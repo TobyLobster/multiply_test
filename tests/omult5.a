@@ -1,7 +1,9 @@
 ; omult5.a
 ; from 'The Sentinel' for the BBC Micro, http://level7.org.uk/miscellany/the-sentinel-disassembly.txt
 ;
-; 16 bit x 16 bit signed multiply, with approximate 16 bit result
+; 16 bit x 16 bit signed multiply, with approximate 16 bit result (may be out by one either way)
+; the first number 'double_x' is unusual as it stores the sign in bit 0, which is also treated as part of the magnitude.
+; the second number is a regular signed number (top bit is the sign, 2's compliment).
 ;
 ; Given bytes A,B,C,D:
 ;
@@ -16,8 +18,13 @@
 ;   AB*CD/65536 = (B*D + 256*A*D + 256*B*C + 65536*A*C)/65536
 ;   AB*CD/65536 ~= (0x80 + A*D + B*C + 256*A*C)/256
 ;
-; Average cycles:
-; bytes
+; One questionable result to be aware of:
+;    A=$ff, B=$ff, C=$80, D=$00, this routine calculates:
+;       (-65535*-32768)/65536 and returns 32768 which has the top bit set so it is
+;    interpreted as the negative number -32768.
+;
+; Average cycles: 492.96
+; 196 bytes
 
 
 double_x_low        = $02
@@ -29,16 +36,16 @@ result_low          = $07
 result_high         = $08
 invert_result       = $09
 a                   = $0a
+multiplicand        = $0a
 multiplier          = $0b
 a_fraction          = $0b
-multiplicand        = $0c
 
 * = $0200
 
 multiply_double_by_double           ; Multiply two 16 bit numbers into 16 bit result
     lda #0                          ; initialisation
     sta invert_result
-    
+
     lda double_y_high
     bpl skip_y_inversion            ; Is y negative?
     lda #0                          ; If so, make it positive
@@ -111,56 +118,57 @@ leave
     rts
 
 ; See mult44.a
-multiply_A_by_byte      
+multiply_A_by_byte
+    sta multiplier
     lda #0
     lsr multiplier
     bcc skip_bit_0
     clc
     adc multiplicand
 skip_bit_0
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_1
     clc
     adc multiplicand
 skip_bit_1
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_2
     clc
     adc multiplicand
 skip_bit_2
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_3
     clc
     adc multiplicand
 skip_bit_3
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_4
     clc
     adc multiplicand
 skip_bit_4
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_5
     clc
     adc multiplicand
 skip_bit_5
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_6
     clc
     adc multiplicand
 skip_bit_6
-    ror 
+    ror
     ror multiplier
     bcc skip_bit_7
     clc
     adc multiplicand
 skip_bit_7
-    ror 
+    ror
     ror multiplier
     rts
 
@@ -171,7 +179,7 @@ skip_bit_7
 ;    lda multiplier_high
 ;    jsr multiply_A_by_byte          ; Multiply multiplier_high * multiplicand
 ;    sta result_high
-;    lda tmp                
+;    lda tmp
 ;    clc
 ;    adc result_low
 ;    sta result_low

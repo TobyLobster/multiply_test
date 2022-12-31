@@ -7,7 +7,7 @@ function test() {
     acme -o build/TESTME -r build/report.txt tests/$1.a
     clang -O3 -Wno-unknown-warning-option -I../Z/API -Iasm -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
     echo $1
-    time build/tester -t$1 -l0x200 -e$2 -n1 -ibuild/TESTME -oresults/results_$1.json
+    time build/tester -t$1 -l0x200 -e$2 -n19 -ibuild/TESTME -oresults/results_$1.json
 }
 
 #test "mult1"  0x200
@@ -60,12 +60,15 @@ function test() {
 #test "smult3" 0xa00
 #test "smult4" 0x200
 #test "smult5" 0x200
+test "smult6" 0x200
 
 #test "omult1" 0x200
 #test "omult2" 0x200
 #test "omult3" 0x200
 
 #test "omult4" 0x200
-#test "omult5" 0x200 !TODO
+#test "omult5" 0x200
 #test "omult6" 0x200
-test "omult7" 0x500
+#test "omult7" 0x500
+#test "omult8" 0x600
+#test "omult9" 0x4ff

@@ -1,5 +1,5 @@
 ; omult3.a
-; from Elite, https://www.bbcelite.com/cassette/main/subroutine/fmltu.html
+; from the original cassette and disc versions of Elite, https://www.bbcelite.com/cassette/main/subroutine/fmltu.html
 ;
 ; 8 bit x 8 bit unsigned multiply, 8 bit partial result (high byte)
 ; Average cycles: 128.00

@@ -1,5 +1,6 @@
 ; omult2.a
 ; from The BBC Micro Compendium by Jeremy Ruston: https://archive.org/details/BBCMicroCompendium/page/38/mode/2up
+; also found in 'Nightshade' for the BBC Micro, http://level7.org.uk/miscellany/nightshade-disassembly.txt (see multiply_A_and_X)
 ;
 ; 8 bit x 8 bit unsigned multiply, low 8 bit result
 ; Average cycles: 145

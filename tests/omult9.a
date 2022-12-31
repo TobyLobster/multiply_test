@@ -1,0 +1,98 @@
+; omult9.a
+; from articles by Krill/Plush in the German *GO64!* magazine (2000), via codebase64, https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6
+; Uses log and exp tables to get an approximate result.
+;
+; Note that I've removed the `+.5` from the formula for the antilog table `y=2^(x/f-8)+.5`
+; since this makes the results more accurate.
+;
+; 8 bit x 8 bit unsigned multiply, approximate 8 bit result
+;
+; Average cycles: 22.97
+; 780 bytes
+;
+; Over all 65536 possible inputs, I record how many results are correct, out by one, by two etc:
+;
+; Error -5: 9
+; Error -4: 93
+; Error -3: 468
+; Error -2: 2088
+; Error -1: 10529
+; Error 0: 41848
+; Error 1: 8275
+; Error 2: 1753
+; Error 3: 411
+; Error 4: 61
+; Error 5: 1
+;
+; Root-mean-square deviation: 211.64 (smaller is better)
+
+* = $0200
+
+; tables must be page aligned
+log2tab
+    ; f = 255/log2(255)
+    ;
+    ; log2tab[0] = 0
+    ; for i in range(1, 256):
+    ;     log2tab[i] = int(f*math.log(i, 2)+0.5)
+    !byte $00,$00,$20,$33,$40,$4a,$52,$5a,$60,$65,$6a,$6e,$72,$76,$79,$7d
+    !byte $80,$82,$85,$87,$8a,$8c,$8e,$90,$92,$94,$96,$98,$99,$9b,$9d,$9e
+    !byte $9f,$a1,$a2,$a4,$a5,$a6,$a7,$a9,$aa,$ab,$ac,$ad,$ae,$af,$b0,$b1
+    !byte $b2,$b3,$b4,$b5,$b6,$b7,$b8,$b8,$b9,$ba,$bb,$bc,$bc,$bd,$be,$bf
+    !byte $bf,$c0,$c1,$c1,$c2,$c3,$c4,$c4,$c5,$c5,$c6,$c7,$c7,$c8,$c8,$c9
+    !byte $ca,$ca,$cb,$cb,$cc,$cc,$cd,$ce,$ce,$cf,$cf,$d0,$d0,$d1,$d1,$d2
+    !byte $d2,$d3,$d3,$d3,$d4,$d4,$d5,$d5,$d6,$d6,$d7,$d7,$d7,$d8,$d8,$d9
+    !byte $d9,$da,$da,$da,$db,$db,$dc,$dc,$dc,$dd,$dd,$dd,$de,$de,$df,$df
+    !byte $df,$e0,$e0,$e0,$e1,$e1,$e1,$e2,$e2,$e2,$e3,$e3,$e3,$e4,$e4,$e4
+    !byte $e5,$e5,$e5,$e6,$e6,$e6,$e7,$e7,$e7,$e7,$e8,$e8,$e8,$e9,$e9,$e9
+    !byte $ea,$ea,$ea,$ea,$eb,$eb,$eb,$ec,$ec,$ec,$ec,$ed,$ed,$ed,$ed,$ee
+    !byte $ee,$ee,$ee,$ef,$ef,$ef,$ef,$f0,$f0,$f0,$f0,$f1,$f1,$f1,$f1,$f2
+    !byte $f2,$f2,$f2,$f3,$f3,$f3,$f3,$f4,$f4,$f4,$f4,$f5,$f5,$f5,$f5,$f5
+    !byte $f6,$f6,$f6,$f6,$f7,$f7,$f7,$f7,$f7,$f8,$f8,$f8,$f8,$f8,$f9,$f9
+    !byte $f9,$f9,$f9,$fa,$fa,$fa,$fa,$fa,$fb,$fb,$fb,$fb,$fb,$fc,$fc,$fc
+    !byte $fc,$fc,$fd,$fd,$fd,$fd,$fd,$fe,$fe,$fe,$fe,$fe,$fe,$ff,$ff,$ff
+
+pow2tab
+    ; for i in range(0, 511):
+    ;     pow2tab[i] = int(math.pow(i/f-8,2))
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    !byte $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
+    !byte $02,$02,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$04
+    !byte $04,$04,$04,$04,$04,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$05
+    !byte $05,$05,$06,$06,$06,$06,$06,$06,$06,$07,$07,$07,$07,$07,$07,$08
+    !byte $08,$08,$08,$08,$08,$09,$09,$09,$09,$09,$0a,$0a,$0a,$0a,$0b,$0b
+    !byte $0b,$0b,$0c,$0c,$0c,$0c,$0d,$0d,$0d,$0e,$0e,$0e,$0f,$0f,$0f,$10
+    !byte $10,$10,$11,$11,$11,$12,$12,$13,$13,$13,$14,$14,$15,$15,$16,$16
+    !byte $17,$17,$18,$18,$19,$19,$1a,$1b,$1b,$1c,$1c,$1d,$1e,$1e,$1f,$20
+    !byte $20,$21,$22,$23,$23,$24,$25,$26,$27,$28,$28,$29,$2a,$2b,$2c,$2d
+    !byte $2e,$2f,$30,$31,$32,$33,$35,$36,$37,$38,$39,$3b,$3c,$3d,$3f,$40
+    !byte $42,$43,$44,$46,$48,$49,$4b,$4c,$4e,$50,$52,$53,$55,$57,$59,$5b
+    !byte $5d,$5f,$61,$63,$65,$68,$6a,$6c,$6f,$71,$74,$76,$79,$7b,$7e,$81
+    !byte $84,$87,$8a,$8d,$90,$93,$96,$9a,$9d,$a0,$a4,$a8,$ab,$af,$b3,$b7
+    !byte $bb,$bf,$c3,$c7,$cc,$d0,$d5,$da,$de,$e3,$e8,$ed,$f3,$f8,$fe
+
+; A ~= X*Y/256
+mult
+    lda log2tab,x           ; get log
+    sta getresult+1         ; store log (self-modifying code)
+    ldx log2tab,y           ; get log
+getresult
+    lda pow2tab,x           ; get result (self-modified code)
+    rts                     ;

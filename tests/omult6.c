@@ -2,41 +2,42 @@
 
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;
-static const uint64_t INPUT_END   = 65536UL;
-
-static int result[65536UL];
-__thread int test_input = 0;
+static const uint64_t INPUT_END   = 65536UL * 65536UL;
 
 // **************************************************************************************
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    threadContext->machine.state.a = input & 255UL;
-    threadContext->machine.state.x = (input / 256UL) & 255UL;
-
-    test_input = input;
+    memory[4] = input & 255UL;
+    memory[5] = (input / 256UL) & 255UL;
+    memory[2] = (input/65536UL) & 255UL;
+    memory[3] = (input/65536UL) / 256UL;
 }
 
 // **************************************************************************************
 uint64_t test_post(thread_context_t* threadContext) {
     zuint8* memory = threadContext->machine.context;
 
-    uint64_t low = threadContext->machine.state.a;
+    uint64_t a = threadContext->machine.state.x;
+    uint64_t b = threadContext->machine.state.y;
 
-    result[test_input] = low;
-    return low;
+    return a + 256UL*b;
 }
 
 // **************************************************************************************
 int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_result, uint64_t* expected) {
-    uint64_t a = input & 255UL;
-    uint64_t b = (input / 256UL) & 255UL;
+    uint64_t x = input & 65535UL;
+    uint64_t y = input / 65536UL;
 
-    uint64_t e = (a*b) & 255;
+    uint64_t e = x * y;
+    if (e > 65535) {
+        *expected = actual_result;
+        return -1;
+    }
     *expected = e;
-
     return actual_result == e;
 }
+
 
 // **************************************************************************************
 void test_cleanup()
