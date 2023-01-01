@@ -20,9 +20,7 @@
 
 ## Introduction
 
-This document compares the runtime performance and memory usage of a wide variety of available multiplication routines for the 6502 CPU.
-
-The most common routines are unsigned: either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. However there is a section that discusses how to customise these routines for different bit sizes, signedness etc.
+This document compares the runtime performance and memory usage of a wide variety of available multiplication routines for the 6502 CPU. The most common routines handle unsigned numbers, and are either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. However there is a section later that discusses how to customise these routines for different bit sizes, and how to handle signed numbers etc.
 
 Each implementation below is executed exhaustively over *every* possible input to verify correctness and tally the exact cycle counts. The results are shown below.
 
@@ -32,8 +30,8 @@ I test the following routines:
 
 | Source                       | Bits     | Method                    | From |
 | ---------------------------- | :------: | :-----------------------: | :---- |
-| [mult1.a](tests/mult1.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) and (earlier) [*6502 Software Design*](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) by Leo J Scanlon (1980) |
-| [mult2.a](tests/mult2.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)   | [The Fridge, as found on the Merlin 128 Macro Assembler disk](http://www.ffd2.com/fridge/math/mult-div.s)
+| [mult1.a](tests/mult1.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 Software Design*](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) by Leo J Scanlon (1980) and also [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) |
+| [mult2.a](tests/mult2.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add)   | [The Merlin 128 Macro Assembler disk, via The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
 | [mult3.a](tests/mult3.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [mult4.a](tests/mult4.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, combining the results of mult39 |
 | [mult5.a](tests/mult5.a)     | 8x8=16   | [tables of squares](#2-tables-of-squares) | [yerricde at everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
@@ -92,7 +90,7 @@ I test the following routines:
 | [omult7.a](tests/omult7.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite* for the BBC Master](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
 | [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
-| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM at $9d83](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
+| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
 
 ## The Results
 
@@ -151,7 +149,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 ![Results of 16 x 16 bit unsigned multiply](results/6502_16x16=32.svg)
 
-| Source                     | Average Cycles | Memory (bytes) | Changes                                                                      |
+| Source                     | Average Cycles | Memory (bytes) | My Changes                                                                      |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
 | [mult1.a](tests/mult1.a)   | 751.00         | 38             |                                                                              |
 | [mult2.a](tests/mult2.a)   | 578.00         | 33             | optimised slightly                                                           |
