@@ -1,7 +1,7 @@
 ; mult13.a
 ; from Apple Assembly Line March 1986: http://www.txbobsc.com/aal/1986/aal8603.html#a5
 ;
-; 8 bit x 8 bit multiply, 16 bit result
+; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 54
 ; 1075 bytes
 

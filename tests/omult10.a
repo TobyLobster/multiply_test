@@ -1,0 +1,55 @@
+; omult10.a
+; from the BBC BASIC ROM at $9d83, https://archive.org/details/BBCMicroCompendium/page/364/mode/2up
+;
+; 16 bit x 32 bit unsigned multiply, 32 bit result
+; Average cycles: 909.00
+; 50 bytes
+
+
+factorA  = $02          ; 2 bytes
+factorB  = $04          ; 4 bytes
+product2 = $08          ; 1 byte
+product3 = $09          ; 1 byte
+
+* = $0200
+
+; On Entry:
+;   factorA=multiplier   (2 bytes)
+;   factorB=multiplicand (4 bytes)
+; On Exit:
+;   (Y, X, product2, product3) is the 32 bit product
+
+mult
+    ldy #0
+    ldx #0
+    sty product2
+    sty product3
+-
+    lsr factorA+1
+    ror factorA
+    bcc +
+
+    clc
+    tya
+    adc factorB
+    tay
+    txa
+    adc factorB+1
+    tax
+    lda product2
+    adc factorB+2
+    sta product2
+    lda product3
+    adc factorB+3
+    sta product3
+
++
+    asl factorB
+    rol factorB+1
+    rol factorB+2
+    rol factorB+3
+
+    lda factorA
+    ora factorA+1
+    bne -
+    rts

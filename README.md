@@ -76,6 +76,7 @@ I test the following routines:
 | [mult42.a](tests/mult42.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult16 |
 | [mult43.a](tests/mult43.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming*](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) by Lance A. Leventhal |
 | [mult44.a](tests/mult44.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel*](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
+| [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language**, by Randy Hyde](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up) |
 | [smult1.a](tests/smult1.a)   | 8x8=16 (signed)                              | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult2.a](tests/smult2.a)   | 8x8=16 (signed)                              | [Booth's algorithm](#5-booths-algorithm)  | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
 | [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*)                          | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
@@ -91,6 +92,7 @@ I test the following routines:
 | [omult7.a](tests/omult7.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | [*Elite* for the BBC Master](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
 | [omult8.a](tests/omult8.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
+| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM at $9d83](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
 
 ## The Results
 
@@ -151,20 +153,21 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 | Source                     | Average Cycles | Memory (bytes) | Changes                                                                      |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
-| [mult1.a](tests/mult1.a)   | 751            | 38             |                                                                              |
-| [mult2.a](tests/mult2.a)   | 578            | 33             | optimised slightly                                                           |
-| [mult3.a](tests/mult3.a)   | 711            | 36             |                                                                              |
-| [mult4.a](tests/mult4.a)   | 567            | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
+| [mult1.a](tests/mult1.a)   | 751.00         | 38             |                                                                              |
+| [mult2.a](tests/mult2.a)   | 578.00         | 33             | optimised slightly                                                           |
+| [mult3.a](tests/mult3.a)   | 711.00         | 36             |                                                                              |
+| [mult4.a](tests/mult4.a)   | 567.00         | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
 | [mult15.a](tests/mult15.a) | 206.60         | 2181           |                                                                              |
 | [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
 | [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
 | [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
-| [mult41.a](tests/mult41.a) | 350            | 1150           | I use mult13 and combine to make 16x16                                       |
+| [mult41.a](tests/mult41.a) | 350.00         | 1150           | I use mult13 and combine to make 16x16                                       |
 | [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       |
+| [mult45.a](tests/mult45.a) | 695.00         | 38             | optimised slightly                                                           |
 
 ### Miscellaneous Examples
 
-Some signed multiply routines, and multiply with partial results.
+First some signed multiply routines. See below for how to adapt an unsigned multiply into a signed multiply routine.
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
@@ -174,6 +177,9 @@ Some signed multiply routines, and multiply with partial results.
 | [smult4.a](tests/smult4.a)   | 242.52         | 67             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult19                    |
 | [smult5.a](tests/smult5.a)   | 180.50         | 35             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult9                     |
 | [smult6.a](tests/smult6.a)   | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                    |
+
+And other miscellaneous multiply routines with something specialised e.g. only returning an approximate result, or with different bit depths:
+
 | [omult1.a](tests/omult1.a)   | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                                     |
 | [omult2.a](tests/omult2.a)   | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                        |
 | [omult3.a](tests/omult3.a)   | 128.00         | 24             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                                       |
@@ -183,6 +189,7 @@ Some signed multiply routines, and multiply with partial results.
 | [omult7.a](tests/omult7.a)   |  46.72         | 802            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
 | [omult8.a](tests/omult8.a)   |  49.20         | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
 | [omult9.a](tests/omult9.a)   |  22.97         | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
+| [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                                      |
 
 
 ## The Algorithms
@@ -430,5 +437,3 @@ This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decima
 
 ## See Also
 See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
-
-

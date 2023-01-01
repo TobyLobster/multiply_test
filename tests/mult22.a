@@ -3,7 +3,7 @@
 ; slightly tweaked for speed
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
-; Average cycles: 77.49
+; Average cycles: 76.48
 ; 563 bytes
 
 
@@ -13,6 +13,7 @@ temp3       = $04
 
 * = $0200
 
+; align tables to page boundary for best speed
 sqtab_lsb ;<x*x
     !byte 0,1,4,9,$10,$19,$24,$31,$40,$51,$64,$79,$90,$a9,$c4,$e1
     !byte 0,$21,$44,$69,$90,$b9,$e4,$11,$40,$71,$a4,$d9,$10,$49,$84,$c1
@@ -57,7 +58,6 @@ mult
     bcc swap
     txa
 continue
-    sec
     sbc min
     tay
 
@@ -84,4 +84,5 @@ continue
 swap
     stx min
     tax
-    bcc continue            ; ALWAYS branch
+    sec
+    bcs continue            ; ALWAYS branch

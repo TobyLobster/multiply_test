@@ -9,6 +9,7 @@
 
 * = $0200
 
+; Tables must be aligned with page boundary
 sqrLow
     !for i, 0, 511 {
         !byte <((i*i)/4)
