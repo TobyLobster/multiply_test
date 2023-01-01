@@ -1,5 +1,7 @@
 // omult9.c
 
+extern void write_image(char *filename);
+
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;
 static const uint64_t INPUT_END   = 65536UL;
@@ -72,4 +74,5 @@ void test_cleanup()
     }
     deviation = sqrt(deviation);
     printf("Root-mean-square deviation: %.2f (smaller is better)\n", (float) deviation);
+    write_image("results/omult9.png");
 }

@@ -1,6 +1,5 @@
 ; mult41.a
-; based on 8 bit multiply of mult13.a
-; I combined the results of four calls to this to get the 16x16 bit multiply
+; based on 8 bit multiply of mult13.a, combined by TobyLobster to give a 16 bit multiply
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 350

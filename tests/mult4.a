@@ -1,6 +1,5 @@
 ; mult4.a
-; based on the 8x8 bit multiply from mult39.a
-; then I add four 8 bit multiplications to make a 16 bit multiply:
+; based on the 8x8 bit multiply from mult39.a, combined by TobyLobster to make a 16 bit multiply:
 ;
 ;   (a0 + 256*a1) * (b0 + 256*b1) = a0*b0 + 256*a1*b0 + 256*a0*b1 + 65536*a1*b1
 ;

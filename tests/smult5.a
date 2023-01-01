@@ -1,5 +1,5 @@
 ; smult5
-; based on mult9, adjusted for signed multiply
+; based on mult9, adjusted by TobyLobster for signed multiply
 ;
 ; 8 bit x 8 bit signed multiply, 16 bit result
 ; Average cycles: 180.50

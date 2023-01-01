@@ -10,6 +10,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <limits.h>
+#include <png.h>
 
 #include "disassembler.h"
 #include "../../6502/API/emulation/CPU/6502.h"
@@ -342,6 +343,99 @@ void record_result(thread_context_t* threadContext, uint64_t input, uint64_t cyc
     threadContext->results[bucket].total_cycles += cycles;
     threadContext->results[bucket].count++;
     threadContext->total_errors += errors;
+}
+
+// **************************************************************************************
+void write_image(char *filename)
+{
+    // output png
+    int width  = 256;
+    int height = 256;
+    int y;
+    png_bytep *row_pointers = NULL;
+
+    FILE *fp = fopen(filename, "wb");
+    if(!fp) abort();
+
+    png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!png) abort();
+
+    png_infop info = png_create_info_struct(png);
+    if (!info) abort();
+
+    if (setjmp(png_jmpbuf(png))) abort();
+
+    png_init_io(png, fp);
+
+    // Output is 8bit depth, RGBA format.
+    png_set_IHDR(
+        png,
+        info,
+        width, height,
+        8,
+        PNG_COLOR_TYPE_RGBA,
+        PNG_INTERLACE_NONE,
+        PNG_COMPRESSION_TYPE_DEFAULT,
+        PNG_FILTER_TYPE_DEFAULT);
+
+    png_write_info(png, info);
+    // To remove the alpha channel for PNG_COLOR_TYPE_RGB format,
+    // Use png_set_filler().
+    //png_set_filler(png, 0, PNG_FILLER_AFTER);
+
+    // allocate rows of pixels
+    row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
+    for(int y = 0; y < height; y++) {
+        row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(png,info));
+    }
+
+    if (!row_pointers) abort();
+
+    for(int y = 0; y < height; y++) {
+        png_bytep row = row_pointers[height-1-y];
+        for(int x = 0; x < width; x++) {
+            png_bytep px = &(row[x * 4]);
+
+            uint64_t input = 256*y + x;
+
+            int actual_result = result[input];
+            int expected = (x*y)/256;
+
+            if (actual_result == expected) {
+                // Green
+                px[0] = 0;
+                px[1] = 255;
+                px[2] = 0;
+                px[3] = 255;
+            } else if (actual_result > expected) {
+                // Blue
+                px[0] = 0;
+                px[1] = 0;
+                px[2] = 255;
+                px[3] = 255;
+            } else {
+                // Red
+                px[0] = 255;
+                px[1] = 0;
+                px[2] = 0;
+                px[3] = 255;
+            }
+            // Do something awesome for each pixel here...
+            //printf("%4d, %4d = RGBA(%3d, %3d, %3d, %3d)\n", x, y, px[0], px[1], px[2], px[3]);
+        }
+    }
+
+    png_write_image(png, row_pointers);
+    png_write_end(png, NULL);
+
+    for(int y = 0; y < height; y++) {
+        free(row_pointers[y]);
+    }
+    free(row_pointers);
+
+    fclose(fp);
+
+    png_destroy_write_struct(&png, &info);
 }
 
 // **************************************************************************************

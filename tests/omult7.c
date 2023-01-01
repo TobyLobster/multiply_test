@@ -1,5 +1,7 @@
 // omult7.c
 
+extern void write_image(char *filename);
+
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;
 static const uint64_t INPUT_END   = 65536UL;
@@ -46,6 +48,7 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     return abs(err) <= close_enough;
 }
 
+
 // **************************************************************************************
 void test_cleanup()
 {
@@ -68,6 +71,9 @@ void test_cleanup()
             printf("Error %d: %d\n", err, hist[index]);
         }
     }
+
+    write_image("results/omult7.png");
+
 /*
     FILE* out_file = fopen("in_outs.csv", "w");
     if (out_file) {
