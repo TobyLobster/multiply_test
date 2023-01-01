@@ -241,9 +241,10 @@ The method is described further here [here](https://codebase64.org/doku.php?id=b
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
 This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
 
-Note that it's formula for the antilog table `y=2^(x/f-8)+.5` should not have the `+.5` as this makes the results less accurate. In particualr, testing with `+0.5` over all 65536 possible inputs we get the following histogram:
+Note that it's formula for the antilog table `y=2^(x/f-8)+.5` should not have the `+.5` as this makes the results less accurate. In particualr, testing with `+0.5` over all 65536 possible inputs we get the following results:
 
-<img align="right" src="results/omult9.png">
+![omult9 results with 0.5 bias](results/omult9_with_0.5_bias.png)
+
 ```
 Error: -5  count: 1
 Error: -4  count: 32
@@ -261,6 +262,8 @@ Root-mean-square deviation: 257.06 (smaller is better)
 ```
 
 which is more often wrong than it is right. Without the `+.5` the code gives more accurate results:
+
+![omult9 results without 0.5 bias](results/omult9.png)
 
 ```
 Error: -5  count: 9
@@ -283,6 +286,9 @@ Root-mean-square deviation: 211.64 (smaller is better)
 The Master and Second Processor versions of *Elite* for the BBC Micro also use logarithms for approximating some 8 bit x 8 bit = 8 bit (high byte) multiplications (see [here](https://www.bbcelite.com/deep_dives/multiplication_and_division_using_logarithms.html)).
 
 The BBC Master and Apple II versions of *Elite* have identical routines with two log tables and an antilog table (total: 768 bytes of data) for a version that is wrong by no more than six:
+
+![omult7 results](results/omult7.png)
+
 ```
 Error -6: 10
 Error -5: 119
@@ -299,6 +305,9 @@ Root-mean-square deviation: 292.66 (smaller is better)
 #### *Elite*, Second Processor version ([omult8.a](tests/omult8.a))
 
 The Second Processor version of *Elite* has a more accurate version using an extra antilog table (total: 1024 bytes of data), for a version that is wrong by not more than three:
+
+![omult8 results](results/omult8.png)
+
 ```
 Error -3: 90
 Error -2: 1981
