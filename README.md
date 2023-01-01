@@ -77,22 +77,22 @@ I test the following routines:
 | [mult43.a](tests/mult43.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming*](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) by Lance A. Leventhal |
 | [mult44.a](tests/mult44.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel*](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
 | [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language**, by Randy Hyde](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up) |
-| [smult1.a](tests/smult1.a)   | 8x8=16 (signed)                              | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [smult2.a](tests/smult2.a)   | 8x8=16 (signed)                              | [Booth's algorithm](#5-booths-algorithm)  | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
-| [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*)                          | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [smult4.a](tests/smult4.a)   | 8x8=16 (*signed*)                            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
-| [smult5.a](tests/smult5.a)   | 8x8=16 (*signed*)                            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
-| [smult6.a](tests/smult6.a)   | 16x8=16 (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7* for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
-| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
-| [omult2.a](tests/omult2.a)   | 8x8=8   (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston, also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
-| [omult3.a](tests/omult3.a)   | 8x8=8   (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro, the original cassette and disc versions](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
-| [omult4.a](tests/omult4.a)   | 24x8=32 (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
-| [omult5.a](tests/omult5.a)   | 16x16=16 (approximate 2 high bytes only)     | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* for the BBC Micro](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
+| [smult1.a](tests/smult1.a)   | 8x8=16   (*signed*)                           | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult2.a](tests/smult2.a)   | 8x8=16   (*signed*)                           | [Booth's algorithm](#5-booths-algorithm)  | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
+| [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*)                           | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult4.a](tests/smult4.a)   | 8x8=16   (*signed*)                           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
+| [smult5.a](tests/smult5.a)   | 8x8=16   (*signed*)                           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
+| [smult6.a](tests/smult6.a)   | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7* for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
+| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
+| [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston, also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
+| [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro, the original cassette and disc versions](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
+| [omult4.a](tests/omult4.a)   | 24x8=32  (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
+| [omult5.a](tests/omult5.a)   | 16x16=16 (approximate 2 high bytes only)      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* for the BBC Micro](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
 | [omult6.a](tests/omult6.a)   | 16x16=16 (*low 16 bit result*, or carry set if overflow occurs)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Commodore 64 BASIC/KERNAL ROM at $B357](https://github.com/mist64/c64ref/blob/master/Source/c64disasm/c64disasm_en.txt) |
-| [omult7.a](tests/omult7.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | [*Elite* for the BBC Master](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
-| [omult8.a](tests/omult8.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
-| [omult9.a](tests/omult9.a)   | 8x8=8 (*partial result, approx high byte*)   | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
-| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM at $9d83](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
+| [omult7.a](tests/omult7.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite* for the BBC Master](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
+| [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
+| [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
+| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM at $9d83](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
 
 ## The Results
 
@@ -165,9 +165,9 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       |
 | [mult45.a](tests/mult45.a) | 695.00         | 38             | optimised slightly                                                           |
 
-### Miscellaneous Examples
+### Signed Examples
 
-First some signed multiply routines. See below for how to adapt an unsigned multiply into a signed multiply routine.
+First some example signed multiply routines. See below for how to adapt an unsigned multiply into a signed multiply routine.
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
@@ -178,8 +178,12 @@ First some signed multiply routines. See below for how to adapt an unsigned mult
 | [smult5.a](tests/smult5.a)   | 180.50         | 35             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult9                     |
 | [smult6.a](tests/smult6.a)   | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                    |
 
-And other miscellaneous multiply routines with something specialised e.g. only returning an approximate result, or with different bit depths:
+### Miscellaneous Examples
 
+Other miscellaneous multiply routines with something about it 'specialised' e.g. only returning an approximate result, or with different bit depths:
+
+| Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
+| ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
 | [omult1.a](tests/omult1.a)   | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                                     |
 | [omult2.a](tests/omult2.a)   | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                        |
 | [omult3.a](tests/omult3.a)   | 128.00         | 24             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                                       |
