@@ -263,8 +263,6 @@ Root-mean-square deviation: 257.06 (smaller is better)
 
 which is more often wrong than it is right. Without the `+.5` the code gives more accurate results:
 
-![omult9 results without 0.5 bias](results/omult9.png)
-
 ```
 Error: -5  count: 9
 Error: -4  count: 93
@@ -281,13 +279,13 @@ Error: 5  count: 1
 Root-mean-square deviation: 211.64 (smaller is better)
 ```
 
+![omult9 results without 0.5 bias](results/omult9.png)
+
 #### *Elite*, Master version ([omult7.a](tests/omult7.a))
 
 The Master and Second Processor versions of *Elite* for the BBC Micro also use logarithms for approximating some 8 bit x 8 bit = 8 bit (high byte) multiplications (see [here](https://www.bbcelite.com/deep_dives/multiplication_and_division_using_logarithms.html)).
 
 The BBC Master and Apple II versions of *Elite* have identical routines with two log tables and an antilog table (total: 768 bytes of data) for a version that is wrong by no more than six:
-
-![omult7 results](results/omult7.png)
 
 ```
 Error -6: 10
@@ -302,11 +300,11 @@ Error 1: 2
 Root-mean-square deviation: 292.66 (smaller is better)
 ```
 
+![omult7 results](results/omult7.png)
+
 #### *Elite*, Second Processor version ([omult8.a](tests/omult8.a))
 
 The Second Processor version of *Elite* has a more accurate version using an extra antilog table (total: 1024 bytes of data), for a version that is wrong by not more than three:
-
-![omult8 results](results/omult8.png)
 
 ```
 Error -3: 90
@@ -316,6 +314,8 @@ Error 0: 44109
 
 Root-mean-square deviation: 167.60 (smaller is better)
 ```
+
+![omult8 results](results/omult8.png)
 
 Finally, the same log and antilog tables can be used to implement an approximate division, but that's beyond the scope of this page.
 
