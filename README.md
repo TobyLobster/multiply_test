@@ -369,7 +369,7 @@ Unusually, this method is designed for signed numbers, not unsigned.
 This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'shift-and-add' routine, so doesn't seem to be used much in practice. It's used more in designing hardware circuits.
 
 ### 6. Hardware support
-Some hardware has support for multiplication in silicon. These are likely to be fastest, where available. For instance, the SNES has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
+Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with it's extended 6502 instruction set has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
 
 ### 7. Repeated addition ###
 To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general.
