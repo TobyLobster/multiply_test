@@ -377,7 +377,7 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 
 ## Customising
 
-### Number of bits
+### 1. Changing the number of bits
 The most common routines I've found either multiply two 8 bit values to get a 16 bit result, or multiply two 16 bit values to get a 32 bit result.
 
 These are useful, but in practice what you may need is something different, something custom made. For example you may need to multiply a 24 bit number by an 8 bit number, scaling the result down by 256 to get a new 24 bit number. It helps to realise that you can make these routines by building on your favourite standard 8 bit x 8 bit = 16 bit routine.
@@ -395,26 +395,26 @@ Just as binary multiplication works in base 2, this works in base 256. Each byte
 ```
 Adding the four partial results as shown.
 
-### In and Out Parameters
+### 2. Changing the In and Out Parameters
 Routines can take input values either from registers or from memory.
 It can also return results in registers and/or memory.
 
 #### 8 bit x 8 bit = 16 bit
 The 8 bit routines I have presented here will generally use whichever parameter method is fastest.
 
-However, the calling code can often set up parameters for the multiply most efficiently by using registers for both input and output. So you may want to adjust the in/out parameters of the routine depending on your usage.
+However, the calling code often wants to use registers for the parameters for the multiply for both input and output as this is often most efficient. You may want to adjust the in/out parameters of the routine depending on your usage.
 
-If on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract e.g. when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
+In particular, if on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract e.g. when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
 
 #### 16bit x 16 bit = 32 bit
 These routines mostly use memory locations for in/out parameters, as there are too many values to hold in the registers.
 
-### Partial results only
+### 3. Only Using Partial Results
 For speed, some routines only provide a partial answer. e.g. it may return only the high byte of the result (as an approximation, often used with fixed point calculations) or the low byte (for multiplying small numbers that don't lead to results larger than one byte).
 
-For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment, see *Signed Multiply* below.
+For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment:
 
-### Signed multiply
+### 4. Making Signed Multiply Routines
 Two's compliment representation is commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used.
 
 There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster. The more obvious method is:
@@ -456,10 +456,10 @@ temp = * + 1
 Corollary: For an 8 bit x 8 bit multiply where only the low 8 bits of the result are required, there is no difference between the unsigned and signed result, the same answer works for both.
 This is true also for the 16 bit x 16 bit multiply where only the lower 16 bits are required for the result.
 
-### Self modifying code
+### 5. Self modifying code
 Some of the implementations use self modifying code for speed, so won't work without change from ROM. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
 
-### Multiply using Binary Coded Decimal (BCD)
+### 6. Multiply using Binary Coded Decimal (BCD)
 
 This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
 
