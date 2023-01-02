@@ -22,7 +22,7 @@
 
 This document compares the runtime performance and memory used by a wide variety of multiplication routines for the 6502 CPU. Over 60 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
-The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed. There is also section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
+The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed later. There is also section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
 
 ## The Implementations
 
@@ -183,7 +183,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 
 ### Signed multiply
 
-Here are some example signed multiply routines. The signed routines are usually just an unsigned routine with adjustments made before/after it. See below for how to adapt an unsigned multiply into a signed multiply routine.
+Here are some example signed multiply routines. The signed routines are usually just an unsigned routine with adjustments made before and/or after it. See below for how to adapt an unsigned multiply into a signed multiply routine.
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
@@ -226,7 +226,7 @@ This is the method used by most programs that need multiplication. It has the ad
 
 By storing tables of square numbers, we can speed up multiplication. This uses:
 
-    a*b = f(a+b) - f(a-b),   where f(x) = x^2/4
+$$ab = f(a+b) - f(a-b),   where f(x) = x^2/4$$
 
 So using two table lookups, an addition and two subtractions, we can multiply. This is faster than 'shift and add'. The downside is how much memory needed to store the data. For 8 bit multiplication, the amount of data varies depending on the exact implementation, but is either 2k of data (fastest), or 1k (only marginally slower), or 512 bytes (slightly slower again).
 
@@ -238,7 +238,7 @@ The data tables can be either loaded from storage, or initialised in code.
 
 This is an approximation for multiplication. This uses:
 
-    log(a*b) = log(a) + log(b)
+$$log(ab) = log(a) + log(b)$$
 
 By using a log and exponentiation tables, we can multiply using just three table lookups and one addition. This is fast.
 
