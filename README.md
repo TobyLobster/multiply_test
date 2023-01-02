@@ -402,9 +402,9 @@ It can also return results in registers and/or memory.
 #### 8 bit x 8 bit = 16 bit
 The 8 bit routines I have presented here will generally use whichever parameter method is fastest.
 
-However, the calling code often wants to use registers for the parameters for the multiply for both input and output as this is often most efficient. You may want to adjust the in/out parameters of the routine depending on your usage.
+However, the calling code may want to use registers for the parameters for the multiply for both input and output as this is often most efficient. You may want to adjust the in/out parameters of the routine depending on your usage.
 
-In particular, if on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract e.g. when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
+In particular, if on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract, as used when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
 
 #### 16bit x 16 bit = 32 bit
 These routines mostly use memory locations for in/out parameters, as there are too many values to hold in the registers.
@@ -412,10 +412,10 @@ These routines mostly use memory locations for in/out parameters, as there are t
 ### 3. Only Using Partial Results
 For speed, some routines only provide a partial answer. e.g. it may return only the high byte of the result (as an approximation, often used with fixed point calculations) or the low byte (for multiplying small numbers that don't lead to results larger than one byte).
 
-For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment:
+For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication by N can happen and the result scaled down by 256. Note also that negative numbers will need special treatment:
 
 ### 4. Making Signed Multiply Routines
-Two's compliment representation is commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used.
+Two's compliment representation is most commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used.
 
 There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster. The more obvious method is:
 
