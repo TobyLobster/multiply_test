@@ -20,9 +20,13 @@
 
 ## Introduction
 
-This document compares the runtime performance and memory used by a wide variety of multiplication routines for the 6502 CPU. Over 60 different routines have been exhaustively tested, cycle counted, and the results plotted.
+This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 60 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
-The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed later. There is also a section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
+There is no one 'best' routine or algorithm, because there are always trade-offs between speed and memory. By *speed*, I mean the average, best and worst cases of how many cycles are needed to perform the multiplication. By *memory* I mean the total number of bytes needed for the code itself and all necessary data tables.
+
+There may be other gains based on the context in which it is being used, e.g. the memory cost can be shared if data tables can be reused by other routines (for example square root or division). Perhaps the multiplicands are more likely to lie in a given range. So it is not possible to recommend a single routine as best. What we can say is that some routines are almost always, or actually always, worse than others. In practice, only a few are worth considering.
+
+The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are listed further down. There is also a section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
 
 ## The Implementations
 
