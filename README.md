@@ -113,7 +113,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 
 ### 8 bit x 8 bit unsigned multiply, with 16 bit result
 
-In the diagrams below, grey dots are the also-rans. They are are beaten for both cycles and memory by the better orange dots. 
+In the diagrams below, grey dots are the also-rans. They are are beaten for both cycles and memory by the better orange dots.
 
 ![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
 
@@ -325,19 +325,19 @@ Root-mean-square deviation: 167.60 (smaller is better)
 
 ![omult8 results](results/log8.svg)
 
-#### Alternative: a table-of-squares approximation
+#### Alternative: a table-of-squares approximation ([omult11.a](tests/omult11.a))
 
-The same log and antilog tables can be used to implement an approximate division. 
+The same log and antilog tables can be used to implement an approximate division.
 
 If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by not more than one:
-
-![omult11 results](results/log11.svg)
 
 ```
 Error 0: 35492
 Error 1: 30044
 Root-mean-square deviation: 173.33 (smaller is better)
 ```
+
+![omult11 results](results/log11.svg)
 
 ### 4. Four bit multiply
 Instead of 'binary multiplication' using base 2 (as described above), we use base 16 (hexadecimal). We use a 256 byte table that stores the result of multiplying two 4 bit numbers together.
@@ -437,7 +437,10 @@ The code to do this can be optimised to be quite small. For instance smult1.a ha
 ```
     ; Step 1: Unsigned multiply
     ;     <do an unsigned multiply here>
-    ; Suppose at this point: X=one of the original input numbers; A=high byte of result; Y = low byte of result
+    ; Suppose at this point:
+    ;     X=one of the original input numbers
+    ;     A=high byte of result
+    ;     Y=low byte of result
 
     ; Step 2: apply sign.
     cpx #$80             ; check the sign of one input              2 cycles
