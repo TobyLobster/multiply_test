@@ -22,7 +22,7 @@
 
 This document compares the runtime performance and memory used by a wide variety of multiplication routines for the 6502 CPU. Over 60 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
-The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed later. There is also section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
+The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed later. There is also a section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
 
 ## The Implementations
 
@@ -48,8 +48,8 @@ I have tested the following routines:
 | [mult14.a](tests/mult14.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult15.a](tests/mult15.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
 | [mult16.a](tests/mult16.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
-| [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[*Elite*](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
-| [mult18.a](tests/mult18.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite*](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
+| [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[*Elite* (BBC Micro)](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
+| [mult18.a](tests/mult18.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Micro)](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
 | [mult19.a](tests/mult19.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
 | [mult20.a](tests/mult20.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
 | [mult21.a](tests/mult21.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
@@ -69,13 +69,13 @@ I have tested the following routines:
 | [mult35.a](tests/mult35.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
 | [mult36.a](tests/mult36.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
 | [mult37.a](tests/mult37.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Andrew Blance, at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
-| [mult38.a](tests/mult38.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator*](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult39.a](tests/mult39.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Revs*](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
-| [mult40.a](tests/mult40.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Meteors*](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
+| [mult38.a](tests/mult38.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator* (BBC Micro)](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
+| [mult39.a](tests/mult39.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Revs* (BBC Micro)](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
+| [mult40.a](tests/mult40.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Meteors* (BBC Micro)](https://gitlab.riscosopen.org/RiscOS/Sources/Apps/Diversions/Meteors/-/blob/master/Srce6502/MetSrc) |
 | [mult41.a](tests/mult41.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult13 |
 | [mult42.a](tests/mult42.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult16 |
 | [mult43.a](tests/mult43.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming*](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) by Lance A. Leventhal |
-| [mult44.a](tests/mult44.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel*](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
+| [mult44.a](tests/mult44.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* (BBC Micro)](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
 | [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language**, by Randy Hyde](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up) |
 
 ### Signed multiply
@@ -415,7 +415,7 @@ For speed, some routines only provide a partial answer. e.g. it may return only 
 For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication by N can happen and the result scaled down by 256. Note also that negative numbers will need special treatment:
 
 ### 4. Making Signed Multiply Routines
-Two's compliment representation is most commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used.
+Two's complement representation is most commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's complement representation is used.
 
 There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster. The more obvious method is:
 
