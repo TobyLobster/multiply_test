@@ -13,58 +13,6 @@ mul_product_hi = $05
 
 * = $0200
 
-;
-; mul
-; Wicked fast LUT-based multiplication
-; input: A = factor a
-;        X = factor b
-; output: mul_factor_a      = factor a
-;         mul_factor_x      = x = factor x
-;         mul_product_lo    = low byte of product a*b
-;         mul_product_hi    = a = high byte of product
-; preserved: Y
-mult
-  sta mul_factor_a      ; setup: 6 cycles
-  stx mul_factor_x
-
-  clc                   ; (a + x)^2/2
-  adc mul_factor_x
-  tax
-  bcc +
-  lda mul_hibyte512,x
-  bcs ++
-+
-  lda mul_hibyte256,x
-  sec
-++
-  sta mul_product_hi
-  lda mul_lobyte256,x
-
-  ldx mul_factor_a      ; - a^2/2
-  sbc mul_lobyte256,x
-  sta mul_product_lo
-  lda mul_product_hi
-  sbc mul_hibyte256,x
-  sta mul_product_hi
-
-  ldx mul_factor_x      ; + x & a & 1
-  txa                   ; (this is a kludge to correct a
-  and mul_factor_a      ; roundoff error that makes odd * odd too low)
-  and #1
-
-  clc
-  adc mul_product_lo
-  bcc +
-  inc mul_product_hi
-+
-  sec                   ; - x^2/2
-  sbc mul_lobyte256,x
-  sta mul_product_lo
-  lda mul_product_hi
-  sbc mul_hibyte256,x
-  sta mul_product_hi
-  rts
-
 ; here are the big fat lookup tables
 mul_lobyte256
   !byte   0,  1,  2,  5,  8, 13, 18, 25, 32, 41, 50, 61, 72, 85, 98,113
@@ -117,3 +65,56 @@ mul_hibyte512
   !byte 164,166,168,169,171,173,175,177,179,180,182,184,186,188,190,192
   !byte 194,195,197,199,201,203,205,207,209,211,212,214,216,218,220,222
   !byte 224,226,228,230,232,234,236,238,240,242,244,246,248,250,252,254
+
+;
+; mul
+; Wicked fast LUT-based multiplication
+; input: A = factor a
+;        X = factor b
+; output: mul_factor_a      = factor a
+;         mul_factor_x      = x = factor x
+;         mul_product_lo    = low byte of product a*b
+;         mul_product_hi    = a = high byte of product
+; preserved: Y
+mult
+  sta mul_factor_a      ; setup: 6 cycles
+  stx mul_factor_x
+
+  clc                   ; (a + x)^2/2
+  adc mul_factor_x
+  tax
+  bcc +
+  lda mul_hibyte512,x
+  bcs ++
++
+  lda mul_hibyte256,x
+  sec
+++
+  sta mul_product_hi
+  lda mul_lobyte256,x
+
+  ldx mul_factor_a      ; - a^2/2
+  sbc mul_lobyte256,x
+  sta mul_product_lo
+  lda mul_product_hi
+  sbc mul_hibyte256,x
+  sta mul_product_hi
+
+  ldx mul_factor_x      ; + x & a & 1
+  txa                   ; (this is a kludge to correct a
+  and mul_factor_a      ; roundoff error that makes odd * odd too low)
+  and #1
+
+  clc
+  adc mul_product_lo
+  bcc +
+  inc mul_product_hi
++
+  sec                   ; - x^2/2
+  sbc mul_lobyte256,x
+  sta mul_product_lo
+  lda mul_product_hi
+  sbc mul_hibyte256,x
+  sta mul_product_hi
+  rts
+

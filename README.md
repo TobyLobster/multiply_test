@@ -127,7 +127,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 
 | Source code                | Average Cycles | Memory (bytes) | My Changes                                   |
 | -------------------------- | -------------: | -------------: | :------------------------------------------- |
-| [mult5.a](tests/mult5.a)   | 93.55          | 834            |                                              |
+| [mult5.a](tests/mult5.a)   | 92.01          | 834            |                                              |
 | [mult6.a](tests/mult6.a)   | 137.92         | 620            |                                              |
 | [mult7.a](tests/mult7.a)   | 133.53         | 36             | with slight change to swap output parameters |
 | [mult8.a](tests/mult8.a)   | 153.45         | 29             |                                              |
