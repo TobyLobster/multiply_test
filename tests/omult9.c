@@ -44,7 +44,12 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     // log is 'close enough' to expected result
     int err = (int) actual_result- (int) e;
     int index = err + close_enough;
+
+    // lock mutex, update hist, unlock mutex
+    pthread_mutex_lock(&mutex);
     hist[index] += 1;
+    pthread_mutex_unlock(&mutex);
+
     return abs(err) <= close_enough;
 }
 

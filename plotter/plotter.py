@@ -224,3 +224,4 @@ plot_log_surround("Errors in omult7.a (a log based approximation to X*Y/256)", "
 plot_log_surround("Errors in omult8.a (a log based approximation to X*Y/256)", "results/omult8.png", "log8.svg")
 plot_log_surround("Errors in omult9.a (a log based approximation to X*Y/256) without +.5 bias", "results/omult9.png", "log9.svg")
 plot_log_surround("Errors in omult9.a (a log based approximation to X*Y/256) with +.5 bias", "results/omult9_with_0.5_bias.png", "log9a.svg")
+plot_log_surround("Errors in omult11.a (a table of squares based approximation to X*Y/256)", "results/omult11.png", "log11.svg")

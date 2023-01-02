@@ -65,6 +65,8 @@ typedef struct {
     uint64_t    total_errors;
 } thread_context_t;
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void usage(char *progname, int opt);
 int  process(options_t *options);
 void perror(const char *message);

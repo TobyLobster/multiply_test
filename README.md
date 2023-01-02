@@ -91,7 +91,7 @@ I have tested the following routines:
 
 ### Miscellaneous multiply
 
-Specialised multiply routines often find their niche in games. Partial results (a result with fewer bits than expected) are common for fixed point arithmetic. Even approximate results can be used in cases where speed is more important than complete accuracy.
+Specialised multiply routines often find their niche in games. Partial results (a result with fewer bits than expected) are common for fixed point arithmetic. Even approximate results can be used in cases where speed is more important than absolute accuracy.
 
 | Source code                  | Bits     | Method                    | From  |
 | ---------------------------- | :------: | :-----------------------: | :---- |
@@ -108,9 +108,9 @@ Specialised multiply routines often find their niche in games. Partial results (
 
 ## The Results
 
-In the diagrams below, grey dots are the also-rans. They are are beaten for both cycles and memory by the orange dots. All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
-
 ### 8 bit x 8 bit unsigned multiply, with 16 bit result
+
+In the diagrams below, grey dots are the also-rans. They are are beaten for both cycles and memory by the better orange dots. 
 
 ![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
 
@@ -118,6 +118,9 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 ![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
 
+When looking for a fast routine, note that the two fastest routines (mult13 and mult14) can be made even faster if the multiplier is constant across multiple calls. The first part of these routines set up the multiplier, and this only needs to be done once.
+
+All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
 
 | Source code                | Average Cycles | Memory (bytes) | My Changes                                   |
 | -------------------------- | -------------: | -------------: | :------------------------------------------- |
@@ -177,7 +180,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 ### Signed multiply
 
-First some example signed multiply routines. See below for how to adapt an unsigned multiply into a signed multiply routine.
+Here are some example signed multiply routines. The signed routines are usually just an unsigned routine with adjustments made before/after it. See below for how to adapt an unsigned multiply into a signed multiply routine.
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
@@ -190,7 +193,7 @@ First some example signed multiply routines. See below for how to adapt an unsig
 
 ### Miscellaneous multiply
 
-Other miscellaneous multiply routines with something about it 'specialised' e.g. only returning an approximate result, or with different bit depths:
+Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths:
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
@@ -317,7 +320,19 @@ Root-mean-square deviation: 167.60 (smaller is better)
 
 ![omult8 results](results/log8.svg)
 
-Finally, the same log and antilog tables can be used to implement an approximate division, but that's beyond the scope of this page.
+#### Table-of-squares approximation
+
+The same log and antilog tables can be used to implement an approximate division. 
+
+If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods) only the high byte of the product is required, the code for the low byte can be removed, to give a result that is out by one at most. This produces a result in a competitive 43 cycles:
+
+![omult11 results](results/log11.svg)
+
+```
+Error 0: 35492
+Error 1: 30044
+Root-mean-square deviation: 173.33 (smaller is better)
+```
 
 ### 4. Four bit multiply
 Instead of 'binary multiplication' using base 2 (as described above), we use base 16 (hexadecimal). We use a 256 byte table that stores the result of multiplying two 4 bit numbers together.
@@ -395,7 +410,7 @@ For speed, some routines only provide a partial answer. e.g. it may return only 
 For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment, see *Signed Multiply* below.
 
 ### Signed multiply
-For the most part, 2's compliment representation is used to represent signed numbers. But occasionally routines use a sign-magnitude representation (e.g. omult4.a). I will assume here the standard two's compliment representation is used. There are two methods of dealing with multiplying signed numbers; one fairly obvious, the other is less obvious but faster.
+For the most part, two's compliment representation is used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used. There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster.
 
 The more obvious method is to remove the signs from the inputs, do an unsigned multiply, then apply the appropriate sign to the result.
 
@@ -461,10 +476,12 @@ This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decima
 * Tests can be executed on multiple threads for speed.
 
 ### Dependencies
-* I use the [MOS Technology 6502 CPU Emulator](https://github.com/redcode/6502) to emulate the 6502 (not included).
-* I use the [Z](https://github.com/redcode/Z) header only library as it is required by the emulator (not included).
-* I use the [acme](https://github.com/meonwax/acme) assembler (not included).
-* I use clang to compile the C code (not included).
+* I use the [MOS Technology 6502 CPU Emulator](https://github.com/redcode/6502) to emulate the 6502.
+* I use the [Z](https://github.com/redcode/Z) header only library as it is required by the emulator.
+* I use the [libpng](http://www.libpng.org/pub/png/libpng.html) library to plot the log error images.
+* I use [matplotlib](https://matplotlib.org) python library to plot the graphs.
+* I use the [acme](https://github.com/meonwax/acme) assembler.
+* I use clang to compile the C code.
 
 ## See Also
 See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.

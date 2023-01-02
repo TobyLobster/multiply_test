@@ -70,7 +70,8 @@ function test() {
 #test "omult4" 0x200
 #test "omult5" 0x200
 #test "omult6" 0x200
-#test "omult7" 0x500
-#test "omult8" 0x600
-#test "omult9" 0x4ff
+test "omult7" 0x500
+test "omult8" 0x600
+test "omult9" 0x4ff
 #test "omult10" 0x200
+#test "omult11" 0x400

@@ -44,7 +44,12 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     // log is 'close enough' to expected result
     int err = (int) actual_result- (int) e;
     int index = err + close_enough;
+
+    // lock mutex, update hist, unlock mutex
+    pthread_mutex_lock(&mutex);
     hist[index] += 1;
+    pthread_mutex_unlock(&mutex);
+
     return abs(err) <= close_enough;
 }
 
@@ -66,10 +71,14 @@ void test_cleanup()
     }
 
     if (from >= 0) {
+        double deviation = 0.0;
         for(int index = from; index <= to; index++) {
             int err = index - close_enough;
+            deviation += err*err*hist[index];
             printf("Error %d: %d\n", err, hist[index]);
         }
+        deviation = sqrt(deviation);
+        printf("Root-mean-square deviation: %.2f (smaller is better)\n", (float) deviation);
     }
 
     write_image("results/omult7.png");

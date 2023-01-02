@@ -1,0 +1,48 @@
+; omult11.a
+; from Apple Assembly Line March 1986: http://www.txbobsc.com/aal/1986/aal8603.html#a5
+; reduced by TobyLobster to only give the high byte of the answer (possibly out by one)
+;
+; 8 bit x 8 bit unsigned multiply, 8 bit result
+; Average cycles: 43.00
+; 547 bytes
+;
+; Error 0: 35492
+; Error 1: 30044
+; Root-mean-square deviation: 173.33 (smaller is better)
+
+temp_m2   = $02
+
+* = $0200
+
+; align table to start of a page
+squares_high
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ----------------------------------------------------------------------------------
+; Calculate A*X (aka m1 * m2) with the product returned in A (high)
+; ----------------------------------------------------------------------------------
+mult
+    tay                             ; save m1 in y
+    stx temp_m2                     ; save m2
+    sec                             ; set carry for subtract
+    sbc temp_m2                     ; find difference
+    bcs +                           ; was m1 > m2 ?
+    eor #$ff                        ; invert it
+    adc #1                          ; and add 1
++
+    tax                             ; use abs(m1-m2) as index
+    clc                             ;
+    tya                             ; get m1 back
+    adc temp_m2                     ; find m1 + m2
+    tay                             ; use m1+m2 as index
+    bcc +                           ; m1+m2 < 255 ?
+    lda squares_high+256,y          ; hi byte
+    sbc squares_high,x              ;
+    rts                             ; done
++
+    sec                             ; set carry for subtract
+    lda squares_high,y              ; hi byte
+    sbc squares_high,x              ;
+    rts                             ;
