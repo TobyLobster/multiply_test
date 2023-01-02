@@ -1,0 +1,41 @@
+; omult12.a
+; from 'Gateway to Apshai' for the Atari 8-bit family, http://bringerp.free.fr/RE/Gta/downloads.php5
+; optimised to remove use of 'result'
+;
+; 8 bit x 8 bit unsigned multiply, 8 bit result (low byte)
+; Average cycles: 181.04
+; 27 bytes
+
+localA = $02
+localX = $03
+result = $04
+
+* = $0200
+
+mulAbyX
+    stx localX
+    cmp localX
+    bcc +
+    sta localX
+    txa
+
++
+    sta localA
+    lda #0
+;    sta result
+
+-
+    lsr localA
+    php
+    bcc +
+;    lda result
+    clc
+    adc localX
+;    sta result
+
++
+    asl localX
+    plp
+    bne -
+ ;   lda result
+    rts

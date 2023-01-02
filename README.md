@@ -105,6 +105,9 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
 | [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
+| [omult11.a](tests/omult11.a) | 8x8=8 (*partial result, high byte only*) | [tables of squares](#2-tables-of-squares) | TobyLobster, reducing mult13 to return high byte only |
+| [omult12.a](tests/omult12.a) | 8x8=8 (*partial result, low byte only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai* for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
+
 
 ## The Results
 
@@ -207,6 +210,8 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult8.a](tests/omult8.a)   |  49.20         | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
 | [omult9.a](tests/omult9.a)   |  22.97         | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
 | [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                                      |
+| [omult11.a](tests/omult11.a) | 43.00         | 547             | 8 x 8 bit unsigned multiply, *ONLY approximate high 8 bit* result                                        |
+| [omult12.a](tests/omult11.a) | 181.04        | 27              | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                                     |
 
 
 ## The Algorithms
@@ -239,7 +244,7 @@ By using a log and exponentiation tables, we can multiply using just three table
 
 However, since we are working with integers and not floating point, this is only an approximation. In particular, when multiplying 8 bit x 8 bit and returning an 8 bit (high byte) result only, this can give a reasonable approximation.
 
-The method is described further here [here](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) along with an implementation we discuss here:
+The method is described further here [here](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6). We compare the implementations:
 
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
 This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
@@ -320,11 +325,11 @@ Root-mean-square deviation: 167.60 (smaller is better)
 
 ![omult8 results](results/log8.svg)
 
-#### Table-of-squares approximation
+#### Alternative: a table-of-squares approximation
 
 The same log and antilog tables can be used to implement an approximate division. 
 
-If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods) only the high byte of the product is required, the code for the low byte can be removed, to give a result that is out by one at most. This produces a result in a competitive 43 cycles:
+If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by not more than one:
 
 ![omult11 results](results/log11.svg)
 

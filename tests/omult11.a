@@ -1,8 +1,7 @@
 ; omult11.a
-; from Apple Assembly Line March 1986: http://www.txbobsc.com/aal/1986/aal8603.html#a5
-; reduced by TobyLobster to only give the high byte of the answer (possibly out by one)
+; from mult13, reduced by TobyLobster to only give the high byte of the answer (possibly out by one)
 ;
-; 8 bit x 8 bit unsigned multiply, 8 bit result
+; 8 bit x 8 bit unsigned multiply, 8 bit result (~high byte)
 ; Average cycles: 43.00
 ; 547 bytes
 ;
@@ -14,7 +13,7 @@ temp_m2   = $02
 
 * = $0200
 
-; align table to start of a page
+; align table to start of a page for speed
 squares_high
     !for i, 0, 511 {
         !byte >((i*i)/4)
