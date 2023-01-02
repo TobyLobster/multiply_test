@@ -424,11 +424,11 @@ There are two methods of dealing with multiplying signed numbers; one obvious, t
 3. do a regular unsigned multiply
 4. recall if the signs differ and negate the result if needed
 
-The craftier method is:
+The faster, craftier method is:
 
 1. do a regular unsigned multiply
-2. If the first input is negative, subtract the second input from the high byte of the result.
-3. If the second input is negative, subtract the first input from the high byte of the result.
+2. If the first input is negative, subtract the second input from the high byte(s) of the result.
+3. If the second input is negative, subtract the first input from the high byte(s) of the result.
 
 This takes less memory and fewer cycles than the more obvious method. See [C=Hacking16](http://www.ffd2.com/fridge/chacking/c=hacking16.txt) for more details.
 
@@ -437,7 +437,7 @@ The code to do this can be optimised to be quite small. For instance smult1.a ha
 ```
     ; Step 1: Unsigned multiply
     ;     <do an unsigned multiply here>
-    ; At this point: X=one of the original input numbers; A=high byte of result; Y = low byte of result
+    ; Suppose at this point: X=one of the original input numbers; A=high byte of result; Y = low byte of result
 
     ; Step 2: apply sign.
     cpx #$80             ; check the sign of one input              2 cycles
@@ -453,11 +453,11 @@ temp = * + 1
 +
 ```
 
-Corollary: For an 8 bit x 8 bit multiply where only the low 8 bits of the result are required, there is no difference between the unsigned and signed result, the same answer works for both.
-This is true also for the 16 bit x 16 bit multiply where only the lower 16 bits are required for the result.
+*Corollary*: For an 8 bit x 8 bit multiply where only the low 8 bits of the result are required, there is no difference between the unsigned and signed result, the same answer works for both.
+For a 16 bit x 16 bit multiply where only the lower 16 bits are required, the same is true.
 
 ### 5. Self modifying code
-Some of the implementations use self modifying code for speed, so won't work without change from ROM. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
+Some implementations use self modifying code for speed, so won't work without change from ROM. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
 
 ### 6. Multiply using Binary Coded Decimal (BCD)
 
