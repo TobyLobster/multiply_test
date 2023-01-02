@@ -249,7 +249,7 @@ The method is described further here [here](https://codebase64.org/doku.php?id=b
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
 This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
 
-Note that it's formula for the antilog table `$y=2^(x/f-8)+.5$` should not have the `+.5` as this makes the results less accurate. In particular, testing with `+.5` over all 65536 possible inputs we get the following results:
+Note that it's formula for the antilog table $y=2^(x/f-8)+.5$ should not have the `+.5` as this makes the results less accurate. In particular, testing with `+.5` over all 65536 possible inputs we get the following results:
 
 ```
 Error: -5  count: 1
