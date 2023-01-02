@@ -247,7 +247,7 @@ However, since we are working with integers and not floating point, this is only
 The method is described further here [here](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6). It has an implementation we look at next, and compare it with others:
 
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
-This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
+This uses a 256 byte log table and a 511 byte antilog table (total: 767 bytes of data).
 
 Note that it's formula for the antilog table $y=2^{(x/f-8)}+.5$ should not have the $+.5$ as this makes the results less accurate. In particular, testing with $+.5$ over all 65536 possible inputs we get the following results:
 
@@ -312,7 +312,7 @@ Root-mean-square deviation: 292.66 (smaller is better)
 
 #### *Elite*, Second Processor version ([omult8.a](tests/omult8.a))
 
-The Second Processor version of *Elite* has a more accurate version using an extra antilog table (total: 1024 bytes of data), for a version that is wrong by not more than three:
+The Second Processor version of *Elite* has a more accurate version using an extra antilog table (total: 1024 bytes of data), for a version that is wrong by no more than three:
 
 ```
 Error -3: 90
@@ -329,7 +329,7 @@ Root-mean-square deviation: 167.60 (smaller is better)
 
 The same log and antilog tables can be used to implement an approximate division.
 
-If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by not more than one:
+If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by no more than one:
 
 ```
 Error 0: 35492
