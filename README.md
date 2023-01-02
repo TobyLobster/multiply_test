@@ -244,12 +244,12 @@ By using a log and exponentiation tables, we can multiply using just three table
 
 However, since we are working with integers and not floating point, this is only an approximation. In particular, when multiplying 8 bit x 8 bit and returning an 8 bit (high byte) result only, this can give a reasonable approximation.
 
-The method is described further here [here](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6). We compare the implementations:
+The method is described further here [here](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6). It has an implementation we look at next, and compare it with others:
 
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
 This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
 
-Note that it's formula for the antilog table $y=2^{(x/f-8)}+.5$ should not have the `+.5` as this makes the results less accurate. In particular, testing with `+.5` over all 65536 possible inputs we get the following results:
+Note that it's formula for the antilog table $y=2^{(x/f-8)}+.5$ should not have the $+.5$ as this makes the results less accurate. In particular, testing with $+.5$ over all 65536 possible inputs we get the following results:
 
 ```
 Error: -5  count: 1
@@ -269,7 +269,7 @@ Root-mean-square deviation: 257.06 (smaller is better)
 
 ![omult9 results with 0.5 bias](results/log9a.svg)
 
-which is more often wrong than it is right. Without the `+.5` the code gives more accurate results:
+which is more often wrong than it is right. Without the $+.5$ the code gives more accurate results:
 
 ```
 Error: -5  count: 9
