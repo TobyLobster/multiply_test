@@ -1,4 +1,5 @@
 import matplotlib as mpl
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -182,3 +183,44 @@ for diagram in diagrams:
 
     plt.title(f"{diagram.title}")
     plt.savefig(f"results/{diagram.filename}.svg", metadata={'Date': None})
+
+
+def plot_log_surround(title, image_filename, output_filename):
+    # plot
+    mpl.rcParams['svg.hashsalt'] = 'hello?'
+    fig, ax = plt.subplots(figsize=(9, 7))
+
+    img = plt.imread(image_filename)
+
+    if diagram.xlimit:
+        plt.xlim([0, 256])
+    if diagram.ylimit:
+        plt.ylim([0, 256])
+
+    from matplotlib.ticker import ScalarFormatter #,NullFormatter,LinearLocator
+    ax.xaxis.get_ticklocs(minor=True)
+    ax.yaxis.get_ticklocs(minor=True)
+    ax.minorticks_on()
+    img = ax.imshow(img, extent = [0, 256, 0, 256])
+
+    ax.set_xticks([64, 128, 192, 256])
+    ax.set_yticks([64, 128, 192, 256])
+
+    green_patch = mpatches.Patch(color='#00ff00', label='correct')
+    red_patch   = mpatches.Patch(color='#ff0000', label='too small')
+    blue_patch  = mpatches.Patch(color='#0000ff', label='too large')
+    ax.legend(handles=[red_patch, green_patch, blue_patch], bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+    #locmin = LinearLocator(numticks=100)
+    #ax.xaxis.set_minor_locator(locmin)
+
+    plt.gca().set_xlabel("input X") #, fontweight='bold')
+    plt.gca().set_ylabel("input Y") #, fontweight='bold')
+
+    plt.title(title, pad=20)
+    plt.savefig(f"results/{output_filename}", metadata={'Date': None})
+
+plot_log_surround("Errors in omult7.a (a log based approximation to X*Y/256)", "results/omult7.png", "log7.svg")
+plot_log_surround("Errors in omult8.a (a log based approximation to X*Y/256)", "results/omult8.png", "log8.svg")
+plot_log_surround("Errors in omult9.a (a log based approximation to X*Y/256) without +.5 bias", "results/omult9.png", "log9.svg")
+plot_log_surround("Errors in omult9.a (a log based approximation to X*Y/256) with +.5 bias", "results/omult9_with_0.5_bias.png", "log9a.svg")

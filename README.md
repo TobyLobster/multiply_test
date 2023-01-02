@@ -241,9 +241,7 @@ The method is described further here [here](https://codebase64.org/doku.php?id=b
 #### *GO64!* magazine articles ([omult9.a](tests/omult9.a))
 This uses a 256 byte log table and a 511 byte antilog table (total: 768 bytes of data).
 
-Note that it's formula for the antilog table `y=2^(x/f-8)+.5` should not have the `+.5` as this makes the results less accurate. In particualr, testing with `+0.5` over all 65536 possible inputs we get the following results:
-
-![omult9 results with 0.5 bias](results/omult9_with_0.5_bias.png)
+Note that it's formula for the antilog table `y=2^(x/f-8)+.5` should not have the `+.5` as this makes the results less accurate. In particular, testing with `+0.5` over all 65536 possible inputs we get the following results:
 
 ```
 Error: -5  count: 1
@@ -260,6 +258,8 @@ Error: 5  count: 16
 
 Root-mean-square deviation: 257.06 (smaller is better)
 ```
+
+![omult9 results with 0.5 bias](results/log9a.svg)
 
 which is more often wrong than it is right. Without the `+.5` the code gives more accurate results:
 
@@ -279,7 +279,7 @@ Error: 5  count: 1
 Root-mean-square deviation: 211.64 (smaller is better)
 ```
 
-![omult9 results without 0.5 bias](results/omult9.png)
+![omult9 results without 0.5 bias](results/log9.svg)
 
 #### *Elite*, Master version ([omult7.a](tests/omult7.a))
 
@@ -300,7 +300,7 @@ Error 1: 2
 Root-mean-square deviation: 292.66 (smaller is better)
 ```
 
-![omult7 results](results/omult7.png)
+![omult7 results](results/log7.svg)
 
 #### *Elite*, Second Processor version ([omult8.a](tests/omult8.a))
 
@@ -315,7 +315,7 @@ Error 0: 44109
 Root-mean-square deviation: 167.60 (smaller is better)
 ```
 
-![omult8 results](results/omult8.png)
+![omult8 results](results/log8.svg)
 
 Finally, the same log and antilog tables can be used to implement an approximate division, but that's beyond the scope of this page.
 
