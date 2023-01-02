@@ -1,4 +1,4 @@
-// smult6.c
+// omult13.c
 
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;

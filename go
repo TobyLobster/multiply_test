@@ -61,7 +61,6 @@ function test() {
 #test "smult3" 0xa00
 #test "smult4" 0x200
 #test "smult5" 0x200
-#test "smult6" 0x200
 
 #test "omult1" 0x200
 #test "omult2" 0x200
@@ -75,4 +74,5 @@ function test() {
 #test "omult9" 0x4ff
 #test "omult10" 0x200
 #test "omult11" 0x400
-test "omult12" 0x200
+#test "omult12" 0x200
+#test "omult13" 0x200

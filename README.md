@@ -22,7 +22,7 @@
 
 This document compares the runtime performance and memory used by a wide variety of multiplication routines for the 6502 CPU. Over 60 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
-The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed. There is also section later that discusses how to how to customise the routines, e.g. handling signed numbers, adjusting to different bit sizes, etc.
+The most common routines available are for unsigned numbers, either 8 bit x 8 bit with a 16 bit result, or 16 bit x 16 bit with a 32 bit result. These are the natural focus, however several other routines are also listed. There is also section later that discusses how to how to customise the routines, e.g. how to handle signed numbers, adjusting to different bit sizes, etc.
 
 ## The Implementations
 
@@ -87,7 +87,6 @@ I have tested the following routines:
 | [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*)                           | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult4.a](tests/smult4.a)   | 8x8=16   (*signed*)                           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [smult5.a](tests/smult5.a)   | 8x8=16   (*signed*)                           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
-| [smult6.a](tests/smult6.a)   | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 
 ### Miscellaneous multiply
 
@@ -107,6 +106,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
 | [omult11.a](tests/omult11.a) | 8x8=8 (*partial result, high byte only*) | [tables of squares](#2-tables-of-squares) | TobyLobster, reducing mult13 to return high byte only |
 | [omult12.a](tests/omult12.a) | 8x8=8 (*partial result, low byte only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai* for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
+| [omult13.a](tests/omult13.a)   | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 
 
 ## The Results
@@ -121,7 +121,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 ![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
 
-When looking for a fast routine, note that the two fastest routines (mult13 and mult14) can be made even faster if the multiplier is constant across multiple calls. The first part of these routines set up the multiplier, and this only needs to be done once.
+When looking for a fast routine, note that the fastest routine (mult14 at 46.99 cycles on average) can be made even faster if the multiplier (in A) is constant across multiple calls. The first instructions of this routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, so subsequent multiplies only take 28.99 cycles on average. This can also be done to a lesser degree for mult27.
 
 All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
 
@@ -192,7 +192,6 @@ Here are some example signed multiply routines. The signed routines are usually 
 | [smult3.a](tests/smult3.a)   | 277.57         | 2253           | 16 x 16 bit *signed* multiply (32 bit result), tweaked slightly (based on the mult31.a)     |
 | [smult4.a](tests/smult4.a)   | 242.52         | 67             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult19                    |
 | [smult5.a](tests/smult5.a)   | 180.50         | 35             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult9                     |
-| [smult6.a](tests/smult6.a)   | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                    |
 
 ### Miscellaneous multiply
 
@@ -211,7 +210,8 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult9.a](tests/omult9.a)   |  22.97         | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                           |
 | [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                                      |
 | [omult11.a](tests/omult11.a) | 43.00         | 547             | 8 x 8 bit unsigned multiply, *ONLY approximate high 8 bit* result                                        |
-| [omult12.a](tests/omult11.a) | 181.04        | 27              | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                                     |
+| [omult12.a](tests/omult12.a) | 181.04        | 27              | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                                     |
+| [omult13.a](tests/omult13.a)   | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                    |
 
 
 ## The Algorithms
