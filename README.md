@@ -480,6 +480,7 @@ This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decim
 * I use [matplotlib](https://matplotlib.org) python library to plot the graphs.
 * I use the [acme](https://github.com/meonwax/acme) assembler.
 * I use clang to compile the C code.
+* I use python3 to create the graphs.
 
 ### Go
 * I'm set up for macOS. The 'go' script specifies which tests to execute. Uncomment the test(s) you want to run. Run the 'go' script to execute the tests.
