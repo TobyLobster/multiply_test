@@ -486,6 +486,8 @@ This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decim
 * The 'tests' folder contains a number of 6502 assembly language files ('.a' files) to test.
 * The testing is configured by a small associated '.c' file.
 * The test results are written to the results/ folder.
+* Tests can be executed on multiple threads for speed. Adjust this in the go script: `-n<number>` on the command line for the tester program specifies the number of threads.
+* The 'go_plot' script is used to create the graphs from the results as svg files.
 
 ### How testing works
 * The assembly language code is assembled into a binary file using the acme assembler.
@@ -493,7 +495,6 @@ This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decim
 * The 6502 binary is loaded and executed (simulated) multiple times, over all possible inputs (specified by the test's '.c' file).
 * Any unexpected results (e.g. due to errors in the algorithm or the test) are reported. The test case that failed is re-run with a full disassembly output to aid debugging.
 * The average cycle count is reported and results are output to a json file.
-* Tests can be executed on multiple threads for speed. Adjust this in the go script: `-n<number>` on the command line for the tester program specifies the number of threads.
 
 ## See Also
 See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
