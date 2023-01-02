@@ -415,12 +415,12 @@ For speed, some routines only provide a partial answer. e.g. it may return only 
 For example, if a routine wants to multiply a 16 bit number by the sine of an angle this is a problem for an integer routine since the sine of an angle is a floating point number not an integer. By scaling up the fractional value to an integer e.g. `N=256*sin(angle)`, then the integer multiplication can happen and the result scaled down by 256. Note also that negative numbers will need special treatment, see *Signed Multiply* below.
 
 ### Signed multiply
-For the most part, two's compliment representation is used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used. There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster.
+Two's compliment representation is commonly used to represent signed numbers. Occasionally routines use a sign-magnitude representation (e.g. omult4.a), but I will assume here the standard two's compliment representation is used.
 
-The more obvious method is to remove the signs from the inputs, do an unsigned multiply, then apply the appropriate sign to the result.
+There are two methods of dealing with multiplying signed numbers; one obvious, the other less obvious but faster. The more obvious method is:
 
-1. remember if the sign of the two input numbers are different
-2. remove the sign bit from each input value
+1. remember if the sign of the two input numbers differ
+2. remove the sign of each input value (abs)
 3. do a regular unsigned multiply
 4. recall if the signs differ and negate the result if needed
 
@@ -430,9 +430,9 @@ The craftier method is:
 2. If the first input is negative, subtract the second input from the high byte of the result.
 3. If the second input is negative, subtract the first input from the high byte of the result.
 
-That's it. This takes less memory and fewer cycles than the more obvious method. See [C=Hacking16](http://www.ffd2.com/fridge/chacking/c=hacking16.txt) for more details.
+This takes less memory and fewer cycles than the more obvious method. See [C=Hacking16](http://www.ffd2.com/fridge/chacking/c=hacking16.txt) for more details.
 
-The code to do this can be optimised to be quite small, if the parameters are right. For instance smult1 has:
+The code to do this can be optimised to be quite small. For instance smult1.a has:
 
 ```
     ; Step 1: Unsigned multiply
@@ -457,28 +457,14 @@ Corollary: For an 8 bit x 8 bit multiply where only the low 8 bits of the result
 This is true also for the 16 bit x 16 bit multiply where only the lower 16 bits are required for the result.
 
 ### Self modifying code
-Some of the implementations use self modifying code for speed, so won't work without change from ROM code. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
+Some of the implementations use self modifying code for speed, so won't work without change from ROM. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
 
 ### Multiply using Binary Coded Decimal (BCD)
 
-This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
+This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
 
 
 ## How to run the tests
-* Check the dependencies below.
-* The 'go' script specifies which tests to execute.
-* Run the 'go' script to execute the tests.
-* The 'tests' folder contains a number of assembly language files (.a files) to test.
-* The testing is configured by a small associated .c file.
-* The test results are written to json files.
-
-### How testing works
-* The assembly language code is assembled into a binary file using the acme assembler.
-* The tester C code is compiled (using clang) along with the test parameters .c file.
-* The binary is loaded and executed (simulated) multiple times, usually over all possible inputs (specified by the test's .c file).
-* Any unexpected results (e.g. due to errors in the algorithm) are reported. The test case that failed is re-run with full disassembly output to aid debugging.
-* The average cycle count is reported and results are output to a json file.
-* Tests can be executed on multiple threads for speed.
 
 ### Dependencies
 * I use the [MOS Technology 6502 CPU Emulator](https://github.com/redcode/6502) to emulate the 6502.
@@ -487,6 +473,20 @@ This can be done but not very efficiently. [Here](https://llx.com/Neil/a2/decima
 * I use [matplotlib](https://matplotlib.org) python library to plot the graphs.
 * I use the [acme](https://github.com/meonwax/acme) assembler.
 * I use clang to compile the C code.
+
+### Go
+* I'm set up for macOS. The 'go' script specifies which tests to execute. Uncomment the test(s) you want to run. Run the 'go' script to execute the tests.
+* The 'tests' folder contains a number of 6502 assembly language files (.a files) to test.
+* The testing is configured by a small associated .c file.
+* The test results are written to the results/ folder.
+
+### How testing works
+* The assembly language code is assembled into a binary file using the acme assembler.
+* The tester C code is compiled (using clang) along with the test parameters .c file.
+* The 6502 binary is loaded and executed (simulated) multiple times, over all possible inputs (specified by the test's .c file).
+* Any unexpected results (e.g. due to errors in the algorithm or the test) are reported. The test case that failed is re-run with a full disassembly output to aid debugging.
+* The average cycle count is reported and results are output to a json file.
+* Tests can be executed on multiple threads for speed. Adjust this in the go script `-n<number>` on the command line for the tester program specifies the number of threads.
 
 ## See Also
 See also my [sqrt_test](https://github.com/TobyLobster/sqrt_test) repository for comparing implementations of square root.
