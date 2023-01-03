@@ -71,7 +71,7 @@ I have tested the following routines:
 | [mult33.a](tests/mult33.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
 | [mult34.a](tests/mult34.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
 | [mult35.a](tests/mult35.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult36.a](tests/mult36.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502* by David Barrow](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) |
+| [mult36.a](tests/mult36.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502*](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) by David Barrow (1985) |
 | [mult37.a](tests/mult37.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Andrew Blance, at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
 | [mult38.a](tests/mult38.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator* (BBC Micro)](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
 | [mult39.a](tests/mult39.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Revs* (BBC Micro)](https://revs.bbcelite.com/source/main/subroutine/multiply8x8.html) |
@@ -80,7 +80,7 @@ I have tested the following routines:
 | [mult42.a](tests/mult42.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | TobyLobster, combining the results of mult16 |
 | [mult43.a](tests/mult43.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 assembly language programming*](https://archive.org/details/6502-assembly-language-programming/page/n251/mode/2up) by Lance A. Leventhal |
 | [mult44.a](tests/mult44.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* (BBC Micro)](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
-| [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language*, by Randy Hyde](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up) |
+| [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language*](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up), by Randy Hyde (1981) |
 
 ### Signed multiply
 
@@ -99,17 +99,17 @@ Specialised multiply routines often find their niche in games. Partial results (
 | Source code                  | Bits     | Method                    | From  |
 | ---------------------------- | :------: | :-----------------------: | :---- |
 | [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
-| [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston, also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
-| [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro, the original cassette and disc versions](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
+| [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
+| [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
 | [omult4.a](tests/omult4.a)   | 24x8=32  (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
 | [omult5.a](tests/omult5.a)   | 16x16=16 (approximate 2 high bytes only)      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* for the BBC Micro](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
-| [omult6.a](tests/omult6.a)   | 16x16=16 (*low 16 bit result*, or carry set if overflow occurs)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Commodore 64 BASIC/KERNAL ROM at $B357](https://github.com/mist64/c64ref/blob/master/Source/c64disasm/c64disasm_en.txt) |
+| [omult6.a](tests/omult6.a)   | 16x16=16 (*low 16 bit result*, or carry set if overflow occurs)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Commodore 64 BASIC/KERNAL ROM](https://github.com/mist64/c64ref/blob/master/Source/c64disasm/c64disasm_en.txt) at $B357 |
 | [omult7.a](tests/omult7.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, BBC Master version](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
 | [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
 | [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
 | [omult11.a](tests/omult11.a) | 8x8=8 (*partial result, high byte only*) | [tables of squares](#2-tables-of-squares) | TobyLobster, reducing mult13 to return high byte only |
-| [omult12.a](tests/omult12.a) | 8x8=8 (*partial result, low byte only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai* for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
+| [omult12.a](tests/omult12.a) | 8x8=8 (*partial result, low byte only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
 | [omult13.a](tests/omult13.a)   | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 
 
@@ -384,7 +384,11 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 ### 1. Changing the number of bits
 The most common routines I've found either multiply two 8 bit values to get a 16 bit result, or multiply two 16 bit values to get a 32 bit result.
 
-These are useful, but in practice what you may need is something different, something custom made. For example you may need to multiply a 24 bit number by an 8 bit number, scaling the result down by 256 to get a new 24 bit number. It helps to realise that you can make these routines by building on your favourite standard 8 bit x 8 bit = 16 bit routine.
+These are useful, but in practice what you may need is something different, something custom made. For example you may need to multiply a 24 bit number by an 8 bit number, scaling the result down by 256 to get a new 24 bit number. 
+
+The shift-and-add method is straightforward to extend to larger the number of bits, since the principles are the same no matter how many bits are used. An m-bit by n-bit multiply needs a result of m+n bits.
+
+It also helps to realise that you can make these routines by building on your favourite standard 8 bit x 8 bit = 16 bit routine.
 
 Just as binary multiplication works in base 2, this works in base 256. Each byte is one digit. For example, to make a 16 x 16 bit multiply:
 
@@ -410,7 +414,7 @@ However, the calling code may want to use registers for the parameters for the m
 
 In particular, if on exiting the routine the low byte of the result is in A, then it can be used as the starting point for a subsequent add or subtract, as used when combining to make a larger bit multiply. Sometimes carry is guaranteed clear after the multiply which also helps with optimising a subsequent addition.
 
-#### 16bit x 16 bit = 32 bit
+#### 16 bit x 16 bit = 32 bit
 These routines mostly use memory locations for in/out parameters, as there are too many values to hold in the registers.
 
 ### 3. Only Using Partial Results
