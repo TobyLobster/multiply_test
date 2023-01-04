@@ -1,5 +1,6 @@
 ; mult21.a
-; from Niels Möller: https://www.lysator.liu.se/~nisse/misc/6502-mul.html
+; from 'Machine Code for the Atmos and Oric-I', Bruce Smith (1984): https://archive.org/details/shiva-machine-code-for-the-atmos-and-oric-i/page/78/mode/2up
+; also from Niels Möller: https://www.lysator.liu.se/~nisse/misc/6502-mul.html
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 150

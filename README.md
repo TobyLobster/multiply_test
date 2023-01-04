@@ -54,9 +54,9 @@ I have tested the following routines:
 | [mult16.a](tests/mult16.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
 | [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[*Elite* (BBC Micro)](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
 | [mult18.a](tests/mult18.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Master version)](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
-| [mult19.a](tests/mult19.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
+| [mult19.a](tests/mult19.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Australian Personal Computer, Aug 1984](https://archive.org/details/apc_1984_08/page/115/mode/2up?q=6502+multiplication) and [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
 | [mult20.a](tests/mult20.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
-| [mult21.a](tests/mult21.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
+| [mult21.a](tests/mult21.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Machine Code for the Atmos and Oric-I*](https://archive.org/details/shiva-machine-code-for-the-atmos-and-oric-i/page/78/mode/2up) by Bruce Smith (1984) and [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
 | [mult22.a](tests/mult22.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares) | [Niels Möller](https://www.lysator.liu.se/~nisse/misc/6502-mul.html) |
 | [mult23.a](tests/mult23.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
 | [mult24.a](tests/mult24.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply)
@@ -69,8 +69,8 @@ I have tested the following routines:
 | [mult31.a](tests/mult31.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult32.a](tests/mult32.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply)    | [keldon at everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
 | [mult33.a](tests/mult33.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares) | [Retro64](https://retro64.altervista.org/ProgrammingExamples/AssemblyLanguage/fast_mult_16bit_v05_pres.txt)
-| [mult34.a](tests/mult34.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
-| [mult35.a](tests/mult35.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [AtariArchives](https://www.atariarchives.org/roots/chapter_10.php) |
+| [mult34.a](tests/mult34.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Atari Roots*](https://archive.org/details/ataribooks-atari-roots/page/n169/mode/2up) by Mark Andrews (1984) |
+| [mult35.a](tests/mult35.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Atari Roots*](https://archive.org/details/ataribooks-atari-roots/page/n173/mode/2up) by Mark Andrews (1984) |
 | [mult36.a](tests/mult36.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Best of Personal Computer World, ASSEMBLER ROUTINES FOR THE 6502*](https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up) by David Barrow (1985) |
 | [mult37.a](tests/mult37.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Andrew Blance, at codeburst](https://codeburst.io/lets-write-some-harder-assembly-language-code-c7860dcceba) |
 | [mult38.a](tests/mult38.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply) | [*Aviator* (BBC Micro)](https://aviator.bbcelite.com/source/main/subroutine/multiply8x8.html) |
@@ -98,7 +98,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 
 | Source code                  | Bits     | Method                    | From  |
 | ---------------------------- | :------: | :-----------------------: | :---- |
-| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apprize](https://apprize.best/programming/65816/17.html) |
+| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Programming the 65816 by David Eyes (1986)](https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply) |
 | [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
 | [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
 | [omult4.a](tests/omult4.a)   | 24x8=32  (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
@@ -158,7 +158,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult30.a](tests/mult30.a) | 114.00         | 74             | tweaked                                      |
 | [mult32.a](tests/mult32.a) | 117.14         | 592            |                                              |
 | [mult34.a](tests/mult34.a) | 280.00         | 36             |                                              |
-| [mult35.a](tests/mult35.a) | 191.00         | 22             |                                              |
+| [mult35.a](tests/mult35.a) | 188.00         | 20             |                                              |
 | [mult37.a](tests/mult37.a) | 278.00         | 35             |                                              |
 | [mult38.a](tests/mult38.a) | 97.00          | 1345           |                                              |
 | [mult39.a](tests/mult39.a) | 107.00         | 69             | tweaked slightly                             |
@@ -375,6 +375,8 @@ This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'sh
 ### 6. Hardware support
 Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with its extended 6502 instruction set has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
 
+Some early vector based arcade machines like Tempest and Battlezone were programmed in 6502, with an external processor (Atari's Math Box) to handle the vector maths, including multiply routines.
+
 ### 7. Repeated addition ###
 To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general.
 
@@ -384,7 +386,7 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 ### 1. Changing the number of bits
 The most common routines I've found either multiply two 8 bit values to get a 16 bit result, or multiply two 16 bit values to get a 32 bit result.
 
-These are useful, but in practice what you may need is something different, something custom made. For example you may need to multiply a 24 bit number by an 8 bit number, scaling the result down by 256 to get a new 24 bit number. 
+These are useful, but in practice what you may need is something different, something custom made. For example you may need to multiply a 24 bit number by an 8 bit number, scaling the result down by 256 to get a new 24 bit number.
 
 The shift-and-add method is straightforward to extend to larger the number of bits, since the principles are the same no matter how many bits are used. An m-bit by n-bit multiply needs a result of m+n bits.
 

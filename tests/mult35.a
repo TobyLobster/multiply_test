@@ -1,15 +1,16 @@
 ; mult35.a
-; from the second faster version at https://www.atariarchives.org/roots/chapter_10.php
+; from 'Atari Roots' by Mark Andrews (1984) p173: https://archive.org/details/ataribooks-atari-roots/page/n173/mode/2up
+; also available at https://www.atariarchives.org/roots/chapter_10.php
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
-; Average cycles: 191.00
-; 22 bytes
+; Average cycles: 188.00
+; 20 bytes
 
 
 mpr   = $02
 mpd   = $03
 prodl = $04
-prodh = $05
+; prodh = $05
 
 *=$0200
 
@@ -19,7 +20,7 @@ prodh = $05
 ;   mpd: multiplicand
 ; On Exit:
 ;   prodl: low byte of product
-;   prodh: high byte of product
+;   A: high byte of product
 values
     lda #0
     sta prodl
@@ -34,5 +35,5 @@ noadd
     ror prodl
     dex
     bne loop
-    sta prodh
+;    sta prodh
     rts

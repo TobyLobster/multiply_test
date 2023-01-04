@@ -1,5 +1,5 @@
 ; omult1.a
-; from https://apprize.best/programming/65816/17.html
+; from Programming the 65816 by David Eyes (1986), https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply
 ;
 ; Only returns the lower 16 bits of the result.
 ;

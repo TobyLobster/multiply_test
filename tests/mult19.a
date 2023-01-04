@@ -1,5 +1,6 @@
 ; mult19.a
-; from Neil Parker: https://www.llx.com/Neil/a2/mult.html
+; from Australian Personal Computer, Aug 1984: https://archive.org/details/apc_1984_08/page/115/mode/2up?q=6502+multiplication
+; also from Neil Parker: https://www.llx.com/Neil/a2/mult.html
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 185
