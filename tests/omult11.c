@@ -6,7 +6,6 @@ extern void write_image(char *filename);
 static const uint64_t INPUT_START = 0UL;
 static const uint64_t INPUT_END   = 65536UL;
 
-static int result[65536UL];
 __thread int test_input = 0;
 
 const int close_enough = 1;

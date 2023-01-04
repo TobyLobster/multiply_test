@@ -1,11 +1,8 @@
-// mult45.c
+// mult46.c
 
 // specify range of input values
 static const uint64_t INPUT_START = 0UL;
 static const uint64_t INPUT_END   = 65536UL * 65536UL;
-
-static int result[65536UL];
-__thread int test_input = 0;
 
 // **************************************************************************************
 void test_pre(thread_context_t* threadContext, uint64_t input) {

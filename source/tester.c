@@ -73,6 +73,7 @@ void perror(const char *message);
 void *thread_main(void *threadId);
 
 #define MAX_RESULTS 65536
+static int result[65536UL];
 
 #include "../build/parameters.c"
 
