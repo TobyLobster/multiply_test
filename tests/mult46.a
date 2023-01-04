@@ -1,0 +1,40 @@
+; mult46.a
+; from 'Apple Programmers Handbook', by Paul Irwin (1984) https://archive.org/details/sams-apple-programmers-handbook/page/220/mode/2up?q=multiply
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 655.00
+; 40 bytes
+
+
+result = $02    ; 4 bytes
+xvalue = $02    ; 2 bytes
+bconst = $04    ; 2 bytes
+mmod   = $06    ; 2 bytes
+
+* = $0200
+
+mult
+    lda #0
+    sta bconst
+    sta bconst+1
+    ldx #16
+    clc
+    rol bconst
+    rol bconst+1
+mult1
+    ror bconst+1
+    ror bconst
+    ror xvalue+1
+    ror xvalue
+    bcc mult2
+    clc
+    lda bconst
+    adc mmod
+    sta bconst
+    lda bconst+1
+    adc mmod+1
+    sta bconst+1
+mult2
+    dex
+    bpl mult1
+    rts

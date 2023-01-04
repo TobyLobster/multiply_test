@@ -1,0 +1,30 @@
+; mult47.a
+; from Neil Parker: https://llx.com/Neil/a2/mult.html
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 175.00
+; 20 bytes
+
+
+num1   = $02            ; 1 byte
+num2   = $03            ; 1 byte
+result = $04            ; 2 bytes
+
+* = $0200
+
+; result = num1 * num2
+mult
+    lda #$80        ; Preload sentinel bit into RESULT
+    sta result
+    asl             ; Initialize RESULT hi byte to 0
+l1
+    lsr num2        ; Get low bit of NUM2
+    bcc l2          ; 0 or 1?
+    clc             ; If 1, add NUM1
+    adc num1
+l2
+    ror             ; "Stairstep" shift (catching carry from add)
+    ror result
+    bcc l1          ; When sentinel falls off into carry, we're done
+    sta result+1
+    rts
