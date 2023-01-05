@@ -379,7 +379,7 @@ This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'sh
 ### 6. Hardware support
 Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with its extended 6502 instruction set has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
 
-Some early vector based arcade machines like Tempest and Battlezone were programmed in 6502, with an external processor (Atari's Math Box) to handle the vector maths, including multiply routines.
+Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiply routines.
 
 ### 7. Repeated addition ###
 To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general.
