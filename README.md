@@ -83,6 +83,8 @@ I have tested the following routines:
 | [mult45.a](tests/mult45.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program the Apple II Using 6502 Assembly Language*](https://archive.org/details/Using_6502_Assembly_Language/page/n197/mode/2up) by Randy Hyde (1981) |
 | [mult46.a](tests/mult46.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Apple Programmers Handbook*](https://archive.org/details/sams-apple-programmers-handbook/page/220/mode/2up?q=multiply) by Paul Irwin (1984) |
 | [mult47.a](tests/mult47.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Neil Parker*](https://llx.com/Neil/a2/mult.html) |
+| [mult48.a](tests/mult48.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Micro 6502 Journal Issue 31, Dec 1980, p71-74](https://archive.org/details/micro-6502-journal-31/page/n73/mode/2up) by Brooke Boering |
+| [mult49.a](tests/mult49.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Micro 6502 Journal Issue 31, Dec 1980, p71-74](https://archive.org/details/micro-6502-journal-31/page/n73/mode/2up) by Brooke Boering, with 8x16 multiply 'shortcut' removed |
 
 ### Signed multiply
 
@@ -188,6 +190,8 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult42.a](tests/mult42.a) | 404.59         | 648            | I use mult16 and combine to make 16x16                                       |
 | [mult45.a](tests/mult45.a) | 695.00         | 38             | optimised slightly                                                           |
 | [mult46.a](tests/mult46.a) | 655.00         | 40             |                                                                              |
+| [mult48.a](tests/mult48.a) | 707.11         | 69             |                                                                              |
+| [mult49.a](tests/mult49.a) | 703.00         | 43             | version of mult48 with 8x16 multiply 'shortcut' removed                      |
 
 ### Signed multiply
 

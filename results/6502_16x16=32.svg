@@ -58,6 +58,8 @@ z
      <use xlink:href="#mad22b90ff5" x="110.293826" y="70.954279" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="104.180087" y="178.8444" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="104.689565" y="194.3676" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#mad22b90ff5" x="112.077" y="174.144751" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#mad22b90ff5" x="105.453783" y="175.73976" style="fill: #d3d3d3; stroke: #d3d3d3"/>
     </g>
    </g>
    <g id="PathCollection_2">
@@ -1138,6 +1140,12 @@ L 104.180087 119.85624
     <path d="M 104.689565 253.35576 
 L 104.689565 135.37944 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
+    <path d="M 112.077 321.26976 
+L 112.077 114.8112 
+" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
+    <path d="M 105.453783 234.72792 
+L 105.453783 116.7516 
+" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
    </g>
    <g id="line2d_46">
     <defs>
@@ -1153,6 +1161,8 @@ L -3 -0
      <use xlink:href="#m408c75a34d" x="110.293826" y="166.42584" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="104.180087" y="237.83256" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="104.689565" y="253.35576" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#m408c75a34d" x="112.077" y="321.26976" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#m408c75a34d" x="105.453783" y="234.72792" style="fill: #d3d3d3; stroke: #d3d3d3"/>
     </g>
    </g>
    <g id="line2d_47">
@@ -1165,6 +1175,8 @@ L -3 -0
      <use xlink:href="#m408c75a34d" x="108.881189" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="104.180087" y="119.85624" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="104.689565" y="135.37944" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#m408c75a34d" x="112.077" y="114.8112" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#m408c75a34d" x="105.453783" y="116.7516" style="fill: #d3d3d3; stroke: #d3d3d3"/>
     </g>
    </g>
    <g id="LineCollection_2">
@@ -1414,6 +1426,60 @@ z
     </g>
    </g>
    <g id="text_26">
+    <!-- mult48 -->
+    <g style="fill: #d3d3d3" transform="translate(117.077 177.144751) scale(0.1 -0.1)">
+     <use xlink:href="#DejaVuSans-6d"/>
+     <use xlink:href="#DejaVuSans-75" x="97.412109"/>
+     <use xlink:href="#DejaVuSans-6c" x="160.791016"/>
+     <use xlink:href="#DejaVuSans-74" x="188.574219"/>
+     <use xlink:href="#DejaVuSans-34" x="227.783203"/>
+     <use xlink:href="#DejaVuSans-38" x="291.40625"/>
+    </g>
+   </g>
+   <g id="text_27">
+    <!-- mult49 -->
+    <g style="fill: #d3d3d3" transform="translate(110.453783 178.73976) scale(0.1 -0.1)">
+     <defs>
+      <path id="DejaVuSans-39" d="M 703 97 
+L 703 672 
+Q 941 559 1184 500 
+Q 1428 441 1663 441 
+Q 2288 441 2617 861 
+Q 2947 1281 2994 2138 
+Q 2813 1869 2534 1725 
+Q 2256 1581 1919 1581 
+Q 1219 1581 811 2004 
+Q 403 2428 403 3163 
+Q 403 3881 828 4315 
+Q 1253 4750 1959 4750 
+Q 2769 4750 3195 4129 
+Q 3622 3509 3622 2328 
+Q 3622 1225 3098 567 
+Q 2575 -91 1691 -91 
+Q 1453 -91 1209 -44 
+Q 966 3 703 97 
+z
+M 1959 2075 
+Q 2384 2075 2632 2365 
+Q 2881 2656 2881 3163 
+Q 2881 3666 2632 3958 
+Q 2384 4250 1959 4250 
+Q 1534 4250 1286 3958 
+Q 1038 3666 1038 3163 
+Q 1038 2656 1286 2365 
+Q 1534 2075 1959 2075 
+z
+" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#DejaVuSans-6d"/>
+     <use xlink:href="#DejaVuSans-75" x="97.412109"/>
+     <use xlink:href="#DejaVuSans-6c" x="160.791016"/>
+     <use xlink:href="#DejaVuSans-74" x="188.574219"/>
+     <use xlink:href="#DejaVuSans-34" x="227.783203"/>
+     <use xlink:href="#DejaVuSans-39" x="291.40625"/>
+    </g>
+   </g>
+   <g id="text_28">
     <!-- 6502 unsigned multiply (16x16=32 bit), Memory vs speed -->
     <g transform="translate(211.854375 54.48) scale(0.12 -0.12)">
      <defs>

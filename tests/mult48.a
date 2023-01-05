@@ -1,0 +1,72 @@
+; mult48.a
+; from Micro 6502 Journal Issue 31 (Dec 1980) p71-74, https://archive.org/details/micro-6502-journal-31/page/n73/mode/2up
+; bug fixed
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 707.11
+; 69 bytes
+
+
+* = $0200
+
+acl     = $02
+ach     = $03
+xtndl   = $04
+xtndh   = $05
+auxl    = $06
+auxh    = $07
+
+; 16 x 16 bit unsigned multiply
+;
+; On Entry:
+;   auxl/h: 16 bit multiplier
+;   X (low),Y (high): 16 bit multiplicand
+; On Exit:
+;   acl, ach, xtndl, xtndh: 32 bit product
+mult16x
+    lda ach
+    beq mul5x
+    lda #$10
+multi
+    sty auxl
+    stx auxh
+    tay
+    lda #0
+    sta xtndl
+    sta xtndh
+mul3x
+    lda acl
+    lsr
+    bcc mul4x       ; Bug fix - original listing was missing this line!
+    lda xtndl
+    clc
+    adc auxl
+    sta xtndl
+    lda xtndh
+    adc auxh
+    sta xtndh
+mul4x
+    ror xtndh
+    ror xtndl
+    ror ach
+    ror acl
+    dey
+    bne mul3x
+    rts
+
+;mul816
+;    sta acl
+;    lda #0
+;    sta ach
+mul5x
+    lda #8
+    jsr multi
+    ldy xtndh
+    lda #0
+    sta xtndh
+    lda xtndl
+    sty xtndl
+    ldx ach
+    sta ach
+    stx acl
+    rts
