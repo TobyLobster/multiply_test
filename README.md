@@ -183,7 +183,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 
 To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
 
-![Results of 16 x 16 bit unsigned multiply (detail)](results/6502_16x16=32_detail_.svg)
+![Results of 16 x 16 bit unsigned multiply (detail)](results/6502_16x16=32_detail.svg)
 
 | Source                     | Average Cycles | Memory (bytes) | My Changes                                                                   |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
