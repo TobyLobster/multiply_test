@@ -85,6 +85,11 @@ I have tested the following routines:
 | [mult47.a](tests/mult47.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Neil Parker*](https://llx.com/Neil/a2/mult.html) |
 | [mult48.a](tests/mult48.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Micro 6502 Journal Issue 31, Dec 1980, p71-74](https://archive.org/details/micro-6502-journal-31/page/n73/mode/2up) by Brooke Boering |
 | [mult49.a](tests/mult49.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Micro 6502 Journal Issue 31, Dec 1980, p71-74](https://archive.org/details/micro-6502-journal-31/page/n73/mode/2up) by Brooke Boering, with 8x16 multiply 'shortcut' removed |
+| [mult50.a](tests/mult50.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
+| [mult51.a](tests/mult51.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
+| [mult52.a](tests/mult52.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
+| [mult53.a](tests/mult53.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
+| [mult54.a](tests/mult54.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
 
 ### Signed multiply
 
@@ -112,9 +117,9 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#3-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
 | [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
-| [omult11.a](tests/omult11.a) | 8x8=8 (*partial result, high byte only*)      | [tables of squares](#2-tables-of-squares)                         | TobyLobster, reducing mult13 to return high byte only |
-| [omult12.a](tests/omult12.a) | 8x8=8 (*partial result, low byte only*)       | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
-| [omult13.a](tests/omult13.a)   | 16x8=16  (*partial result*, div 128)        | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
+| [omult11.a](tests/omult11.a) | 8x8=8    (*partial result, high byte only*)   | [tables of squares](#2-tables-of-squares)                         | TobyLobster, reducing mult13 to return high byte only |
+| [omult12.a](tests/omult12.a) | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
+| [omult13.a](tests/omult13.a) | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 
 
 ## The Results
@@ -176,6 +181,10 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 
 ![Results of 16 x 16 bit unsigned multiply](results/6502_16x16=32.svg)
 
+To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
+
+![Results of 16 x 16 bit unsigned multiply (detail)](results/6502_16x16=32_detail_.svg)
+
 | Source                     | Average Cycles | Memory (bytes) | My Changes                                                                   |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
 | [mult1.a](tests/mult1.a)   | 751.00         | 38             |                                                                              |
@@ -192,6 +201,11 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult46.a](tests/mult46.a) | 655.00         | 40             |                                                                              |
 | [mult48.a](tests/mult48.a) | 707.11         | 69             |                                                                              |
 | [mult49.a](tests/mult49.a) | 703.00         | 43             | version of mult48 with 8x16 multiply 'shortcut' removed                      |
+| [mult50.a](tests/mult50.a) | 534.00         | 55             | unrolled mult2                                                               |
+| [mult51.a](tests/mult51.a) | 524.00         | 69             | unrolled mult2                                                               |
+| [mult52.a](tests/mult52.a) | 519.00         | 75             | unrolled mult2                                                               |
+| [mult53.a](tests/mult53.a) | 514.00         | 95             | unrolled mult2                                                               |
+| [mult54.a](tests/mult54.a) | 497.00         | 192            | unrolled mult2                                                               |
 
 ### Signed multiply
 

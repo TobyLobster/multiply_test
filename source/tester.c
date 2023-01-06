@@ -44,7 +44,7 @@ typedef struct {
   uint32_t      exec_address;
   uint32_t      num_threads;
   FILE *        input;
-  FILE *        output;
+  char *        output;
 } options_t;
 
 typedef struct {
@@ -80,7 +80,7 @@ static int result[65536UL];
 // **************************************************************************************
 int main(int argc, char *argv[]) {
     int opt;
-    options_t options = { "default", 0, 0x0200, -1, 19, stdin, stdout };
+    options_t options = { "default", 0, 0x0200, -1, 19, stdin, "" };
 
     opterr = 0;
 
@@ -94,10 +94,8 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 'o':
-                if (!(options.output = fopen(optarg, "w")) ){
-                    perror(ERR_FOPEN_OUTPUT);
-                    exit(EXIT_FAILURE);
-                }
+                options.output = calloc(strlen(optarg) + 1, 1);
+                strcpy(options.output, optarg);
                 break;
 
             case 'l':
@@ -313,16 +311,23 @@ int process(options_t *options) {
     printf("total count    = %llu\n", total_count);
     printf("average cycles = %.2lf\n", (double) total_cycles / total_count);
 
-    fprintf(options->output, "{\n");
-    fprintf(options->output, "    \"results\": {\n");
-    fprintf(options->output, "        \"title\": \"%s\",\n", options->title);
-    fprintf(options->output, "        \"bytes\": \"%zu\",\n", bytes_read);
-    fprintf(options->output, "        \"AverageCycles\": \"%.2lf\",\n", (double) total_cycles / total_count);
-    fprintf(options->output, "        \"MinCycles\": \"%llu\",\n", min_cycles);
-    fprintf(options->output, "        \"MaxCycles\": \"%llu\"\n", max_cycles);
-    fprintf(options->output, "    }\n");
-    fprintf(options->output, "}\n");
-    fclose(options->output);
+    FILE * file_output = fopen(options->output, "w");
+    if (!file_output) {
+        perror(ERR_FOPEN_OUTPUT);
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(file_output, "{\n");
+    fprintf(file_output, "    \"results\": {\n");
+    fprintf(file_output, "        \"title\": \"%s\",\n", options->title);
+    fprintf(file_output, "        \"bytes\": \"%zu\",\n", bytes_read);
+    fprintf(file_output, "        \"AverageCycles\": \"%.2lf\",\n", (double) total_cycles / total_count);
+    fprintf(file_output, "        \"MinCycles\": \"%llu\",\n", min_cycles);
+    fprintf(file_output, "        \"MaxCycles\": \"%llu\"\n", max_cycles);
+    fprintf(file_output, "    }\n");
+    fprintf(file_output, "}\n");
+    fclose(file_output);
+    file_output = NULL;
 
     // Clean up
     for(uint64_t i = 0; i < options->num_threads; i++ ) {

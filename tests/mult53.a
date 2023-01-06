@@ -1,0 +1,92 @@
+; mult53.a
+; from 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
+; with an optimisation for speed (changing pha/pla to tax/txa), then unrolled a bit more
+; (see mult2)
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 514.00
+; 95 bytes
+
+
+; acc*aux -> [acc,acc+1,ext,ext+1] (low,hi) 32 bit result
+
+aux = $02       ; 2 bytes   input1
+acc = $04       ; 2 bytes   input2   } result
+ext = $06       ; 2 bytes            }
+
+* = $0200
+
+; (acc, acc+1, ext, ext+1) = (aux, aux+1) * (acc, acc+1)
+mult
+    lda #0                          ; A holds the low byte of ext (zero for now)
+    sta ext+1                       ; high byte of ext = 0
+    ldy #5                          ; loop counter
+    clc                             ;
+    bcc enter_loop                  ;
+loop
+    ; loop step 1
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 2
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 3
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 4
+    ror ext+1                       ; }
+    ror                             ; }
+enter_loop
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    dey                             ; decrement loop counter
+    bne loop                        ; loop back if not done yet
+
+    sta ext                         ;
+    rts                             ;

@@ -1,10 +1,11 @@
-; mult2.a
+; mult50.a
 ; from 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
 ; with an optimisation for speed (changing pha/pla to tax/txa)
+; mult2 unrolled once
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 578
-; 33 bytes
+; Average cycles: 534.00
+; 55 bytes
 
 
 ; acc*aux -> [acc,acc+1,ext,ext+1] (low,hi) 32 bit result
@@ -19,14 +20,15 @@ ext = $06       ; 2 bytes            }
 mult
     lda #0                          ; A holds the low byte of ext (zero for now)
     sta ext+1                       ; high byte of ext = 0
-    ldy #17                         ; loop counter. Loop 17 times.
+    ldy #8                          ; loop counter
     clc                             ;
+    bcc enter_loop                  ;
 loop
     ror ext+1                       ; }
     ror                             ; }
     ror acc+1                       ; } acc_ext >> 1
     ror acc                         ; }
-    bcc mul2                        ; skip if carry clear
+    bcc +                           ; skip if carry clear
 
     clc                             ;               }
     adc aux                         ;               }
@@ -35,9 +37,25 @@ loop
     adc ext+1                       ;               }
     sta ext+1                       ;               }
     txa                             ; recall A
-mul2
++
+    ror ext+1                       ; }
+    ror                             ; }
+
+enter_loop
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
     dey                             ; decrement loop counter
-    bne loop                        ; loop back if not done yet
+    bpl loop                        ; loop back if not done yet
 
     sta ext                         ;
     rts                             ;

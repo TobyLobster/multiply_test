@@ -21,7 +21,10 @@ diagrams = [
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47]),
 
     Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", "6502_16x16=32", [0, 2300], [0, 1000],
-        [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49]),
+        [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54]),
+
+    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed (detail)", "6502_16x16=32_detail", [0, 200], [0, 1000],
+        [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54]),
         ]
 
 class Result:
@@ -173,6 +176,8 @@ for diagram in diagrams:
         elif entry.title == "mult37":
             ax.annotate(entry.title, xy=(entry.bytes, entry.ave), xytext=(5,-1), textcoords="offset points", color=color)
         elif entry.title == "mult40":
+            ax.annotate(entry.title, xy=(entry.bytes, entry.ave), xytext=(-40,-3), textcoords="offset points", color=color)
+        elif entry.title == "mult51":
             ax.annotate(entry.title, xy=(entry.bytes, entry.ave), xytext=(-40,-3), textcoords="offset points", color=color)
         else:
             ax.annotate(entry.title, xy=(entry.bytes, entry.ave), xytext=(5,-3), textcoords="offset points", color=color)
