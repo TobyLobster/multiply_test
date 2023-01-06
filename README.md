@@ -390,7 +390,7 @@ To get an 8 bit x 8 bit multiply, we think of our two 8 bit numbers as being two
 
 This algorithm is not the fastest, it's nearly 2 times slower than a regular shift and add.
 
-'Aviator' for the BBC Micro uses this method (see [here](https://aviator.bbcelite.com/deep_dives/times_tables_and_nibble_arithmetic.html)).
+*Aviator* for the BBC Micro uses this method (see [here](https://aviator.bbcelite.com/deep_dives/times_tables_and_nibble_arithmetic.html)).
 
 ### 5. Booth's Algorithm
 
