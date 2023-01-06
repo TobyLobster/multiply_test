@@ -1,11 +1,11 @@
-; mult54.a
+; mult55.a
 ; from The Merlin 128 Macro Assembler disk, via 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
-; with an optimisation for speed (changing pha/pla to tax/txa), then unrolled a bit more
+; with an optimisation for speed (changing pha/pla to tax/txa), then fully unrolled
 ; (see mult2)
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 497.00
-; 192 bytes
+; Average cycles: 483.50
+; 344 bytes
 
 
 ; acc*aux -> [acc,acc+1,ext,ext+1] (low,hi) 32 bit result
@@ -20,7 +20,6 @@ ext = $06       ; 2 bytes            }
 mult
     lda #0                          ; A holds the low byte of ext (zero for now)
     sta ext+1                       ; high byte of ext = 0
-    ldy #2                          ; loop counter
     lsr acc+1                       ; } acc_ext >> 1
     ror acc                         ; }
     bcc +                           ; skip if carry clear
@@ -33,7 +32,6 @@ mult
     sta ext+1                       ;               }
     txa                             ; recall A
 +
-loop
     ; loop step 1
     ror ext+1                       ; }
     ror                             ; }
@@ -155,10 +153,126 @@ loop
     sta ext+1                       ;               }
     txa                             ; recall A
 +
-    dey                             ; decrement loop counter
-    beq exit                        ; loop back if not done yet
-    jmp loop                        ;
+    ; loop step 9
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
 
-exit
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 10
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 11
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 12
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+
+    ; loop step 13
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 14
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 15
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
+    ; loop step 16
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc +                           ; skip if carry clear
+
+    clc                             ;               }
+    adc aux                         ;               }
+    tax                             ; remember A    }
+    lda aux+1                       ;               } ext += aux
+    adc ext+1                       ;               }
+    sta ext+1                       ;               }
+    txa                             ; recall A
++
     sta ext                         ;
     rts                             ;

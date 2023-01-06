@@ -3,7 +3,7 @@
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 350
-; 1150 bytes
+; 1149 bytes
 
 inputA = $02        ; 2 bytes (a0,a1)
 inputB = $04        ; 2 bytes (b0,b1)
@@ -33,24 +33,23 @@ squares_high
 mult
     lda inputA          ;
     ldx inputB          ;
-    jsr mult8           ; (a0xb0)
+    jsr mult8bit        ; (a0xb0)
     sta result          ; a is low byte
     stx result+1        ; x is high byte
 
     lda inputA+1        ;
     ldx inputB          ;
-    jsr mult8           ; (a1*b0)
+    jsr mult8bit        ; (a1*b0)
     clc                 ;
     adc result+1        ;
     sta result+1        ;
-
     txa                 ;
     adc #0              ;
     sta result+2        ;
 
     lda inputA          ;
     ldx inputB+1        ;
-    jsr mult8           ; (a0,b1)
+    jsr mult8bit        ; (a0,b1)
     clc                 ;
     adc result+1        ;
     sta result+1        ;
@@ -58,12 +57,12 @@ mult
     adc result+2        ;
     sta result+2        ;
     lda #0              ;
-    adc #0              ; remember the carry for result+3
+    rol                 ; remember the carry for result+3
     sta result+3        ;
 
     lda inputA+1        ;
     ldx inputB+1        ;
-    jsr mult8           ; (a1*b1)
+    jsr mult8bit        ; (a1*b1)
     clc                 ;
     adc result+2        ;
     sta result+2        ;
@@ -84,7 +83,7 @@ mult
 ; On Exit:
 ;   A: low byte of product
 ;   X: high byte of product
-mult8
+mult8bit
     tay                             ; save m1 in y
     stx temp_m2                     ; save m2
     sec                             ; set carry for subtract

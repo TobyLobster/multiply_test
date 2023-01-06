@@ -64,6 +64,7 @@ function test() {
 #test "mult52" 0x200
 #test "mult53" 0x200
 #test "mult54" 0x200
+test "mult55" 0x200
 
 #test "smult1" 0xa00
 #test "smult2" 0x200

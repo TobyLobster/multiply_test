@@ -4,7 +4,7 @@
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 404.59
-; 648 bytes
+; 647 bytes
 
 inputA = $02        ; 2 bytes (a0,a1)
 inputB = $04        ; 2 bytes (b0,b1)
@@ -64,7 +64,7 @@ mult
     sta result+2        ;
 
     lda #0              ;
-    adc #0              ; remember the carry for result+3
+    rol                 ; remember the carry for result+3
     sta result+3        ;
 
     lda inputA+1        ;

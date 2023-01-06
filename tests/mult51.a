@@ -1,5 +1,5 @@
 ; mult51.a
-; from 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
+; from The Merlin 128 Macro Assembler disk, via 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
 ; with an optimisation for speed (changing pha/pla to tax/txa)
 ; mult2 unrolled once and rearranged
 ;
