@@ -8,7 +8,7 @@
 
 ; How to use:
 ; call jsr init, before first use
-; put numbers in x/y and result is Y reg, X reg, z1, z0
+; put numbers in (x0,x1) and (y0,y1) and result is (Y, X, z1, z0)
 
 ; pointers to square tables
 p_sqr_lo    = $8b   ; 2 bytes

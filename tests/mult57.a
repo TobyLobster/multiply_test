@@ -1,0 +1,52 @@
+; mult57.a
+; from https://sites.google.com/site/h2obsession/programming/6502
+; alternative smaller memory version (see mult27.a)
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 53.49
+; 1062 bytes
+
+
+* = $0200
+
+; Tables must be aligned with page boundary
+sqrLow
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+
+sqrHigh
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ***************************************************************************************
+; On Entry:
+;   A = multiplicand
+;   X = multiplier
+; On Exit:
+;   A: low byte of product
+;   X: high byte of product
+mult
+    stx temp1
+    sta getLow+1
+    sta getHigh+1
+    sec
+temp1 = *+1
+    sbc #0
+    bcs doMult
+    sbc #0
+    eor #255
+doMult
+    tay
+getLow
+    lda sqrLow,x
+    sbc sqrLow,y
+    sta temp2
+getHigh
+    lda sqrHigh,x
+    sbc sqrHigh,y
+    tax
+temp2 = *+1
+    lda #0
+    rts

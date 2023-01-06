@@ -91,6 +91,8 @@ I have tested the following routines:
 | [mult53.a](tests/mult53.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
 | [mult54.a](tests/mult54.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, unrolled version of mult2 |
 | [mult55.a](tests/mult55.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, fully unrolled version of mult2 |
+| [mult56.a](tests/mult56.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | TobyLobster, combining the results of mult27 |
+| [mult57.a](tests/mult57.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) smaller memory version without idTab |
 
 ### Signed multiply
 
@@ -176,6 +178,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult43.a](tests/mult43.a) | 208.90         | 26             |                                              |
 | [mult44.a](tests/mult44.a) | 109.00         | 69             |                                              |
 | [mult47.a](tests/mult47.a) | 175.00         | 20             |                                              |
+| [mult57.a](tests/mult57.a) | 53.49          | 1062           |                                              |
 
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
@@ -208,6 +211,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult53.a](tests/mult53.a) | 514.00         | 95             | unrolled mult2                                                               |
 | [mult54.a](tests/mult54.a) | 497.00         | 192            | unrolled mult2                                                               |
 | [mult55.a](tests/mult55.a) | 483.50         | 344            | fully unrolled mult2                                                         |
+| [mult56.a](tests/mult56.a) | 259.96         | 1210           | I use mult27 and combine to make 16x16                                       |
 
 ### Signed multiply
 

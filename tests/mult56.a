@@ -1,0 +1,152 @@
+; mult56.a
+; from https://sites.google.com/site/h2obsession/programming/6502
+; adjusted for 16 bit multiplication
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 259.96
+; 1210 bytes
+
+
+inputA = $02        ; 2 bytes (a0,a1)
+inputB = $04        ; 2 bytes (b0,b1)
+result = $06        ; 4 bytes
+
+* = $0200
+
+; Tables must be aligned with page boundary
+sqrLow
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+
+sqrHigh
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ***************************************************************************************
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+;
+; On Entry:
+;   inputA: multiplier   (2 bytes)
+;   inputB: multiplicand (2 bytes)
+;
+; On Exit:
+;   result: product (4 bytes)
+mult
+; (a0*b0)
+    lda inputA          ;
+    ldx inputB          ;
+    sta getLow1+1
+    sta getHigh1+1
+    sec
+    sbc inputB
+    bcs +
+    sbc #0
+    eor #255
++
+    tay
+getLow1
+    lda sqrLow,x
+    sbc sqrLow,y
+    sta result          ; low byte
+getHigh1
+    lda sqrHigh,x
+    sbc sqrHigh,y
+    sta result+1        ; high byte
+
+; (a1*b0)
+    lda inputA+1        ;
+    ldx inputB          ;
+    sta getLow2+1
+    sta getHigh2+1
+    sec
+    sbc inputB
+    bcs +
+    sbc #0
+    eor #255
++
+    tay
+getLow2
+    lda sqrLow,x
+    sbc sqrLow,y
+    sta temp1
+getHigh2
+    lda sqrHigh,x
+    sbc sqrHigh,y
+    tax
+temp1 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+
+    txa                 ;
+    adc #0              ;
+    sta result+2        ;
+
+;(a0*b1)
+    lda inputA          ;
+    ldx inputB+1        ;
+    sta getLow3+1
+    sta getHigh3+1
+    sec
+    sbc inputB+1
+    bcs +
+    sbc #0
+    eor #255
++
+    tay
+getLow3
+    lda sqrLow,x
+    sbc sqrLow,y
+    sta temp2
+getHigh3
+    lda sqrHigh,x
+    sbc sqrHigh,y
+    tax
+temp2 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+    txa                 ;
+    adc result+2        ;
+    sta result+2        ;
+
+    lda #0              ;
+    rol                 ; remember the carry for result+3
+    sta result+3        ;
+
+; (a1*b1)
+    lda inputA+1        ;
+    ldx inputB+1        ;
+    sta getLow4+1
+    sta getHigh4+1
+    sec
+    sbc inputB+1
+    bcs +
+    sbc #0
+    eor #255
++
+    tay
+getLow4
+    lda sqrLow,x
+    sbc sqrLow,y
+    sta temp3
+getHigh4
+    lda sqrHigh,x
+    sbc sqrHigh,y
+    tax
+temp3 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+2        ;
+    sta result+2        ;
+    txa                 ;
+    adc result+3        ;
+    sta result+3        ;
+    rts                 ;
