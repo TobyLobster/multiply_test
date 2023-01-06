@@ -37,18 +37,18 @@ I have tested the following routines:
 | Source code                  | Bits     | Method                    | From  |
 | ---------------------------- | :------: | :-----------------------: | :---- |
 | [mult1.a](tests/mult1.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*6502 Software Design*](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) by Leo J Scanlon (1980) and [codebase64](https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product) |
-| [mult2.a](tests/mult2.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Merlin 128 Macro Assembler disk, via The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
+| [mult2.a](tests/mult2.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | *The Merlin 128 Macro Assembler* disk by Glen Bredon (1986), via [The Fridge](http://www.ffd2.com/fridge/math/mult-div.s)
 | [mult3.a](tests/mult3.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [mult4.a](tests/mult4.a)     | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, combining the results of mult39 |
 | [mult5.a](tests/mult5.a)     | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [yerricde at everything2](https://everything2.com/user/yerricde/writeups/Fast+6502+multiplication) |
 | [mult6.a](tests/mult6.a)     | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [eurorusty at everything2](https://everything2.com/user/eurorusty/writeups/Fast+6502+multiplication) |
-| [mult7.a](tests/mult7.a)     | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult8.a](tests/mult8.a)     | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult7.a](tests/mult7.a)     | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Apple Assembly Line*, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult8.a](tests/mult8.a)     | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Apple Assembly Line*, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
 | [mult9.a](tests/mult9.a)     | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [The Fridge](http://www.ffd2.com/fridge/math/mult-div8.s) |
 | [mult10.a](tests/mult10.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product) |
 | [mult11.a](tests/mult11.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product) |
 | [mult12.a](tests/mult12.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) |
-| [mult13.a](tests/mult13.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [Apple Assembly Line, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
+| [mult13.a](tests/mult13.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [*Apple Assembly Line*, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
 | [mult14.a](tests/mult14.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult15.a](tests/mult15.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
 | [mult16.a](tests/mult16.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
@@ -63,8 +63,8 @@ I have tested the following routines:
 | [mult25.a](tests/mult25.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Bregalad at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
 | [mult26.a](tests/mult26.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [frantik at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) |
 | [mult27.a](tests/mult27.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) |
-| [mult28.a](tests/mult28.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
-| [mult29.a](tests/mult29.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Apple Assembly Line, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (unrolled) |
+| [mult28.a](tests/mult28.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Apple Assembly Line*, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) |
+| [mult29.a](tests/mult29.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Apple Assembly Line*, January 1986](http://www.txbobsc.com/aal/1986/aal8601.html#a5) (unrolled) |
 | [mult30.a](tests/mult30.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [tepples unrolled at NesDev](https://www.nesdev.org/wiki/8-bit_Multiply) (adjusted) |
 | [mult31.a](tests/mult31.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult32.a](tests/mult32.a)   | 8x8=16   | [4 bit multiply](#4-four-bit-multiply)                            | [keldon at everything2](https://everything2.com/user/keldon/writeups/Fast+6502+multiplication)
@@ -111,7 +111,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 
 | Source code                  | Bits     | Method                    | From  |
 | ---------------------------- | :------: | :-----------------------: | :---- |
-| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Programming the 65816 by David Eyes (1986)](https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply) |
+| [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming the 65816*](https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply) by David Eyes (1986) |
 | [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
 | [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
 | [omult4.a](tests/omult4.a)   | 24x8=32  (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
