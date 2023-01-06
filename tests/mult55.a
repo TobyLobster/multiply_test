@@ -1,6 +1,6 @@
 ; mult55.a
 ; from The Merlin 128 Macro Assembler disk, via 'The Fridge': http://www.ffd2.com/fridge/math/mult-div.s
-; with an optimisation for speed (changing pha/pla to tax/txa), then fully unrolled
+; TobyLobster: with an optimisation for speed (changing pha/pla to tax/txa), then fully unrolled
 ; (see mult2)
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result

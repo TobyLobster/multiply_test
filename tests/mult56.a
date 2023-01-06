@@ -1,6 +1,6 @@
 ; mult56.a
-; from https://sites.google.com/site/h2obsession/programming/6502
-; adjusted for 16 bit multiplication
+; based on the 8 bit multiply of mult27.a (https://sites.google.com/site/h2obsession/programming/6502)
+; then adjusted for 16 bit multiplication by TobyLobster
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 259.96

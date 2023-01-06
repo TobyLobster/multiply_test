@@ -236,7 +236,7 @@ int process(options_t *options) {
     }
 
     // create and start all threads
-    uint64_t start = 0;
+    uint64_t start = INPUT_START;
     for(uint64_t i = 0; i < options->num_threads; i++ ) {
         zuint8* memory = calloc(65536, 1);
         if (i == 0) {

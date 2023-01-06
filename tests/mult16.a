@@ -65,7 +65,8 @@ sqrhi ;>x*x
     !byte $c4,$c5,$c7,$c9,$cb,$cc,$ce,$d0,$d2,$d4,$d5,$d7,$d9,$db,$dd,$df
     !byte $e1,$e2,$e4,$e6,$e8,$ea,$ec,$ee,$f0,$f2,$f4,$f6,$f8,$fa,$fc,$fe
 
-mult
+
+mult8
     cmp fac
     bcs l1
 

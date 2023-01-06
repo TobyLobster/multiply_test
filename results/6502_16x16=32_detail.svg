@@ -90,6 +90,7 @@ z
      <use xlink:href="#m13cfef3782" x="255.204" y="151.828062" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="382.428" y="159.888185" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="1107.27" y="293.351882" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#m13cfef3782" x="744.012" y="219.33607" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="matplotlib.axis_1">
@@ -1411,6 +1412,9 @@ L 255.204 70.629785
 L 382.428 78.988431 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
     <path clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
+    <path d="M 744.012 230.041108 
+L 744.012 208.547446 
+" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
    </g>
    <g id="line2d_72">
     <defs>
@@ -1430,6 +1434,7 @@ L -3 -0
      <use xlink:href="#me89960d978" x="255.204" y="233.026338" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="382.428" y="240.787938" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="1107.27" y="299.298462" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#me89960d978" x="744.012" y="230.041108" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="line2d_73">
@@ -1445,6 +1450,7 @@ L -3 -0
      <use xlink:href="#me89960d978" x="255.204" y="70.629785" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="382.428" y="78.988431" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="1107.27" y="287.357538" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#me89960d978" x="744.012" y="208.547446" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="patch_3">

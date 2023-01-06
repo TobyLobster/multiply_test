@@ -52,7 +52,7 @@ I have tested the following routines:
 | [mult14.a](tests/mult14.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [mult15.a](tests/mult15.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) |
 | [mult16.a](tests/mult16.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) |
-| [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[*Elite* (BBC Micro)](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
+| [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Micro)](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) |
 | [mult18.a](tests/mult18.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Master version)](https://www.bbcelite.com/master/main/subroutine/mu11.html) |
 | [mult19.a](tests/mult19.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Australian Personal Computer, Aug 1984](https://archive.org/details/apc_1984_08/page/115/mode/2up?q=6502+multiplication) and [Neil Parker](https://www.llx.com/Neil/a2/mult.html)
 | [mult20.a](tests/mult20.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Becoming Julie](https://becomingjulie.blogspot.com/2020/07/multiplying-on-6502-but-faster.html) |
@@ -93,6 +93,7 @@ I have tested the following routines:
 | [mult55.a](tests/mult55.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, fully unrolled version of mult2 |
 | [mult56.a](tests/mult56.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | TobyLobster, combining the results of mult27 |
 | [mult57.a](tests/mult57.a)   | 8x8=16   | [tables of squares](#2-tables-of-squares)                         | [H2Obsession](https://sites.google.com/site/h2obsession/programming/6502) smaller memory version without idTab |
+| [mult58.a](tests/mult58.a)   | 16x16=32 | [tables of squares](#2-tables-of-squares)                         | TobyLobster, combining the results of mult16 |
 
 ### Signed multiply
 
@@ -212,6 +213,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult54.a](tests/mult54.a) | 497.00         | 192            | unrolled mult2                                                               |
 | [mult55.a](tests/mult55.a) | 483.50         | 344            | fully unrolled mult2                                                         |
 | [mult56.a](tests/mult56.a) | 259.96         | 1210           | I use mult27 and combine to make 16x16                                       |
+| [mult58.a](tests/mult58.a) | 383.93         | 776            | I use mult16 and combine to make 16x16                                       |
 
 ### Signed multiply
 
