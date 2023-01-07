@@ -1,0 +1,81 @@
+; mult59.a
+; from Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 553.99
+; 67 bytes
+
+
+n = $08     ; 5 bytes
+
+* = $0200
+
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+;   based on Bruce Clark's UM*
+;   http://forum.6502.org/viewtopic.php?p=4389#p4389
+;   Shifting strategy modified for speed - JWL (Dr Jefyll)
+;
+; On Entry:
+;   n: *five* bytes of workspace.
+;   X: zero page memory address of the two byte multiplier, four bytes needed for result
+;   (n+2, n+3): two byte multiplicand
+; On Exit:
+;   X: preserved, four bytes of product written into zero page addresses starting at X
+mult
+    ldy #0          ; Set Y=0
+
+    clc             ; it's OK to omit the CLC if NEXT leaves C clear. *Implementation Dependent*
+    lda 0,x         ; Copy TOS value to N+2,N+3. To eliminate CLC inside the loop, the
+    sbc #0          ; value at N+2,N+3 is reduced by 1 in advance. Note: in this U*
+    sta n+2         ; special accommodation is mandatory for the case of TOS = 0.
+    lda 1,x
+    sbc #0
+    bcc ust_z       ; TOS = 0? Mandatory special treatment for this
+    sta n+3
+    tya             ; Set A=0. Assumes NEXT has left Y=0. *Implementation Dependent*
+    sta n           ; 16 bits of zero in A, N
+                    ;  Note:    First 8 shifts are  A -> N -> 2,X
+                    ;           Final 8 shifts are  A -> N -> 3,X
+    stx n+4         ; tested later for exit from outer loop
+    dex             ; bias applied to X
+    dex
+
+    ; outer loop (2 times)
+ust_outlp
+    ldy #8          ; count for inner loop
+    lsr 4,x         ; think "2,x" then later "3,X"
+
+    ; inner loop (8 times)
+ust_inlp
+    bcc ust_noadd
+    sta n+1         ; Save time, don't CLC. Value in N+2,N+3 is reduced by 1 to allow this
+    lda n
+    adc n+2
+    sta n
+    lda n+1
+    adc n+3
+
+ust_noadd
+    ror             ; shift
+    ror n
+    ror 4,x         ; think "2,x" then later "3,X"
+    dey
+    bne ust_inlp    ; go back for 1 more shift?
+
+    inx
+    cpx n+4
+    bne ust_outlp   ; go back for 8 more shifts?
+
+    sta 1,x         ; ms byte of hi-word of result
+    lda n
+    sta 0,x         ; ls byte of hi-word of result
+
+ust_exit
+;    jmp next
+    rts
+
+ust_z
+    sty 2,x         ; Assumes NEXT has left Y=0. *Implementation Dependent*
+    sty 3,x
+;    bcc ust_exit
+    rts
