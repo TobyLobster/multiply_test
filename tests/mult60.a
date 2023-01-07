@@ -19,10 +19,10 @@ n = $08     ; 4 bytes
 ;
 ; On Entry:
 ;   n: *five* bytes of workspace.
-;   X: zero page memory address of the two byte multiplier, four bytes needed for result
+;   m: zero page memory address of the two byte multiplier, four bytes needed for result
 ;   (n+2, n+3): two byte multiplicand
 ; On Exit:
-;   X: preserved, four bytes of product written into zero page addresses starting at X
+;   (m+2,m+3, m, m+1): product
 mult
     lda #0          ;
     tax             ; count for outer loop
