@@ -23,7 +23,7 @@
 
 >"The search for the ultimate multiply routine seems never-ending." - Brooke W. Boering (December 1980)
 
-This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 70 different routines have been exhaustively tested, cycle counted, and the results plotted.
+This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 80 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
 There is no one 'best' routine or algorithm, because there are always trade-offs between speed and memory. By *speed*, I mean the average, best and worst cases of how many cycles are needed to perform the multiplication. By *memory* I mean the total number of bytes needed for the code itself and all necessary data tables.
 
