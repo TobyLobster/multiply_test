@@ -3,7 +3,7 @@
 ; I combined the results of four calls to this to get the 16x16 bit multiply
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 404.59
+; Average cycles: 403.83
 ; 647 bytes
 
 inputA = $02        ; 2 bytes (a0,a1)
@@ -49,9 +49,10 @@ mult
     adc result+1        ;
     sta result+1        ;
 
-    txa                 ;
-    adc #0              ;
-    sta result+2        ;
+    bcc +               ;
+    inx                 ;
++
+    stx result+2        ;
 
     lda inputA          ;
     ldx inputB+1        ;

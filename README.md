@@ -210,7 +210,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
 | [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
 | [mult41.a](tests/mult41.a) | 350.00         | 1149           | I use mult13 and combine to make 16x16                                       |
-| [mult42.a](tests/mult42.a) | 404.59         | 647            | I use mult16 and combine to make 16x16                                       |
+| [mult42.a](tests/mult42.a) | 403.83         | 647            | I use mult16 and combine to make 16x16                                       |
 | [mult45.a](tests/mult45.a) | 695.00         | 38             | optimised slightly                                                           |
 | [mult46.a](tests/mult46.a) | 655.00         | 40             |                                                                              |
 | [mult48.a](tests/mult48.a) | 707.11         | 69             |                                                                              |
