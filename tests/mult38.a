@@ -13,6 +13,7 @@ V = $04
 
 * = 0x0200
 
+; Align pages to page boundary for speed
 highNibble
     !for i, 0, 255 {
         !byte i & %11110000

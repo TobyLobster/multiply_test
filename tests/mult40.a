@@ -21,24 +21,24 @@ _y = $05        ; two bytes
 ;   _a:   low byte of product
 ;   _a+1: high byte of product
 mult
-    LDA     #0
-    STA     _y+1
-    STA     _a
-    STA     _a+1
-    LDY     #8
+    lda #0
+    sta _y+1
+    sta _a
+    sta _a+1
+    ldy #8
 mloop
-    LSR     _x
-    BCC     noadd
-    CLC
-    LDA     _a
-    ADC     _y
-    STA     _a
-    LDA     _a+1
-    ADC     _y+1
-    STA     _a+1
+    lsr _x
+    bcc noadd
+    clc
+    lda _a
+    adc _y
+    sta _a
+    lda _a+1
+    adc _y+1
+    sta _a+1
 noadd
-    ASL     _y
-    ROL     _y+1
-    DEY
-    BNE     mloop
-    RTS
+    asl _y
+    rol _y+1
+    dey
+    bne mloop
+    rts

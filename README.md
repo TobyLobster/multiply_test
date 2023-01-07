@@ -154,7 +154,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | Source code                | Average Cycles | Memory (bytes) | My Changes                                   |
 | -------------------------- | -------------: | -------------: | :------------------------------------------- |
 | [mult5.a](tests/mult5.a)   | 92.01          | 834            |                                              |
-| [mult6.a](tests/mult6.a)   | 137.92         | 620            |                                              |
+| [mult6.a](tests/mult6.a)   | 137.21         | 620            |                                              |
 | [mult7.a](tests/mult7.a)   | 133.53         | 36             | with slight change to swap output parameters |
 | [mult8.a](tests/mult8.a)   | 153.45         | 29             |                                              |
 | [mult9.a](tests/mult9.a)   | 162.00         | 17             |                                              |
@@ -207,8 +207,8 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult4.a](tests/mult4.a)   | 567.00         | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
 | [mult15.a](tests/mult15.a) | 206.60         | 2181           |                                                                              |
 | [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
-| [mult33.a](tests/mult33.a) | 609.86         | 1277           | with test code removed, and tables page aligned. Stores numbers in MSB order |
-| [mult36.a](tests/mult36.a) | 973.01         | 62             |                                                                              |
+| [mult33.a](tests/mult33.a) | 609.86         | 1276           | with test code removed, and tables page aligned. Stores numbers in MSB order |
+| [mult36.a](tests/mult36.a) | 957.01         | 55             |                                                                              |
 | [mult41.a](tests/mult41.a) | 350.00         | 1149           | I use mult13 and combine to make 16x16                                       |
 | [mult42.a](tests/mult42.a) | 403.83         | 647            | I use mult16 and combine to make 16x16                                       |
 | [mult45.a](tests/mult45.a) | 695.00         | 38             | optimised slightly                                                           |

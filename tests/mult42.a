@@ -16,7 +16,7 @@ rlo = $0b
 
 * = $0200
 
-; align tables to start of a page
+; align tables to start of a page for speed
 sqrlo
     !for i, 0, 255 {
         !byte <(i*i)

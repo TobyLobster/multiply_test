@@ -14,7 +14,7 @@ prod_low  = $0b
 
 * = $0200
 
-; align tables to start of a page
+; align tables to start of a page for speed
 squares_low
     !for i, 0, 511 {
         !byte <((i*i)/4)

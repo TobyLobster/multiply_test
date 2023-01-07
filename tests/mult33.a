@@ -4,7 +4,7 @@
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 609.86
-; 1277 bytes
+; 1276 bytes
 
 ;
 ; UNUSUALLY FOR 6502, THIS ROUTINE STORES NUMBERS IN MSB FIRST ORDER - BEWARE!
@@ -279,9 +279,6 @@ square_low
     !byte  36 , 30 , 25 , 20 , 16
     !byte  12 , 9 , 6 , 4 , 2
     !byte  1
-
-unused2
-    !byte 0 ; just for my convenience to make the entry point aligned to a page
 
 ; ***************************************************************************************
 ; On Entry:

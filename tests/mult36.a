@@ -2,8 +2,8 @@
 ; from 'ASSEMBLER ROUTINES FOR THE 6502' by David Barrow: https://archive.org/details/assembler-routines-for-the-6502/page/162/mode/2up
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 973.01
-; 62 bytes
+; Average cycles: 957.01
+; 55 bytes
 
 
 mplr = $02
@@ -19,9 +19,9 @@ prod = $06
 ; On Exit:
 ;   prod: product (4 bytes)
 dubmul
-    txa         ; Save X for use as bit count.
-    pha
-    cld         ; Ensure binary additions.
+;    txa         ; Save X for use as bit count.
+;    pha
+;    cld         ; Ensure binary additions.
     lda #0      ; Clear product-accumulator
     tay         ; highest two bytes A and Y, and
     sta prod+1  ; lowest two bytes, M1
@@ -62,7 +62,7 @@ endtst
     bne nextbt  ; of multiplier.
     sta prod+3  ; Store product highest two bytes
     sty prod+2  ; to page zero output variable.
-    pla         ; Restore X from stack
-    tax         ; via A
-    lda prod+3  ; Recover product hi-byte to A.
+;    pla         ; Restore X from stack
+;    tax         ; via A
+;    lda prod+3  ; Recover product hi-byte to A.
     rts         ; Exit, multiplication completed.

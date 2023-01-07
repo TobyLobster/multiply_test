@@ -2,8 +2,8 @@
     "results": {
         "title": "mult6",
         "bytes": "620",
-        "AverageCycles": "137.92",
+        "AverageCycles": "137.21",
         "MinCycles": "114",
-        "MaxCycles": "163"
+        "MaxCycles": "161"
     }
 }

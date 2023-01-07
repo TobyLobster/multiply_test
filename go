@@ -15,7 +15,7 @@ function test() {
 #test "mult3"  0x200
 #test "mult4"  0x200
 #test "mult5"  0x500
-#test "mult6"  0x200
+#test "mult6"  0x400
 #test "mult7"  0x200
 #test "mult8"  0x200
 #test "mult9"  0x200
@@ -42,7 +42,7 @@ function test() {
 #test "mult30" 0x200
 #test "mult31" 0xa00
 #test "mult32" 0x400
-#test "mult33" 0x600
+#test "mult33" 0x5ff
 #test "mult34" 0x200
 #test "mult35" 0x200
 #test "mult36" 0x200
