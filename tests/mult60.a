@@ -1,62 +1,60 @@
 ; mult60.a
-; from Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
 ; - adjusted to use fixed zero page addresses
 ; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 537.00
-; 44 bytes
+; Average cycles: 531.00
+; 40 bytes
 
-m = $02     ;
-n = $08     ; 4 bytes
+multiplicand    = $02   ; 2 bytes
+multiplier      = $04   ; 2 bytes
+result          = $04   ; 4 bytes   (note: shares memory with multiplier)
+temp            = $08   ;
 
 * = $0200
 
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-;   based on Bruce Clark's UM*
-;   http://forum.6502.org/viewtopic.php?p=4389#p4389
-;   Shifting strategy modified for speed - JWL (Dr Jefyll)
 ;
 ; On Entry:
-;   m: two byte multiplier, four bytes needed for result
-;   (n+2, n+3): two byte multiplicand
+;   multiplier:     two byte value
+;   multiplicand:   two byte value
 ; On Exit:
-;   (m+2,m+3, m, m+1): product
+;   result:         four byte product (note: 'result' shares memory with 'multiplier')
 mult
-    lda #0          ;
-    tax             ; count for outer loop
-    sta n           ; 16 bits of zero in A, N
-                    ;  Note:    First 8 shifts are  A -> N -> m+2
-                    ;           Final 8 shifts are  A -> N -> m+3
+    lda #0              ;
+    tax                 ; count for outer loop
+    sta result+2        ; 16 bits of zero in A, result+2
+                        ;  Note:    First 8 shifts are  A -> result+2 -> result
+                        ;           Final 8 shifts are  A -> result+2 -> result+1
 
     ; outer loop (2 times)
 outer_loop
-    ldy #8          ; count for inner loop
-    lsr m+2,x       ; think "m+2" then later "m+3"
+    ldy #8              ; count for inner loop
+    lsr result,x        ; think "result" then later "result+1"
 
     ; inner loop (8 times)
 inner_loop
     bcc +
-    sta n+1
-    lda n
+    sta temp
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    lda temp
+    adc multiplicand+1
 
 +
-    ror             ; shift
-    ror n
-    ror m+2,x       ; think "m+2" then later "m+3"
+    ror                 ; shift
+    ror result+2
+    ror result,x        ; think "result" then later "result+1"
     dey
-    bne inner_loop  ; go back for 1 more shift?
+    bne inner_loop      ; go back for 1 more shift?
 
     inx
     cpx #2
-    bne outer_loop  ; go back for 8 more shifts?
+    bne outer_loop      ; go back for 8 more shifts?
 
-    sta m+1         ; ms byte of hi-word of result
-    lda n
-    sta m           ; ls byte of hi-word of result
+    sta result+3        ; ms byte of hi-word of result
     rts

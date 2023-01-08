@@ -1,268 +1,281 @@
 ; mult64.a
-; from Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
 ; - adjusted to use fixed zero page addresses
 ; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - removed temp zp storage bytes
 ; - unrolled the outer loop
-; - unrolled the inner loops fully
+; - unrolled the two inner loops fully
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 417.50
-; 333 bytes
+; Average cycles: 400.00
+; 299 bytes
 
-
-m = $02     ; 4 bytes
-n = $08     ; 4 bytes
+multiplicand    = $02   ; 2 bytes
+multiplier      = $04   ; 2 bytes
+result          = $04   ; 4 bytes   (note: shares memory with multiplier)
 
 * = $0200
 
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-;   based on Bruce Clark's UM*
-;   http://forum.6502.org/viewtopic.php?p=4389#p4389
-;   Shifting strategy modified for speed - JWL (Dr Jefyll)
 ;
 ; On Entry:
-;   m: two byte multiplier, four bytes needed for result
-;   (n+2, n+3): two byte multiplicand
+;   (multiplier, multiplier+1): two byte multiplier, four bytes needed for result
+;   (multiplicand, multiplicand+1): two byte multiplicand
 ; On Exit:
-;   X: preserved
-;   Y: preserved
-;   (m+2,m+3, m, m+1): product
+;   (result, result+1, result+2, result+3): product
+;   preserves Y
 mult
-    lda #0          ;
-    sta n           ; 16 bits of zero in A, N
-                    ;  Note:    First 8 shifts are  A -> N -> m+2
-                    ;           Final 8 shifts are  A -> N -> m+3
+    lda #0              ;
+    sta result+2        ; 16 bits of zero in A, result+2
+                        ;  Note:    First 8 shifts are  A -> result+2 -> result
+                        ;           Final 8 shifts are  A -> result+2 -> result+1
 
     ; --- 1st byte ---
-    lsr m+2
+    lsr result
 
     ; first time
     bcc +
-    sta n+1
-    lda n+2
-    sta n
-    lda n+1
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+3
-    ror             ; shift
-    ror n
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; second time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; third time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; fourth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; fifth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; sixth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; seventh time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; eighth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+2
+    ror                 ; shift
+    ror result+2
+    ror result
 
     ; --- 2nd byte ---
-    lsr m+3
+    lsr result+1
 
     ; first time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; second time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; third time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; fourth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; fifth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; sixth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; seventh time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
+
 +
-    ror             ; shift
-    ror n
-    ror m+3
+    ror                 ; shift
+    ror result+2
+    ror result+1
 
     ; eighth time
     bcc +
-    sta n+1
-    lda n
+    tax                 ; retain A
+    lda result+2
     clc
-    adc n+2
-    sta n
-    lda n+1
-    adc n+3
-+
-    ror             ; shift
-    ror n
-    ror m+3
+    adc multiplicand
+    sta result+2
+    txa                 ; recall A
+    adc multiplicand+1
 
-    sta m+1         ; ms byte of hi-word of result
-    lda n
-    sta m           ; ls byte of hi-word of result
++
+    ror                 ; shift
+    ror result+2
+    ror result+1
+
+    sta result+3        ; ms byte of hi-word of result
     rts
