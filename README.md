@@ -134,6 +134,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult12.a](tests/omult12.a) | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
 | [omult13.a](tests/omult13.a) | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 | [omult14.a](tests/omult14.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [FastBasic](https://github.com/EricCarrGH/fastbasic/blob/master/src/interp/mul.asm) BASIC interpreter for the Atari 8-bit computers |
+| [omult15.a](tests/omult15.a) | 16x16=16 (*partial result,low 16 bits only*)  | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications by TobyLobster |
 
 
 ## The Results
@@ -263,6 +264,7 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult12.a](tests/omult12.a) | 181.04         | 27             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                               |
 | [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                           |
 | [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
+| [omult14.a](tests/omult15.a) | 464.00         | 60             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
 
 
 ## The Algorithms
