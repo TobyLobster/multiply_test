@@ -1,0 +1,58 @@
+; omult14.a
+; from FastBasic (BASIC interpreter for the Atari 8-bit computers) https://github.com/EricCarrGH/fastbasic/blob/master/src/interp/mul.asm
+;
+; 16 bit x 16 bit unsigned multiply, 16 bit result (low bytes)
+; Average cycles: 575.00
+; 43 bytes
+
+* = $0200
+
+multiplicand    = $02   ; 2 bytes
+tmp1            = $04   ; 2 bytes
+tmp2            = $06   ; 2 bytes
+tmp3            = $08   ; 1 byte
+
+; On Entry:
+;   A: multiplier (low)
+;   X: multiplier (high)
+;   (multiplicand, multiplicand+1): 2 bytes
+; On Exit:
+;   (tmp1, tmp1+1): 16 bit product
+mult
+    ; Store A
+    sta tmp3
+
+    ; Get first bit into carry
+;    lda stack_h, y
+    lda multiplicand+1
+    lsr
+    sta tmp1+1
+;    lda stack_l, y
+    lda multiplicand
+    ror
+    sta tmp1
+
+    lda #0
+    sta tmp2+1
+    ldy #16             ; Number of bits
+
+mult_loop
+    bcc skip_add
+
+    clc
+    adc tmp3
+    sta tmp2
+
+    txa
+    adc tmp2+1
+    sta tmp2+1
+    lda tmp2
+
+skip_add
+    ror tmp2+1
+    ror
+    ror tmp1+1
+    ror tmp1
+    dey
+    bne mult_loop
+    rts

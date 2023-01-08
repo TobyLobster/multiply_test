@@ -18,8 +18,7 @@ n = $08     ; 4 bytes
 ;   Shifting strategy modified for speed - JWL (Dr Jefyll)
 ;
 ; On Entry:
-;   n: *five* bytes of workspace.
-;   m: zero page memory address of the two byte multiplier, four bytes needed for result
+;   m: two byte multiplier, four bytes needed for result
 ;   (n+2, n+3): two byte multiplicand
 ; On Exit:
 ;   (m+2,m+3, m, m+1): product

@@ -84,7 +84,6 @@ function test() {
 #test "omult1" 0x200
 #test "omult2" 0x200
 #test "omult3" 0x200
-
 #test "omult4" 0x200
 #test "omult5" 0x200
 #test "omult6" 0x200
@@ -95,3 +94,4 @@ function test() {
 #test "omult11" 0x400
 #test "omult12" 0x200
 #test "omult13" 0x200
+test "omult14" 0x200

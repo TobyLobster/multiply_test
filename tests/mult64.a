@@ -21,8 +21,7 @@ n = $08     ; 4 bytes
 ;   Shifting strategy modified for speed - JWL (Dr Jefyll)
 ;
 ; On Entry:
-;   n: four bytes of workspace.
-;   m: the two byte multiplier, four bytes needed for result
+;   m: two byte multiplier, four bytes needed for result
 ;   (n+2, n+3): two byte multiplicand
 ; On Exit:
 ;   X: preserved
