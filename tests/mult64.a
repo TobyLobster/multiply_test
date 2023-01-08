@@ -8,8 +8,8 @@
 ; - unrolled the two inner loops fully
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 400.00
-; 299 bytes
+; Average cycles: 392.00
+; 285 bytes
 
 multiplicand    = $02   ; 2 bytes
 multiplier      = $04   ; 2 bytes
@@ -24,8 +24,10 @@ result          = $04   ; 4 bytes   (note: shares memory with multiplier)
 ;   (multiplicand, multiplicand+1): two byte multiplicand
 ; On Exit:
 ;   (result, result+1, result+2, result+3): product
-;   preserves Y
 mult
+    ldy multiplicand    ; Y is 'multiplicand' (low byte) throughout
+                        ; To avoid using Y, just 'lda multiplicand' instead of 'tya' throughout.
+                        ; This increases the average cycle count of the routine by only 4.5 cycles.
     lda #0              ;
     sta result+2        ; 16 bits of zero in A, result+2
                         ;  Note:    First 8 shifts are  A -> result+2 -> result
@@ -37,24 +39,26 @@ mult
     ; first time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
 
-+
     ror                 ; shift
     ror result+2
++                       ; normally this should be two instructions earlier but as this
+                        ; is the first iteration we know A=result+2=0 and carry clear
+                        ; so those ror instructions have no effect.
     ror result
 
     ; second time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -67,9 +71,9 @@ mult
     ; third time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -82,9 +86,9 @@ mult
     ; fourth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -97,9 +101,9 @@ mult
     ; fifth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -112,9 +116,9 @@ mult
     ; sixth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -127,9 +131,9 @@ mult
     ; seventh time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -142,9 +146,9 @@ mult
     ; eighth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -160,9 +164,9 @@ mult
     ; first time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -175,9 +179,9 @@ mult
     ; second time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -190,9 +194,9 @@ mult
     ; third time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -205,9 +209,9 @@ mult
     ; fourth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -220,9 +224,9 @@ mult
     ; fifth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -235,9 +239,9 @@ mult
     ; sixth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -250,9 +254,9 @@ mult
     ; seventh time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1
@@ -265,9 +269,9 @@ mult
     ; eighth time
     bcc +
     tax                 ; retain A
-    lda result+2
+    tya                 ; equivalent to lda multiplicand
     clc
-    adc multiplicand
+    adc result+2
     sta result+2
     txa                 ; recall A
     adc multiplicand+1

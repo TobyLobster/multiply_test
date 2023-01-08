@@ -230,7 +230,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult61.a](tests/mult61.a) | 482.00         | 57             | ...then unrolled the outer loop                                              |
 | [mult62.a](tests/mult62.a) | 442.00         | 93             | ...then unrolled the two inner loops once                                    |
 | [mult63.a](tests/mult63.a) | 422.00         | 165            | ...then unrolled the two inner loops twice                                   |
-| [mult64.a](tests/mult64.a) | 400.00         | 299            | ...then unrolled the two inner loops fully                                   |
+| [mult64.a](tests/mult64.a) | 392.00         | 285            | ...then unrolled the two inner loops fully, and optimise register use        |
 
 ### Signed multiply
 

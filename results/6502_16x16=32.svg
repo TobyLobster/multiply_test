@@ -95,7 +95,7 @@ z
      <use xlink:href="#m13cfef3782" x="109.02013" y="261.50544" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="118.190739" y="277.02864" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="136.531957" y="284.79024" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#m13cfef3782" x="170.667" y="293.328" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#m13cfef3782" x="167.100652" y="296.43264" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="matplotlib.axis_1">
@@ -1266,8 +1266,8 @@ L 118.190739 224.24976
     <path d="M 136.531957 337.56912 
 L 136.531957 232.01136 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
-    <path d="M 170.667 346.10688 
-L 170.667 240.54912 
+    <path d="M 167.100652 347.27112 
+L 167.100652 245.59416 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
    </g>
    <g id="line2d_48">
@@ -1286,7 +1286,7 @@ L -3 -0
      <use xlink:href="#me89960d978" x="109.02013" y="314.28432" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="118.190739" y="329.80752" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="136.531957" y="337.56912" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#me89960d978" x="170.667" y="346.10688" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#me89960d978" x="167.100652" y="347.27112" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="line2d_49">
@@ -1300,7 +1300,7 @@ L -3 -0
      <use xlink:href="#me89960d978" x="109.02013" y="208.72656" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="118.190739" y="224.24976" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#me89960d978" x="136.531957" y="232.01136" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#me89960d978" x="170.667" y="240.54912" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#me89960d978" x="167.100652" y="245.59416" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="patch_3">
@@ -1708,7 +1708,7 @@ z
    </g>
    <g id="text_41">
     <!-- mult64 -->
-    <g transform="translate(175.667 296.328) scale(0.1 -0.1)">
+    <g transform="translate(172.100652 299.43264) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-6d"/>
      <use xlink:href="#DejaVuSans-75" x="97.412109"/>
      <use xlink:href="#DejaVuSans-6c" x="160.791016"/>

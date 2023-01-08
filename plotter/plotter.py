@@ -23,7 +23,7 @@ diagrams = [
     Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", "6502_16x16=32", [0, 2300], [0, 1000],
         [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64]),
 
-    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed (detail)", "6502_16x16=32_detail", [0, 700], [0, 650],
+    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed (detail)", "6502_16x16=32_detail", [0, 400], [0, 650],
         [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64]),
         ]
 
