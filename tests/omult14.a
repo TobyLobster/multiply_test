@@ -1,5 +1,5 @@
 ; omult14.a
-; from FastBasic (BASIC interpreter for the Atari 8-bit computers) https://github.com/EricCarrGH/fastbasic/blob/master/src/interp/mul.asm
+; from FastBasic (BASIC interpreter for the Atari 8-bit computers) https://github.com/dmsc/fastbasic/blob/master/src/interp/mul.asm
 ;
 ; 16 bit x 16 bit unsigned multiply, 16 bit result (low bytes)
 ; Average cycles: 575.00

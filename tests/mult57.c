@@ -16,8 +16,8 @@ void test_pre(thread_context_t* threadContext, uint64_t input) {
 uint64_t test_post(thread_context_t* threadContext) {
     zuint8* memory = threadContext->machine.context;
 
-    uint64_t high = threadContext->machine.state.x;
-    uint64_t low  = threadContext->machine.state.a;
+    uint64_t high = threadContext->machine.state.a;
+    uint64_t low  = memory[2];
 
     return 256*high + low;
 }

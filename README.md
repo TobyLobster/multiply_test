@@ -103,6 +103,7 @@ I have tested the following routines:
 | [mult62.a](tests/mult62.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
 | [mult63.a](tests/mult63.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
 | [mult64.a](tests/mult64.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
+| [mult65.a](tests/mult65.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
 
 ### Signed multiply
 
@@ -133,7 +134,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult11.a](tests/omult11.a) | 8x8=8    (*partial result, high byte only*)   | [tables of squares](#3-tables-of-squares)                         | TobyLobster, reducing mult13 to return high byte only |
 | [omult12.a](tests/omult12.a) | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
 | [omult13.a](tests/omult13.a) | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
-| [omult14.a](tests/omult14.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [FastBasic](https://github.com/EricCarrGH/fastbasic/blob/master/src/interp/mul.asm) BASIC interpreter for the Atari 8-bit computers |
+| [omult14.a](tests/omult14.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [FastBasic](https://github.com/dmsc/fastbasic/blob/master/src/interp/mul.asm) BASIC interpreter for the Atari 8-bit computers |
 | [omult15.a](tests/omult15.a) | 16x16=16 (*partial result,low 16 bits only*)  | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications by TobyLobster |
 
 
@@ -190,7 +191,8 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult43.a](tests/mult43.a) | 208.90         | 26             |                                              |
 | [mult44.a](tests/mult44.a) | 109.00         | 69             |                                              |
 | [mult47.a](tests/mult47.a) | 175.00         | 20             |                                              |
-| [mult57.a](tests/mult57.a) | 53.49          | 1062           |                                              |
+| [mult57.a](tests/mult57.a) | 48.49          | 1058           |                                              |
+| [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
 
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result

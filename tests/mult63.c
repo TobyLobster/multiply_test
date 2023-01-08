@@ -8,7 +8,6 @@ static const uint64_t INPUT_END   = 65536UL * 65536UL;
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    threadContext->machine.state.x = 2;
     memory[2] = input & 255UL;
     memory[3] = (input / 256UL) & 255UL;
     memory[4] = (input/65536UL) & 255UL;

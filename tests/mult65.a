@@ -1,0 +1,60 @@
+; mult65.a
+; from Nick Jameson from BBC Micro Demo (1994), https://github.com/simondotm/bbc-micro-3d/blob/master/source/culling.asm
+; with tables from https://github.com/simondotm/bbc-micro-3d/blob/master/source/fastmultiply.asm
+;
+; 8 bit x 8bit unsigned multiply, 16 bit result
+; Average cycles: 47.49
+; 1061 bytes
+
+multiplicand    = $02   ; 1 byte
+multiplier      = $03   ; 1 byte
+result          = $04   ; 2 bytes
+
+lmul0           = $06   ; pointer into square table low
+lmul1           = $08   ; pointer into square table high
+prod_low        = $0a
+
+* = $0200
+
+; Align tables to start of page
+squaretable1_lsb
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+squaretable1_msb
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; 8 bit x 8bit unsigned multiply, 16 bit result
+;
+; On Entry:
+;  X: multiplier
+;  Y: multiplicand
+; On Exit:
+;  (A, X): product
+mult
+    stx lmul0
+    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0          ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),Y
+    sbc squaretable1_lsb,X
+    sta prod_low
+    lda (lmul1),Y
+    sbc squaretable1_msb,X
+    rts
+
+; call this once to initialise high bytes of pointers to table
+mult_init
+    lda #>squaretable1_lsb          ; high byte, so #2 here
+    sta lmul0+1
+    lda #>squaretable1_msb          ; high byte, so #4 here
+    sta lmul1+1
+    rts

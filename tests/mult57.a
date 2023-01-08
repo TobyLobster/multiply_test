@@ -3,11 +3,13 @@
 ; alternative smaller memory version (see mult27.a)
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
-; Average cycles: 53.49
-; 1062 bytes
+; Average cycles: 48.49
+; 1058 bytes
 
 
 * = $0200
+
+prod_low = $02
 
 ; Tables must be aligned with page boundary
 sqrLow
@@ -25,8 +27,8 @@ sqrHigh
 ;   A = multiplicand
 ;   X = multiplier
 ; On Exit:
-;   A: low byte of product
-;   X: high byte of product
+;   prod_low: low byte of product
+;   A:        high byte of product
 mult
     stx temp1
     sta getLow+1
@@ -42,11 +44,8 @@ doMult
 getLow
     lda sqrLow,x
     sbc sqrLow,y
-    sta temp2
+    sta prod_low
 getHigh
     lda sqrHigh,x
     sbc sqrHigh,y
-    tax
-temp2 = *+1
-    lda #0
     rts
