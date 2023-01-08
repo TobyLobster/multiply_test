@@ -264,7 +264,7 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult12.a](tests/omult12.a) | 181.04         | 27             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                               |
 | [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                           |
 | [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
-| [omult14.a](tests/omult15.a) | 464.00         | 60             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
+| [omult15.a](tests/omult15.a) | 464.00         | 60             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
 
 
 ## The Algorithms
