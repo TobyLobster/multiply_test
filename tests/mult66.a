@@ -45,8 +45,12 @@ squaretable2_msb
 
 
 ; Unsigned multiplication of two 8-bit terms is computed as:
-;  r = table1[a+b] - table2[(a EOR 255)+b]
+;   if Y >= X:
+;       r = table1[X+Y] - table1[Y-X]
+;   else:
+;       r = table1[X+Y] - table2[Y-X]
 ; where r is a 16-bit unsigned result
+; and 'Y-X' is a single byte value (0 to 255)
 
 
 ; 8 bit x 8bit unsigned multiply, 16 bit result
