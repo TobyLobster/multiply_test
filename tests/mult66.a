@@ -50,7 +50,7 @@ squaretable2_msb
 ;   else:
 ;       r = table1[X+Y] - table2[Y-X]
 ; where r is a 16-bit unsigned result
-; and 'Y-X' is a single byte value (0 to 255)
+; and 'Y-X' is calculated as a single byte value (0 to 255)
 
 
 ; 8 bit x 8bit unsigned multiply, 16 bit result

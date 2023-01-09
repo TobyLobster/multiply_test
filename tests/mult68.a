@@ -1,0 +1,35 @@
+; mult68.a
+; from Programming The 6502 by Rodnay Zaks (1983) https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up
+;
+; 8 bit x 8bit unsigned multiply, 16 bit result
+; Average cycles: 188.00
+; 20 bytes
+
+c = $02     ; multiplier
+d = $03     ; multiplicand
+b = $04     ; temp
+
+* = $0200
+
+; 8 bit x 8bit unsigned multiply, 16 bit result
+;
+; On Entry:
+;  c: multiplier
+;  d: multiplicand
+; On Exit:
+;  (b, A): product
+mult
+    lda #0
+    sta b
+    ldx #8
+loop
+    lsr c
+    bcc noadd
+    clc
+    adc d
+noadd
+    ror             ; not lsr, as seen in some editions
+    ror b
+    dex
+    bne loop
+    rts
