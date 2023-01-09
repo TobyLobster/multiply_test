@@ -121,8 +121,8 @@ I have tested the following routines:
 
 Specialised multiply routines often find their niche in games. Partial results (a result with fewer bits than expected) are common for fixed point arithmetic. Even approximate results can be used in cases where speed is more important than absolute accuracy.
 
-| Source code                  | Bits     | Method                    | From  |
-| ---------------------------- | :------: | :-----------------------: | :---- |
+| Source code                  | Bits                                          | Method                    | From  |
+| ---------------------------- | :-------------------------------------------: | :-----------------------: | :---- |
 | [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming the 65816*](https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply) by David Eyes (1986) |
 | [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
 | [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
@@ -132,13 +132,13 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult7.a](tests/omult7.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#4-logarithms) | [*Elite*, BBC Master version](https://www.bbcelite.com/master/main/subroutine/fmltu.html) and [APPLE II *Elite*](https://6502disassembly.com/a2-elite/Elite.html#SymFMLTU) |
 | [omult8.a](tests/omult8.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#4-logarithms) | [*Elite*, Second Processor version](https://www.bbcelite.com/6502sp/main/subroutine/fmltu.html) |
 | [omult9.a](tests/omult9.a)   | 8x8=8    (*partial result, approx high byte*) | [log and exp tables](#4-logarithms) | from articles by Krill/Plush in the German *GO64!* magazine (2000), via [codebase64](https://codebase64.org/doku.php?id=base:mathematics_in_assembly_part_6) |
-| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) |
+| [omult10.a](tests/omult10.a) | 16x32=32 (*partial result,low 32 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/364/mode/2up) integer multiply code |
 | [omult11.a](tests/omult11.a) | 8x8=8    (*partial result, high byte only*)   | [tables of squares](#3-tables-of-squares)                         | TobyLobster, reducing mult13 to return high byte only |
 | [omult12.a](tests/omult12.a) | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Gateway to Apshai*, for the Atari 8-bit family](http://bringerp.free.fr/RE/Gta/downloads.php5) |
 | [omult13.a](tests/omult13.a) | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) |
 | [omult14.a](tests/omult14.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [FastBasic](https://github.com/dmsc/fastbasic/blob/master/src/interp/mul.asm) BASIC interpreter for the Atari 8-bit computers |
 | [omult15.a](tests/omult15.a) | 16x16=16 (*partial result,low 16 bits only*)  | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications by TobyLobster |
-
+| [omult16.a](tests/omult16.a) | 16x16=16 (*partial result,low 16 bits only*)  | [tables of squares](#3-tables-of-squares)                         | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236) multidimensional array access code |
 
 ## The Results
 
@@ -273,7 +273,7 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                           |
 | [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
 | [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
-
+| [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
 
 ## The Algorithms
 

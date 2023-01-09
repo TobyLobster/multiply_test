@@ -1,0 +1,50 @@
+; omult16.a
+; from BBC BASIC 2 ROM, https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236
+; used for calculating multidimensional array access
+;
+; 16 bit x 16 bit multiply, 16 bit result (low bytes), (carry set if overflow?)
+; Average cycles: 223.69
+; 33 bytes
+
+multiplicand = $02
+multiplier   = $04
+
+* = $0200
+
+
+mult
+    ldx #0
+    ldy #0
+loop
+    ; Get the least significant bit of the multiplicand
+    lsr multiplicand+1
+    ror multiplicand
+    bcc skip    ; Do not add the multiplier to the accumulator if the bit is clear
+
+    ; Add the multiplier to the accumulator
+    clc
+    tya
+    adc multiplier
+    tay
+    txa
+    adc multiplier+1
+    tax
+
+    ; Give a ‘Bad DIM’ error message if overflow is encountered
+    bcs overflow
+skip
+    ; Multiply the multiplier by two
+    asl multiplier
+    rol multiplier+1
+
+    ; Continue this process until the multiplicand becomes zero
+    lda multiplicand
+    ora multiplicand+1
+    bne loop
+    clc                     ; TOBY: no overflow?
+    ; Save the accumulator as the answer
+;    sty multiplier
+;    stx multiplier+1
+    ; Exit
+overflow
+    rts
