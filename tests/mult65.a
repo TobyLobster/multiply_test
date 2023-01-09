@@ -1,5 +1,5 @@
 ; mult65.a
-; from Nick Jameson from BBC Micro Demo (1994), https://github.com/simondotm/bbc-micro-3d/blob/master/source/culling.asm
+; from Nick Jameson's 3D Demo for the BBC Micro (1994), https://github.com/simondotm/bbc-micro-3d/blob/master/source/culling.asm
 ; with tables from https://github.com/simondotm/bbc-micro-3d/blob/master/source/fastmultiply.asm
 ;
 ; 8 bit x 8bit unsigned multiply, 16 bit result
@@ -26,13 +26,20 @@ squaretable1_msb
         !byte >((i*i)/4)
     }
 
+; multiply
+;
+; f(x) = x*x/4
+;
+; if (Y>=X) return f(X+Y) - f(Y-X)
+;      else return f(X+Y) - f(X-Y)
+;
 ; 8 bit x 8bit unsigned multiply, 16 bit result
 ;
 ; On Entry:
 ;  X: multiplier
 ;  Y: multiplicand
 ; On Exit:
-;  (A, X): product
+;  (prod_low, A): product
 mult
     stx lmul0
     stx lmul1
@@ -53,8 +60,8 @@ mult
 
 ; call this once to initialise high bytes of pointers to table
 mult_init
-    lda #>squaretable1_lsb          ; high byte, so #2 here
+    lda #>squaretable1_lsb          ; high byte (#2 in this instance)
     sta lmul0+1
-    lda #>squaretable1_msb          ; high byte, so #4 here
+    lda #>squaretable1_msb          ; high byte (#4 in this instance)
     sta lmul1+1
     rts

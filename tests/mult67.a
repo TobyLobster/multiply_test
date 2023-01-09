@@ -1,0 +1,47 @@
+; mult67.a
+; from julie_m, https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 633.00
+; 37 bytes
+
+* = $0200
+
+
+;  ON ENTRY:
+;  $70, $71 => multiplier
+;  $72, $73 => preload (if using; gets added to product)
+;  $74, $75 => multiplicand
+;
+;  ON EXIT:
+;  $70, $71, $72, $73 => product
+;  $74, $75 => unchanged
+;  Y = 0
+;  Carry flag is unaltered from entry
+;  Everything else is undefined
+
+mult16
+    lda #0              ;  Not using preload, so zero it out
+    sta $73
+    sta $72
+mult16_preload
+    ldy #17             ;  One more than we need, because of the DEY
+    bne mult16_3        ;  Always branches
+mult16_1
+    bcc mult16_2        ;  Skip addition if we shifted out 0
+    clc                 ;  Add multiplicand to high word of the product
+    lda $72
+    adc $74
+    sta $72
+    lda $73
+    adc $75
+    sta $73
+mult16_2                ;  Shift product right
+    ror $73
+    ror $72
+mult16_3                ;  Shift low bytes of product right
+    ror $71             ;  (this initially contained multiplier)
+    ror $70             ;  LSB (from shifted multiplier) is now in C
+    dey
+    bne mult16_1        ;  Go around again if we need to
+    rts

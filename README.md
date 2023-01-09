@@ -104,6 +104,8 @@ I have tested the following routines:
 | [mult63.a](tests/mult63.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
 | [mult64.a](tests/mult64.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
 | [mult65.a](tests/mult65.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
+| [mult66.a](tests/mult66.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | TobyLobster, based on [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
+| [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587). (Note: preserves carry) |
 
 ### Signed multiply
 
@@ -150,7 +152,9 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 
 ![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
 
-When looking for a fast routine, note that the fastest routine (mult14 at 46.99 cycles on average) can be made even faster if the multiplier (in A) is constant across multiple calls. The first instructions of this routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, so subsequent multiplies only take 28.99 cycles on average. This can also be done to a lesser degree for mult27.
+Take note that the fastest routines vary largely in size, but with very little difference in cycle counts.
+
+There's a trick however: if you are multiplying lots of numbers by the same multiplier then these routines can be optimised further. e.g. The largest (mult14) takes 45.99 cycles on average normally but takes just 27.99 cycles if the multiplier (in A) doesn't change between calls. This is because the first instructions of the routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, leaving a faster multiply. This same trick can also be done for a smaller benefit to mult66 and mult27.
 
 All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
 
@@ -165,7 +169,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult11.a](tests/mult11.a) | 162.00         | 17             |                                              |
 | [mult12.a](tests/mult12.a) | 108.64         | 71             | slightly tweaked                             |
 | [mult13.a](tests/mult13.a) | 54.00          | 1075           |                                              |
-| [mult14.a](tests/mult14.a) | 46.99          | 2078           |                                              |
+| [mult14.a](tests/mult14.a) | 45.99          | 2077           |                                              |
 | [mult16.a](tests/mult16.a) | 67.48          | 574            |                                              |
 | [mult17.a](tests/mult17.a) | 150.47         | 28             | tweaked to handle X=0 on input               |
 | [mult18.a](tests/mult18.a) | 111.62         | 73             | tweaked to handle X=0 on input  and unrolled |
@@ -193,6 +197,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult47.a](tests/mult47.a) | 175.00         | 20             |                                              |
 | [mult57.a](tests/mult57.a) | 48.49          | 1058           |                                              |
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
+| [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
 
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
@@ -233,6 +238,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult62.a](tests/mult62.a) | 442.00         | 93             | ...then unrolled the two inner loops once                                    |
 | [mult63.a](tests/mult63.a) | 422.00         | 165            | ...then unrolled the two inner loops twice                                   |
 | [mult64.a](tests/mult64.a) | 392.00         | 285            | ...then unrolled the two inner loops fully, and optimise register use        |
+| [mult67.a](tests/mult67.a) | 633.00         | 37             |                                                                              |
 
 ### Signed multiply
 
