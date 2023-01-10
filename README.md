@@ -108,7 +108,10 @@ I have tested the following routines:
 | [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587). (Note: preserves carry) |
 | [mult68.a](tests/mult68.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming The 6502*](https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up) by Rodnay Zaks (1983) |
 | [mult69.a](tests/mult69.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/363/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
-
+| [mult70.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/357/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
+| [mult71.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/359/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
+| [mult72.a](tests/mult72.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
+| [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster | 
 ### Signed multiply
 
 | Source code                  | Bits                | Method                    | From  |
@@ -202,6 +205,10 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
 | [mult68.a](tests/mult68.a) | 188.00         | 20             | usr 'ror' not 'lsr' at noadd (in some editions of the book) |
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                              |
+| [mult70.a](tests/mult70.a) | 1987.11        | 31             |                                              |
+| [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |
+| [mult72.a](tests/mult72.a) | 1544.56        | 16             |                                              |
+| [mult73.a](tests/mult73.a) | 1174.08        | 28             |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -442,8 +449,15 @@ Some hardware has multiplication support in silicon. These are likely to be fast
 Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiply routines.
 
 ### 8. Repeated addition ###
-To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general.
+To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. If I show them with all the others, the graph looks like this:
 
+![all results](results/6502_8x8=16 (all).svg)
+
+Only one is *just* worthy of an orange dot, only useful if you find you can afford 16 bytes but not 17:
+
+![repeated addition results](results/6502_8x8=16 (repeated_addition).svg)
+
+If you have 17 bytes, use binary multiplication instead (e.g. mult9 or mult11). The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
 ## Customising
 

@@ -1,0 +1,41 @@
+; mult71.a
+; from https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/359/mode/2up
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 1572.91
+; 41 bytes
+
+b1      = $02       ; must be adjacent to each other
+b2      = $03       ; must be adjacent to each other
+total   = $04       ; 2 bytes
+
+* = $0200
+
+mulad2
+    lda #0
+    sta total
+    sta total+1
+
+    tay
+    ldx b2
+    beq mulend
+    cpx b1
+    bcc goahead
+    ldx b1
+    beq mulend
+    ldy #1
+
+goahead
+    lda b1,y
+loop
+    dex
+    beq mulstr
+    clc
+    adc b1,y
+    bcc loop
+    inc total+1
+    jmp loop
+mulstr
+    sta total
+mulend
+    rts

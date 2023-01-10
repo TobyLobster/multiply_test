@@ -1,0 +1,31 @@
+; mult72.a
+; from TobyLobster
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 1544.56
+; 16 bytes
+
+* = $0200
+
+; Small, slow 8 bit multiply, 16 bit result, using repeated addition!
+; On Entry:
+;   multiplier: (1 byte)
+;   X: multiplicand
+; On Exit:
+;   (A, Y): product
+mult
+    lda #0          ; product low
+    tay             ; product high
+    inx             ; increment multiplicand
+--
+    clc
+-
+    dex             ; decrement
+    beq +           ; branch if we are done
+multiplier = *+1
+    adc #0          ; add multiplier (self modifying code)
+    bcc -           ; loop back if no carry
+    iny             ; increment high byte of product
+    bcs --          ; always loop back
++
+    rts             ;
