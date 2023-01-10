@@ -14,13 +14,13 @@ class Diagram:
         self.results_list = results_list
 
 diagrams = [
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16_all", [0, 2200], [0, 2000],
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16_all", [0, 2100], [0, 2000],
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71, 72, 73]),
 
     Diagram("Multiply by repeated addition (8x8=16 bit), Memory vs speed", "6502_8x8=16_repeated_addition", [0, 50], [0, 5200],
         [70, 71, 72, 73]),
 
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16", [0, 2200], [0, 300],
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16", [0, 2200], [0, 175],
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71]),
 
     Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed (detail)", "6502_8x8=16_detail", [0,80], [0,180],

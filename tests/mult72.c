@@ -8,8 +8,6 @@ static const uint64_t INPUT_END   = 65536UL;
 void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
-    // set high bytes of addresses of table 2
-    // normally done by calling mul_init once
     memory[0x209] = input & 255UL;
     threadContext->machine.state.x = (input / 256UL) & 255UL;
 }

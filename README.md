@@ -112,6 +112,7 @@ I have tested the following routines:
 | [mult71.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/359/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult72.a](tests/mult72.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
 | [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
+
 ### Signed multiply
 
 | Source code                  | Bits                | Method                    | From  |
@@ -295,7 +296,7 @@ This is the method used by most programs that need multiplication. It has the ad
 
 ### 2. Modified Shift and Add
 
-This is a clever variation of the standard shift and add algorithm that reduces the number of shifts required for a 16 bit multiply. In the standard algorithm each of the 16 loop iterations requires four byte shifts. In this variant each iteration only requires three shifts. This was found by Dr Jefyll in 2012, and is described [here](http://forum.6502.org/viewtopic.php?p=19958#p19958). The animated diagram is instructive.
+This is a clever variation of the standard shift and add algorithm that reduces the number of shifts required for a 16 bit multiply (and larger). In the standard algorithm each of the 16 loop iterations requires four byte shifts. In this variant each iteration only requires three shifts. This was found by Dr Jefyll in 2012, and is described [here](http://forum.6502.org/viewtopic.php?p=19958#p19958). The animated diagram is instructive.
 
 ### 3. Tables of Squares
 
@@ -449,15 +450,15 @@ Some hardware has multiplication support in silicon. These are likely to be fast
 Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiply routines.
 
 ### 8. Repeated addition ###
-To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. Even with just 8 bit multiply, if I show them with all the others, the graph looks like this:
+To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. With 8 bit multiply, if I show them with all the others, the graph looks like this:
 
 ![all results](results/6502_8x8=16_all.svg)
 
-Only one (mult72) is *just* worthy of an orange dot, but it's only useful in the unlikely scenario that you can afford 16 bytes but not 17:
+Only one (mult72) is *just* worthy of an orange dot, but it's really only useful in the unlikely scenario that you can afford 16 bytes but not 17:
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-With 17 bytes, it's better to use binary multiplication instead (e.g. mult9 or mult11).
+So it's better generally to use binary multiplication instead (e.g. mult9 or mult11). Having said all that: for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
 
 The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
