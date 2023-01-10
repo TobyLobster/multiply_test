@@ -14,42 +14,42 @@ total   = $08       ; 4 bytes
 countr  = $0c
 
 mulshf
-    ldy #3
-    lda #0
+    ldy #3          ; four bytes
+    lda #0          ; zero out total
 zout
-    sta total,y
-    dey
-    bpl zout
-    lda b2
+    sta total,y     ; store it
+    dey             ; count down
+    bpl zout        ; and loop back
+    lda b2          ; copy b2 to work
     sta work
     lda b2+1
     sta work+1
 
-    lda #16
-    sta countr
+    lda #16         ; there are 16 shifts, so
+    sta countr      ; set up a counter
 mullp
-    asl work
-    rol work+1
-    bcc bigshf
-    clc
-    lda b1
-    adc total
-    sta total
-    lda b1+1
-    adc total+1
-    sta total+1
-    bcc bigshf
-    inc total+2
-    bne bigshf
-    inc total+3
+    asl work        ; shift the low byte
+    rol work+1      ; into the high byte
+    bcc bigshf      ; if the bit is off, skip the add
+    clc             ; clear carry before add
+    lda b1          ; low byte
+    adc total       ; add to total (low)
+    sta total       ; store it
+    lda b1+1        ; second byte of four
+    adc total+1     ; add it
+    sta total+1     ; store it
+    bcc bigshf      ; if carry clear, branch forward
+    inc total+2     ; else add 1 to third byte
+    bne bigshf      ; if not zero, skip the fourth
+    inc total+3     ; else, get [*increment*] the fourth
 bigshf
-    dec countr
-    bne shifit
-    rts
+    dec countr      ; count down
+    bne shifit      ; shift if there's more
+    rts             ; else, quit
 
 shifit
-    asl total
-    rol total+1
-    rol total+2
-    rol total+3
-    jmp mullp
+    asl total       ; multiply by 2
+    rol total+1     ; all...
+    rol total+2     ; four...
+    rol total+3     ; bytes
+    jmp mullp       ; repeat it again
