@@ -30,7 +30,7 @@
 
 ; tables must be page aligned
 log2tab
-    ; f = 255/log2(255)
+    ; f = 255/math.log(255,2) = 31.8975139158
     ;
     ; log2tab[0] = 0
     ; for i in range(1, 256):
