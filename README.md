@@ -453,11 +453,11 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 
 ![all results](results/6502_8x8=16_all.svg)
 
-Only one is *just* worthy of an orange dot, but it's only useful if you find you can afford 16 bytes but not 17:
+Only one is *just* worthy of an orange dot, but it's only useful in the unlikely scenario that you can afford 16 bytes but not 17:
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-If you have 17 bytes, use binary multiplication instead (e.g. mult9 or mult11).
+With 17 bytes, it's better to use binary multiplication instead (e.g. mult9 or mult11).
 
 The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
