@@ -449,15 +449,17 @@ Some hardware has multiplication support in silicon. These are likely to be fast
 Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiply routines.
 
 ### 8. Repeated addition ###
-To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. If I show them with all the others, the graph looks like this:
+To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. Even with just 8 bit multiply, if I show them with all the others, the graph looks like this:
 
 ![all results](results/6502_8x8=16_all.svg)
 
-Only one is *just* worthy of an orange dot, only useful if you find you can afford 16 bytes but not 17:
+Only one is *just* worthy of an orange dot, but it's only useful if you find you can afford 16 bytes but not 17:
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-If you have 17 bytes, use binary multiplication instead (e.g. mult9 or mult11). The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
+If you have 17 bytes, use binary multiplication instead (e.g. mult9 or mult11).
+
+The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
 ## Customising
 
