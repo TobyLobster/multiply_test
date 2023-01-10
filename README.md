@@ -453,7 +453,7 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 
 ![all results](results/6502_8x8=16_all.svg)
 
-Only one is *just* worthy of an orange dot, but it's only useful in the unlikely scenario that you can afford 16 bytes but not 17:
+Only one (mult72) is *just* worthy of an orange dot, but it's only useful in the unlikely scenario that you can afford 16 bytes but not 17:
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
