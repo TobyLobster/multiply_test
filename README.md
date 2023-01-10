@@ -23,7 +23,7 @@
 
 >"The search for the ultimate multiply routine seems never-ending." - Brooke W. Boering (December 1980)
 
-This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 80 different routines have been exhaustively tested, cycle counted, and the results plotted.
+This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 90 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
 There is no one 'best' routine or algorithm, because there are always trade-offs between speed and memory. By *speed*, I mean the average, best and worst cases of how many cycles are needed to perform the multiplication. By *memory* I mean the total number of bytes needed for the code itself and all necessary data tables.
 
@@ -204,7 +204,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult57.a](tests/mult57.a) | 48.49          | 1058           |                                              |
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
 | [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
-| [mult68.a](tests/mult68.a) | 188.00         | 20             | usr 'ror' not 'lsr' at noadd (in some editions of the book) |
+| [mult68.a](tests/mult68.a) | 188.00         | 20             | at label 'noadd' use 'ror' not 'lsr' as seen in some editions of the book |
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                              |
 | [mult70.a](tests/mult70.a) | 1987.11        | 31             |                                              |
 | [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |
@@ -454,11 +454,11 @@ To multiply m*n, just add m, n times. This is stupidly slow for anything that is
 
 ![all results](results/6502_8x8=16_all.svg)
 
-Only one (mult72) is *just* worthy of an orange dot, but it's really only useful in the unlikely scenario that you can afford 16 bytes but not 17:
+Only one (mult72, being smallest) is *just* worthy of an orange dot, in the unlikely scenario that you can afford 16 bytes but not 17:
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-So it's better generally to use binary multiplication instead (e.g. mult9 or mult11). Having said all that: for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
+It's better generally to use binary multiplication instead (e.g. mult9 or mult11 are 17 bytes). However, for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
 
 The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
