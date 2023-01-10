@@ -107,6 +107,7 @@ I have tested the following routines:
 | [mult66.a](tests/mult66.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | TobyLobster, based on [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
 | [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587). (Note: preserves carry) |
 | [mult68.a](tests/mult68.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming The 6502*](https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up) by Rodnay Zaks (1983) |
+| [mult69.a](tests/mult69.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/363/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 
 ### Signed multiply
 
@@ -200,6 +201,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
 | [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
 | [mult68.a](tests/mult68.a) | 188.00         | 20             | usr 'ror' not 'lsr' at noadd (in some editions of the book) |
+| [mult69.a](tests/mult69.a) | 946.52         | 65             |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 

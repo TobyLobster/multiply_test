@@ -1,0 +1,55 @@
+; mult69.a
+; from 'Machine Language Routines for the Commodore 64 and 128' by Todd D Heimarck and Patrick Parrish (1987) https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/363/mode/2up
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 946.52
+; 65 bytes
+
+* = $0200
+
+b1      = $02       ; 2 bytes
+b2      = $04       ; 2 bytes
+work    = $06       ; 2 bytes
+total   = $08       ; 4 bytes
+countr  = $0c
+
+mulshf
+    ldy #3
+    lda #0
+zout
+    sta total,y
+    dey
+    bpl zout
+    lda b2
+    sta work
+    lda b2+1
+    sta work+1
+
+    lda #16
+    sta countr
+mullp
+    asl work
+    rol work+1
+    bcc bigshf
+    clc
+    lda b1
+    adc total
+    sta total
+    lda b1+1
+    adc total+1
+    sta total+1
+    bcc bigshf
+    inc total+2
+    bne bigshf
+    inc total+3
+bigshf
+    dec countr
+    bne shifit
+    rts
+
+shifit
+    asl total
+    rol total+1
+    rol total+2
+    rol total+3
+    jmp mullp
