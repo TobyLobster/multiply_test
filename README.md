@@ -111,7 +111,7 @@ I have tested the following routines:
 | [mult70.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/357/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult71.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/359/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult72.a](tests/mult72.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
-| [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster | 
+| [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
 ### Signed multiply
 
 | Source code                  | Bits                | Method                    | From  |
@@ -451,11 +451,11 @@ Some early vector based arcade machines like *Tempest* and *Battlezone* were pro
 ### 8. Repeated addition ###
 To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. If I show them with all the others, the graph looks like this:
 
-![all results](results/6502_8x8=16 (all).svg)
+![all results](results/6502_8x8=16_all.svg)
 
 Only one is *just* worthy of an orange dot, only useful if you find you can afford 16 bytes but not 17:
 
-![repeated addition results](results/6502_8x8=16 (repeated_addition).svg)
+![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
 If you have 17 bytes, use binary multiplication instead (e.g. mult9 or mult11). The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
 
