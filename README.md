@@ -112,6 +112,8 @@ I have tested the following routines:
 | [mult71.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/359/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult72.a](tests/mult72.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
 | [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
+| [mult74.a](tests/mult74.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | *Mikroprozessoren 6502, 6800, 8080, Z80, 9900* by Harald Schumny (1983) |
+| [mult75.a](tests/mult75.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | *Practical Microcomputer Programming* by Walter J Weller (1980) |
 
 ### Signed multiply
 
@@ -210,6 +212,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |
 | [mult72.a](tests/mult72.a) | 1544.56        | 16             |                                              |
 | [mult73.a](tests/mult73.a) | 1174.08        | 28             |                                              |
+| [mult75.a](tests/mult75.a) | 205.90         | 24             | *bugs fixed*                                 |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -250,6 +253,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult63.a](tests/mult63.a) | 422.00         | 165            | ...then unrolled the two inner loops twice                                   |
 | [mult64.a](tests/mult64.a) | 392.00         | 285            | ...then unrolled the two inner loops fully, and optimise register use        |
 | [mult67.a](tests/mult67.a) | 633.00         | 37             |                                                                              |
+| [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 
 ### Signed multiply
 

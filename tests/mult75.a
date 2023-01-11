@@ -1,0 +1,38 @@
+; mult75.a
+; from 'Practical Microcomputer Programming' by Walter J Weller (1980)
+; bugs fixed
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 205.90
+; 24 bytes
+
+
+* = $0200
+
+mplr    = $02
+mcnd    = $03
+hiprod  = $04
+
+; On Entry:
+;   mplr: multiplier
+;   mcnd: multiplicand
+; On Exit:
+;   (A, hiprod): product
+mpy
+    lda #0          ; BUGFIX: added
+    sta hiprod      ; BUGFIX: added
+    ldy #8
+mpy1
+    asl
+    rol hiprod
+    asl mplr
+    bcc mpy2
+    clc             ; BUGFIX: added
+    adc mcnd
+    bcc mpy2
+    inc hiprod
+mpy2
+    dey
+    bne mpy1
+    ; sta loprod
+    rts

@@ -1,0 +1,78 @@
+; mult74.a
+; from 'Mikroprozessoren 6502, 6800, 8080, Z80, 9900' by Harald Schumny (1983)
+; bugfixed (clear carry on entry)
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 1358.00
+; 86 bytes
+
+mkdl = $00
+mkdh = $01
+mktl = $02
+mkth = $03
+zreg = $04
+zw1  = $05
+zw2  = $06
+zw3  = $07
+zw4  = $08
+pr1  = $09
+pr2  = $0a
+pr3  = $0b
+pr4  = $0c
+reg  = $0d
+
+* = $0200
+
+bmply
+    clc         ; bugfix
+
+    lda #0
+    sta zw3
+    sta zw4
+    sta pr1
+    sta pr2
+    sta pr3
+    sta pr4
+    lda mkdh
+    sta zw2
+    lda mkdl
+    sta zw1
+    lda #2
+    sta reg     ; loop counter
+    ldx #8      ; loop counter
+    lda mktl
+    sta zreg
+    jmp multi
+
+high
+    ldx #8      ; loop counter
+    lda mkth
+    sta zreg
+multi
+    ror zreg
+    bcc nicht
+    clc
+    ldy #0      ; loop counter
+loop
+    lda zw1,y
+    adc pr1,y
+    sta pr1,y
+    iny
+    tya
+    and #4
+    beq loop
+nicht
+    asl zw1
+    rol zw2
+    rol zw3
+    rol zw4
+    dex
+    beq decrb
+    jmp multi
+
+decrb
+    dec reg
+    beq ende
+    jmp high
+ende
+    rts

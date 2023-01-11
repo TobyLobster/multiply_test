@@ -474,7 +474,7 @@ void *thread_main(void *context) {
             int cycles_executed = m6502_run(&threadContext->machine, 1);
             total_cycles += cycles_executed;
         }
-        while(memory[threadContext->machine.state.pc] != 0);   // loop until BRK reached
+        while(threadContext->machine.state.s != 2);   // loop until stack is exhausted
 
         // Get result
         uint64_t actual_result = test_post(threadContext);
@@ -527,11 +527,14 @@ void *thread_main(void *context) {
                             }
                             j = j/2;
                         }
-                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x P=%s mem[2 to c]=$%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x",
+                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x SP=$01%02x P=%s mem[0 to c]=$%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x",
                             threadContext->machine.state.a,
                             threadContext->machine.state.x,
                             threadContext->machine.state.y,
+                            threadContext->machine.state.s,
                             flags,
+                            memory[0],
+                            memory[1],
                             memory[2],
                             memory[3],
                             memory[4],
@@ -551,7 +554,7 @@ void *thread_main(void *context) {
                         // add cycles to total
                         total_cycles += cycles_executed;
                     }
-                    while(memory[threadContext->machine.state.pc] != 0);   // loop until BRK reached
+                    while(threadContext->machine.state.s != 2);   // loop until stack exhausted
                     pthread_mutex_unlock(&mut);
                     return NULL;
                 }
