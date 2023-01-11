@@ -279,7 +279,7 @@ Here are some example signed multiply routines. The signed routines are usually 
 ### Miscellaneous multiply
 
 Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths.
-Variable bit length multiply is available in omult18.a, but see also [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984) for multibyte arithmetic routines |
+Variable bit length multiply is available in omult18.a, but see also [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984) for multibyte arithmetic routines.
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                              |
 | ---------------------------- | -------------: | -------------: | ---------------------------------------------------------------------------------- |
