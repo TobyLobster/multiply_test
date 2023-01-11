@@ -1,0 +1,42 @@
+; mult77.a
+; from 'Instrumentation of a Savonius wind turbine' by Samuel Martin Babb (1979) https://archive.org/details/instrumentationo00babb/page/108/mode/2up
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 288.00
+; 43 bytes
+
+mul1    = $02   ; multiplier
+mul1h   = $03   ; temp
+mul2    = $04   ; multiplicand
+lowmp   = $05   ; product (low)
+highmp  = $06   ; product (high)
+
+* = $0200
+
+mult
+    lda #0
+    sta highmp
+    sta lowmp
+    sta mul1h
+    tax
+    lsr mul2
+    bcs run
+itiso
+    cpx #7
+    beq don
+    inx
+    asl mul1
+    rol mul1h
+    lsr mul2
+    bcc itiso
+run
+    lda mul1
+    clc
+    adc lowmp
+    sta lowmp
+    lda mul1h
+    adc highmp
+    sta highmp
+    jmp itiso
+don
+    rts

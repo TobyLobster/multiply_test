@@ -23,7 +23,7 @@
 
 >"The search for the ultimate multiply routine seems never-ending." - Brooke W. Boering (December 1980)
 
-This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 90 different routines have been exhaustively tested, cycle counted, and the results plotted.
+This document compares the runtime performance and memory used by a wide variety of general purpose multiplication routines for the 6502 CPU. Over 100 different routines have been exhaustively tested, cycle counted, and the results plotted.
 
 There is no one 'best' routine or algorithm, because there are always trade-offs between speed and memory. By *speed*, I mean the average, best and worst cases of how many cycles are needed to perform the multiplication. By *memory* I mean the total number of bytes needed for the code itself and all necessary data tables.
 
@@ -114,6 +114,9 @@ I have tested the following routines:
 | [mult73.a](tests/mult73.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | TobyLobster |
 | [mult74.a](tests/mult74.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | *Mikroprozessoren 6502, 6800, 8080, Z80, 9900* by Harald Schumny (1983) |
 | [mult75.a](tests/mult75.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | *Practical Microcomputer Programming* by Walter J Weller (1980) |
+| [mult76.a](tests/mult76.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* Magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n109/mode/2up) article by Leo Scanlon |
+| [mult77.a](tests/mult77.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Instrumentation of a Savonius wind turbine*](https://archive.org/details/instrumentationo00babb/page/108/mode/2up) by Samuel Martin Babb (1979) |
+| [mult78.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Commodore 128 assembly language programming*](https://archive.org/details/Commodore_128_Assembly_Language_Programming/page/n165/mode/2up) by Mark Andrews (1986) |
 
 ### Signed multiply
 
@@ -124,6 +127,7 @@ I have tested the following routines:
 | [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*) | [tables of squares](#3-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult4.a](tests/smult4.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [smult5.a](tests/smult5.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
+| [smult6.a](tests/smult6.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*EDN* magazine (5th Sept 1979)](https://archive.org/details/edn-1979_09_05/page/118/mode/2up), article by Arch D Robison |
 
 ### Miscellaneous multiply
 
@@ -148,6 +152,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult15.a](tests/omult15.a) | 16x16=16 (*partial result,low 16 bits only*)  | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications by TobyLobster |
 | [omult16.a](tests/omult16.a) | 16x16=16 (*partial result,low 16 bits only*)  | [tables of squares](#3-tables-of-squares)                         | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236) multidimensional array access code |
 | [omult17.a](tests/omult17.a) | 16x8=16  (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program microcomputers*](https://archive.org/details/howtoprogrammicr00bard/page/192/mode/2up) by William T Barden (1977) |
+| [omult18.a](tests/omult18.a) | mxn=n+m (*variable size multiply*)            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* Magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n113/mode/2up) article by Leo J Scanlon |
 
 ## The Results
 
@@ -214,6 +219,9 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult72.a](tests/mult72.a) | 1544.56        | 16             |                                              |
 | [mult73.a](tests/mult73.a) | 1174.08        | 28             |                                              |
 | [mult75.a](tests/mult75.a) | 205.90         | 24             | *bugs fixed*                                 |
+| [mult76.a](tests/mult76.a) | 185.00         | 18             |                                              |
+| [mult77.a](tests/mult77.a) | 288.00         | 43             |                                              |
+| [mult78.a](tests/mult78.a) | 188.00         | 20             | fixed misleading variable names              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -291,6 +299,7 @@ Other miscellaneous multiply routines with something 'specialised' about it e.g.
 | [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
 | [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
 | [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
+| [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (16 bit x 16 bit multiply tested)            |
 
 ## The Algorithms
 
@@ -450,6 +459,8 @@ Unusually, this method is designed for signed numbers, not unsigned.
 
 This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'shift-and-add' routine, so doesn't seem to be used much in practice. It's used more in designing hardware circuits.
 
+Further explanation of Booth's algorithm [here](https://archive.org/details/AdvancedMicroDevices-AMD-SchottkyAndLow-PowerSchottkyDataBook1977OCR/page/n545/mode/2up)
+
 ### 7. Hardware support
 Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with its extended 6502 instruction set has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
 
@@ -562,6 +573,7 @@ Some implementations use self modifying code for speed, so won't work without ch
 ### 6. Multiply using Binary Coded Decimal (BCD)
 
 This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
+A multibyte BCD multiply (for numbers up to 255 bytes long!) is in [6502 Assembly Lanuage Routines](https://archive.org/details/6502_Assembly_Lanuage_Rountines_part_2/page/n15/mode/2up).
 
 
 ## How to run the tests

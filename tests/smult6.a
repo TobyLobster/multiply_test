@@ -1,0 +1,48 @@
+; smult6.a
+; from EDN magazine (5th Sept 1979), article by Arch D Robison https://archive.org/details/edn-1979_09_05/page/118/mode/2up
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 158.00
+; 39 bytes
+
+plier = $02
+cand  = $03
+prol  = $04
+
+* = $0200
+
+; On Entry:
+;   A:      multiplier
+;   cand:   multiplicand
+; On Exit:
+;   A: high byte of product
+;   Y: low byte
+mpy
+    sta plier
+    lsr
+    sta prol
+    lda #0
+    ldy #7
+test
+    bcc shift
+    clc
+    adc cand
+shift
+    ror
+    ror prol
+    dey
+    bne test
+    bcc adjust
+    sbc cand
+    ror
+    eor #$80
+    rol
+adjust
+    ror
+    ror prol
+    ldy cand
+    bpl exit
+    sec
+    sbc plier
+exit
+    rts

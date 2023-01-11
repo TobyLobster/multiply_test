@@ -1,6 +1,6 @@
 ; mult1.a
 ; from codebase64: https://www.codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
-; also from '6502 Software Design' by Leo J Scanlon: https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up
+; also from '6502 Software Design' by Leo J Scanlon (1980): https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 751

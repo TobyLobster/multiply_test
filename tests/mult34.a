@@ -2,6 +2,7 @@
 ; from Atari Roots, by Mark Andrews (1984) https://archive.org/details/ataribooks-atari-roots/page/n169/mode/2up
 ; from the first slower version, see mult35 for the corresponding faster version.
 ; also available at https://www.atariarchives.org/roots/chapter_10.php
+; see also 'Microelectronic systems N2 checkbook' by R E Vears (1990) https://archive.org/details/microelectronics0000vear_q3o0/page/146/mode/2up
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 280

@@ -84,12 +84,16 @@ function test() {
 #test "mult73" 0x200
 #test "mult74" 0x200
 #test "mult75" 0x200
+#test "mult76" 0x200
+#test "mult77" 0x200
+#test "mult78" 0x200
 
 #test "smult1" 0xa00
 #test "smult2" 0x200
 #test "smult3" 0xa00
 #test "smult4" 0x200
 #test "smult5" 0x200
+#test "smult6" 0x200
 
 #test "omult1" 0x200
 #test "omult2" 0x200
@@ -108,3 +112,4 @@ function test() {
 #test "omult15" 0x200
 #test "omult16" 0x200
 #test "omult17" 0x200
+#test "omult18" 0x200

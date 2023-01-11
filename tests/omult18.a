@@ -1,0 +1,92 @@
+; omult18.a
+; from Microcomputing Magazine (June 1981) article by Leo J Scanlon: https://archive.org/details/kilobaudmagazine-1981-06/page/n113/mode/2up
+; same as Kilobaud Magazine (June 1981) article https://archive.org/details/Kilobaud198106/page/n109/mode/2up
+; bug fix and optimisations by TobyLobster
+;
+; n x m *byte* unsigned multiply, n+m byte result
+;   where 1<=n<=31 and 1<=m<=224
+;
+; Average cycles: 2036.00 (for the 16 x 16 bit case)
+; 76 bytes
+
+; This subroutine multiplies two variable-length, unsigned
+; integers. The multiplier is stored starting at location
+; MPLR, and is N bytes long. The multiplicand is stored
+; starting at location MPND, and is M bytes long. The
+; product will be "N + M" bytes long, and will be returned
+; in memory starting at location PROD.
+; This subroutine affects the A, X and Y registers.
+
+n     = $02     ; multiplier length
+m     = $03     ; multiplicand length
+mplr  = $04     ; multiplier loc    (n bytes)
+mpnd  = $14     ; multiplicand loc  (m bytes)
+prod  = $24     ; product loc       (m+n bytes)
+pindx = $44     ; product index
+mbit  = $45     ; multiplier bit count
+
+* = $0200
+
+mmpyu
+    clc         ; calculate product index
+    lda n       ; (n+m-1)
+    tax
+    adc m
+    tay         ; and save it in Y
+    dey
+    sty pindx   ; and in pindx
+    lda #0      ; clear the high m bytes
+clrp
+    sta prod,y  ; of the product
+    dey
+    cpy n
+    bcs clrp
+    txa         ; calculate multiplier bit count
+    asl
+    asl
+    asl
+    sta mbit    ; and save it in mbit
+nxtbt
+    ; get next multiplier bit (OPTIMISATION: inlined for speed)
+rmplr
+    ldx n       ; yes. rotate multiplier right
+;    dex        ; OPTIMISATION: removed this instruction; offset the ror below; and changed the exit branch condition
+rbyte
+    ror mplr-1,x
+    dex
+    bne rbyte
+
+    php         ; save resulting carry
+    bcc align   ; multiplier bit=1?
+    ldy n       ; yes. add multiplicand to
+    ldx #0      ; high m bytes of product
+    clc
+ampnd
+    lda prod,y
+    adc mpnd,x
+    sta prod,y
+    iny
+    inx
+    php         ; save carry between adds
+    cpy pindx
+    beq pullc
+;    bcc pullc  ; OPTIMISATION: removed this instruction
+    bcs gorot   ; always branch
+
+pullc
+    plp
+    jmp ampnd
+
+gorot
+    plp
+;    clc        ; BUG FIX: removed this instruction
+align
+    ldx pindx
+rprod
+    ror prod,x
+    dex
+    bpl rprod
+    plp         ; retrieve carry from stack
+    dec mbit    ; multiplier fully processed?
+    bne nxtbt   ; no. loop for next bit
+    rts

@@ -453,7 +453,8 @@ void *thread_main(void *context) {
     zuint8* memory = threadContext->machine.context;
     uint64_t errors = 0;
     uint64_t expected;
-    char registers[256];
+    char registers[25600];
+    char to_append[256];
     char flags[9];
 
     pthread_mutex_lock(&mut);
@@ -495,7 +496,13 @@ void *thread_main(void *context) {
                     test_pre(threadContext, i);
 
                     // Run test instruction by instruction, counting the cycles taken
+                    int memory_locations_to_output = 16;
                     int total_cycles = 0;
+                    printf("                                                                            ");
+                    for(i = 0; i < memory_locations_to_output; i++) {
+                        printf(" %3llx", i);
+                    }
+                    printf("\n");
                     do {
                         disassembler.pc = (char *) memory + threadContext->machine.state.pc;
 
@@ -527,26 +534,17 @@ void *thread_main(void *context) {
                             }
                             j = j/2;
                         }
-                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x SP=$01%02x P=%s mem[0 to c]=$%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x $%02x",
+                        sprintf(registers, "A=$%02x X=$%02x Y=$%02x SP=$01%02x P=%s mem[0...]=",
                             threadContext->machine.state.a,
                             threadContext->machine.state.x,
                             threadContext->machine.state.y,
                             threadContext->machine.state.s,
-                            flags,
-                            memory[0],
-                            memory[1],
-                            memory[2],
-                            memory[3],
-                            memory[4],
-                            memory[5],
-                            memory[6],
-                            memory[7],
-                            memory[8],
-                            memory[9],
-                            memory[10],
-                            memory[11],
-                            memory[12]
-                            );
+                            flags);
+
+                        for(i = 0; i < memory_locations_to_output; i++) {
+                            sprintf(to_append, " $%02x", memory[i]);
+                            strcat(registers, to_append);
+                        }
 
                         // show pc, instruction and results
                         printf("%04x:  %s %s\n", pc, disassembler.output, registers);
