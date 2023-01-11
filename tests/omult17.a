@@ -1,0 +1,44 @@
+; omult17.a
+; from 'How to program microcomputers' by William T Barden (1977): https://archive.org/details/howtoprogrammicr00bard/page/192/mode/2up
+;
+; 16 bit x 8 bit unsigned multiply, 16 bit result (2 low bytes) (NOTE: MSB order!)
+; Average cycles: 267.00
+; 34 bytes
+
+
+mcand = $02       ; 2 bytes (high byte is first)
+res   = $04       ; 2 bytes (high byte is first)
+
+* = $0200
+
+; On Entry:
+;   A: multiplier
+;   mcand: multiplicand (2 bytes, high byte first)
+; On Exit:
+;   (res+1, res): product (high byte first)
+unspm
+    ;pha
+    ldx #0
+    stx res
+    stx res+1
+    ;pla
+    ldx #8
+loop
+    ;clc
+    asl res+1
+    rol res
+    asl
+    bcc noc1
+    tay
+    lda res+1
+    clc
+    adc mcand+1
+    sta res+1
+    lda res
+    adc mcand
+    sta res
+    tya
+noc1
+    dex
+    bne loop
+    rts
