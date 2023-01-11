@@ -105,7 +105,7 @@ I have tested the following routines:
 | [mult64.a](tests/mult64.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and unrolling |
 | [mult65.a](tests/mult65.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
 | [mult66.a](tests/mult66.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | TobyLobster, based on [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
-| [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587). (Note: preserves carry) |
+| [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587) (Note: preserves carry) |
 | [mult68.a](tests/mult68.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming The 6502*](https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up) by Rodnay Zaks (1983) |
 | [mult69.a](tests/mult69.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/363/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult70.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/357/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
@@ -278,7 +278,8 @@ Here are some example signed multiply routines. The signed routines are usually 
 
 ### Miscellaneous multiply
 
-Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths:
+Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths.
+Variable bit length multiply is available in omult18.a, but see also [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984) for multibyte arithmetic routines |
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                              |
 | ---------------------------- | -------------: | -------------: | ---------------------------------------------------------------------------------- |
