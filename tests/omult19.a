@@ -1,0 +1,67 @@
+; omult19.a
+; from the Graphics Extension ROM 1.2 at $beb5
+; bug fix by TobyLobster (this routine may have been inspired by omult18.a, as it had the same carry bug)
+;
+; 24 bit x 24 bit unsigned multiply
+; Average cycles: 2057.00
+; 48 bytes
+
+
+gxrTempSort1 = $02
+gxrTempSort2 = $03
+gxrTempSort3 = $04
+gxrTempSort4 = $05
+gxrTempSort5 = $06
+gxrTempSort6 = $07
+gxrTempSort7 = $08
+gxrTempSort8 = $09
+gxrTempSort9 = $0a
+
+* = $0200
+
+; ***************************************************************************************
+;
+; 24 bit x 24 bit unsigned multiply, 48 bit result
+;
+; On Entry:
+;   gxrTempSort1,2,3 is a 24 bit unsigned number
+;   gxrTempSort4,5,6 is another 24 bit unsigned number
+; On Exit:
+;   gxrTempSort4,5,6,7,8,9 is the 48 bit unsigned result
+;
+; ***************************************************************************************
+multiply24x24
+    lsr gxrTempSort6                                    ; }
+    ror gxrTempSort5                                    ; } rotate 24 bit multiplier right
+    ror gxrTempSort4                                    ; }
+
+    lda #0                                              ; }
+    sta gxrTempSort9                                    ; } zero the top half of the result
+    sta gxrTempSort8                                    ; }
+    sta gxrTempSort7                                    ; }
+
+    ldy #23                                             ; loop counter: loops 24 times
+multiply_loop
+    bcc skip_add                                        ;
+    clc                                                 ;
+    lda gxrTempSort1                                    ;
+    adc gxrTempSort7                                    ;
+    sta gxrTempSort7                                    ;
+    lda gxrTempSort2                                    ;
+    adc gxrTempSort8                                    ; gxrTempSort789 += gxrTempSort123
+    sta gxrTempSort8                                    ;
+    lda gxrTempSort3                                    ;
+    adc gxrTempSort9                                    ;
+    sta gxrTempSort9                                    ;
+skip_add
+    ; shift the 48 bit result right
+;    clc                                                 ; BUG FIX: don't clear carry here!
+    ldx #5                                              ; loop counter: loops 6 times
+-
+    ror gxrTempSort4,X                                  ;
+    dex                                                 ;
+    bpl -                                               ;
+
+    dey                                                 ;
+    bpl multiply_loop                                   ;
+    rts                                                 ;

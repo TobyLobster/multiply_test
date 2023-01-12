@@ -1,0 +1,50 @@
+; mult79.a
+; from a NASA Report (1981) https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 399.00
+; 39 bytes
+
+
+mplr  = $02
+mpcnd = $03
+prodl = $04
+prodh = $05
+temp  = $06
+
+* = $0200
+
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+;
+; No branches based on data are allowed in this routine, I think so it can be run
+; simultaneously across multiple processors and they all finish at exactly the same time.
+;
+; On Entry:
+;   mplr:  multiplier
+;   mpcnd: multiplicand
+; On Exit:
+;   (prodl, prodh): 16 bit product
+mult
+    lda #0
+    sta prodl
+    sta prodh
+    ldx #8
+loop
+    asl prodl
+    rol prodh
+    asl mplr
+    lda #0
+    sbc #0
+    eor #$ff
+    and mpcnd
+    sta temp
+    clc
+    adc prodl
+    sta prodl
+    lda prodh
+    adc #0
+    sta prodh
+    dex
+    bne loop
+end
+    rts

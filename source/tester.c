@@ -25,7 +25,7 @@
        __typeof__ (b) _b = (b); \
      _a < _b ? _a : _b; })
 
-#define OPTSTR                   "i:o:l:e:t:n:"
+#define OPTSTR                   "i:o:l:e:t:n:r::"
 #define USAGE_FMT                "%s [-h] [-i inputfile] [-l loadaddr]  [-e execaddr] [-o outputfile] [-n threads]\n"
 #define DEFAULT_PROGNAME         "tester"
 #define ERR_FOPEN_INPUT          "input file could not be opened"
@@ -43,6 +43,7 @@ typedef struct {
   uint32_t      load_address;
   uint32_t      exec_address;
   uint32_t      num_threads;
+  uint64_t      random;
   FILE *        input;
   char *        output;
 } options_t;
@@ -80,7 +81,7 @@ static int result[65536UL];
 // **************************************************************************************
 int main(int argc, char *argv[]) {
     int opt;
-    options_t options = { "default", 0, 0x0200, -1, 19, stdin, "" };
+    options_t options = { "default", 0, 0x0200, -1, 19, 0, stdin, "" };
 
     opterr = 0;
 
@@ -125,6 +126,15 @@ int main(int argc, char *argv[]) {
                     perror(ERR_TOO_MANY_THREADS);
                     exit(EXIT_FAILURE);
                 }
+                break;
+
+            case 'r':
+                //printf("random string: '%s'\n", optarg);
+                options.random = strtoull(optarg, NULL, 0);
+                if (options.random == ULONG_LONG_MAX) {
+                    options.random = 0;
+                }
+                //printf("random: %llu\n", options.random);
                 break;
 
             case 'h':
@@ -446,6 +456,19 @@ void write_image(char *filename)
     png_destroy_write_struct(&png, &info);
 }
 
+#define IMAX_BITS(m) ((m)/((m)%255+1) / 255%255*8 + 7-86/((m)%255+12))
+#define RAND_MAX_WIDTH IMAX_BITS(RAND_MAX)
+_Static_assert((RAND_MAX & (RAND_MAX + 1u)) == 0, "RAND_MAX not a Mersenne number");
+
+uint64_t rand64(void) {
+  uint64_t r = 0;
+  for (int i = 0; i < 64; i += RAND_MAX_WIDTH) {
+    r <<= RAND_MAX_WIDTH;
+    r ^= (unsigned) rand();
+  }
+  return r;
+}
+
 // **************************************************************************************
 void *thread_main(void *context) {
     thread_context_t* threadContext = context;
@@ -461,13 +484,28 @@ void *thread_main(void *context) {
     printf("thread %llu: starting range %llu to %llu\n", threadContext->thread_index, threadContext->start, threadContext->end);
     pthread_mutex_unlock(&mut);
 
-    for(uint64_t i = threadContext->start; i < threadContext->end; i++) {
+    uint64_t start = threadContext->start;
+    uint64_t end   = threadContext->end;
+
+    if (threadContext->options->random) {
+        start = 0;
+        end = threadContext->options->random;
+    }
+
+    for(uint64_t i = start; i < end; i++) {
         // Set stack pointer and pc
         threadContext->machine.state.s = 0;
         threadContext->machine.state.pc = threadContext->options->exec_address;
 
+        uint64_t input = i;
+
+        if (threadContext->options->random) {
+            srand(i);
+            input = rand64();
+        }
+
         // Set up input values
-        test_pre(threadContext, i);
+        test_pre(threadContext, input);
 
         // Run test instruction by instruction, counting the cycles taken
         int total_cycles = 0;
@@ -481,10 +519,10 @@ void *thread_main(void *context) {
         uint64_t actual_result = test_post(threadContext);
 
         // Is the result correct?
-        if (!is_correct(threadContext, i, actual_result, &expected)) {
+        if (!is_correct(threadContext, input, actual_result, &expected)) {
             if (errors < 100) {
                 pthread_mutex_lock(&mut);
-                printf("thread %llu: for input %llu (0x%llx), expected %llu but got %llu\n", threadContext->thread_index, i, i, (uint64_t) expected, (uint64_t) actual_result);
+                printf("thread %llu: for input %llu (0x%llx), expected %llu but got %llu\n", threadContext->thread_index, input, input, (uint64_t) expected, (uint64_t) actual_result);
 
                 // Run again for debugging purposes, through a debugger:
                 {
@@ -493,7 +531,7 @@ void *thread_main(void *context) {
                     threadContext->machine.state.pc = threadContext->options->exec_address;
 
                     // Set up input values
-                    test_pre(threadContext, i);
+                    test_pre(threadContext, input);
 
                     // Run test instruction by instruction, counting the cycles taken
                     int memory_locations_to_output = 16;

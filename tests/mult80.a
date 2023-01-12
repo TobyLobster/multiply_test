@@ -1,0 +1,73 @@
+; mult80.a
+; from Kakemoms at 'Denial, the Commodore Vic 20 Forum': http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 110.00
+; 325 bytes
+
+prodlo = $02
+prodhi = $03
+
+* = $0200
+
+tab44
+    !for y, 0, 15 {
+        !for x, 0, 15 {
+            !byte x*y
+        }
+    }
+
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+;
+; On Entry:
+;   X: multiplier
+;   Y: multiplicand
+; On Exit:
+;   (prodlo, prodhi): product
+mult88f
+    txa             ; 2
+    and #$f         ; 2
+    sta m4s1+1      ; 4
+    asl             ; 2
+    asl             ; 2
+    asl             ; 2
+    asl             ; 2
+    sta m4u1+1      ; 4
+    txa             ; 2
+    and #$f0        ; 2
+    sta m4s2+1      ; 4
+    lsr             ; 2
+    lsr             ; 2
+    lsr             ; 2
+    lsr             ; 2 (c=0)
+    sta m4s3+1      ; 4
+    tya             ; 2
+    and #$f0        ; 2
+    tax             ; 2
+    tya             ; 2
+    and #$f         ; 2
+    tay
+m4s1
+    lda tab44,x     ; 5
+m4s2
+    adc tab44,y     ; 5 h4bx*l4by - c=0
+    sta prodlo      ; 3
+    ror             ; 2 shift right and put carry in bit7
+    lsr             ; 2
+    lsr             ; 2
+    lsr             ; 2 all bits in bit4-bit0
+    sta prodhi      ; 3 high byte result (e.g. *16)
+    lda prodlo      ; 3
+    and #$f         ; 2
+    asl             ; 2
+    asl             ; 2
+    asl             ; 2
+    asl             ; 2 *16
+m4u1
+    adc tab44,y     ; 5 l4bx*l4by
+    sta prodlo      ; 3
+m4s3
+    lda tab44,x     ; 5 h4bx*h4by*16*16
+    adc prodhi      ; 3 result high byte, add overflow carry
+    sta prodhi      ; 3
+    rts

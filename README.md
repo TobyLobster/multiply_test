@@ -117,6 +117,8 @@ I have tested the following routines:
 | [mult76.a](tests/mult76.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n109/mode/2up) article by Leo Scanlon |
 | [mult77.a](tests/mult77.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Instrumentation of a Savonius Wind Turbine*](https://archive.org/details/instrumentationo00babb/page/108/mode/2up) by Samuel Martin Babb (1979) |
 | [mult78.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Commodore 128 Assembly Language Programming*](https://archive.org/details/Commodore_128_Assembly_Language_Programming/page/n165/mode/2up) by Mark Andrews (1986) |
+| [mult79.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*NASA Report*](https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up) |
+| [mult80.a](tests/mult80.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [Kakemoms at *Denial, the Commodore Vic 20 Forum*](http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071) |
 
 ### Signed multiply
 
@@ -153,6 +155,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult16.a](tests/omult16.a) | 16x16=16 (*partial result,low 16 bits only*)  | [tables of squares](#3-tables-of-squares)                         | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236) multidimensional array access code |
 | [omult17.a](tests/omult17.a) | 16x8=16  (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program microcomputers*](https://archive.org/details/howtoprogrammicr00bard/page/192/mode/2up) by William T Barden (1977) |
 | [omult18.a](tests/omult18.a) | mxn=n+m (*variable size multiply*)            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n113/mode/2up) article by Leo J Scanlon |
+| [omult19.a](tests/omult19.a) | 24x24=48                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) |
 
 ## The Results
 
@@ -222,6 +225,8 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult76.a](tests/mult76.a) | 185.00         | 18             |                                              |
 | [mult77.a](tests/mult77.a) | 288.00         | 43             |                                              |
 | [mult78.a](tests/mult78.a) | 188.00         | 20             | fixed misleading variable names              |
+| [mult79.a](tests/mult79.a) | 399.00         | 39             |                                              |
+| [mult80.a](tests/mult80.a) | 110.00         | 325            |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -301,6 +306,7 @@ Variable bit length multiply is available in omult18.a, but see also [*BBC Micro
 | [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
 | [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
 | [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (16 bit x 16 bit multiply tested)            |
+| [omult19.a](tests/omult19.a) | 2057.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random 24 bit inputs, and all 16 bit inputs) |
 
 ## The Algorithms
 
@@ -574,6 +580,7 @@ Some implementations use self modifying code for speed, so won't work without ch
 ### 6. Multiply using Binary Coded Decimal (BCD)
 
 This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
+There is discussion of various methods on the [6502.org forum](http://forum.6502.org/viewtopic.php?t=4978).
 A multibyte BCD multiply (for numbers up to 255 bytes long!) is in [6502 Assembly Lanuage Routines](https://archive.org/details/6502_Assembly_Lanuage_Rountines_part_2/page/n15/mode/2up).
 
 

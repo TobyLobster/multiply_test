@@ -7,7 +7,7 @@ function test() {
     acme -o build/TESTME -r build/report.txt tests/$1.a
     clang -O3 -Wno-unknown-warning-option -I../Z/API -I/usr/local/include/libpng16/ -lpng -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
     echo $1
-    time build/tester -t$1 -l0x200 -e$2 -n19 -ibuild/TESTME -oresults/results_$1.json
+    time build/tester -t$1 -l0x200 -e$2 -n19 -r$3 -ibuild/TESTME -oresults/results_$1.json
 }
 
 #test "mult1"  0x200
@@ -87,6 +87,8 @@ function test() {
 #test "mult76" 0x200
 #test "mult77" 0x200
 #test "mult78" 0x200
+#test "mult79" 0x200
+#test "mult80" 0x300
 
 #test "smult1" 0xa00
 #test "smult2" 0x200
@@ -113,3 +115,5 @@ function test() {
 #test "omult16" 0x200
 #test "omult17" 0x200
 #test "omult18" 0x200
+#test "omult19" 0x200
+#test "omult19" 0x200 1000000        # test one million random inputs on each thread
