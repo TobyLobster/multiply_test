@@ -1,0 +1,52 @@
+; omult20.a
+; from 6502.org, based on '6502 Software Design' by Leo J. Scanlon, expanded by Greg http://6502.org/source/integers/32muldiv.htm
+;
+; 32 bit x 32 bit unsigned multiply, 64 bit result
+; Average cycles: 2469.00
+; 66 bytes
+
+
+mulr    = $02       ; 4 bytes
+mulnd   = $06       ; 4 bytes
+prod    = $0a       ; 8 bytes
+
+* = $0200
+
+multiply
+    lda     #0
+    sta     prod+4   ; Clear upper half of
+    sta     prod+5   ; product
+    sta     prod+6
+    sta     prod+7
+    ldx     #32      ; Set binary count to 32
+shift_r
+    lsr     mulr+3   ; Shift multiplyer right
+    ror     mulr+2
+    ror     mulr+1
+    ror     mulr
+    bcc     rotate_r ; Go rotate right if c = 0
+    lda     prod+4   ; Get upper half of product
+    clc              ; and add multiplicand to
+    adc     mulnd    ; it
+    sta     prod+4
+    lda     prod+5
+    adc     mulnd+1
+    sta     prod+5
+    lda     prod+6
+    adc     mulnd+2
+    sta     prod+6
+    lda     prod+7
+    adc     mulnd+3
+rotate_r
+    ror              ; Rotate partial product
+    sta     prod+7   ; right
+    ror     prod+6
+    ror     prod+5
+    ror     prod+4
+    ror     prod+3
+    ror     prod+2
+    ror     prod+1
+    ror     prod
+    dex              ; Decrement bit count and
+    bne     shift_r  ; loop until 32 bits are
+    rts

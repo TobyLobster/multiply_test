@@ -25,7 +25,7 @@
        __typeof__ (b) _b = (b); \
      _a < _b ? _a : _b; })
 
-#define OPTSTR                   "i:o:l:e:t:n:r::"
+#define OPTSTR                   "i:o:l:e:t:n:r:"
 #define USAGE_FMT                "%s [-h] [-i inputfile] [-l loadaddr]  [-e execaddr] [-o outputfile] [-n threads]\n"
 #define DEFAULT_PROGNAME         "tester"
 #define ERR_FOPEN_INPUT          "input file could not be opened"
@@ -78,10 +78,36 @@ static int result[65536UL];
 
 #include "../build/parameters.c"
 
+
+// **************************************************************************************
+// see https://stackoverflow.com/a/61546212
+char* th_sep_u64(uint64_t val, char* buf) {
+   char tmpbuf[32]; //18'446'744'073'709'551'615 -> 26 chars
+   int  nch, toffs, pos;
+   pos   = 1;
+   toffs = 31;
+   nch   = snprintf(tmpbuf, 32, "%llu", val);
+   nch  -- ;
+   buf[toffs] = 0;
+
+   for (; nch>=0; --nch) {
+      toffs -- ;
+      buf[toffs] = tmpbuf[nch];
+      if ((0 == (pos % 3)) && (nch > 0)) {
+         toffs -- ;
+         buf[toffs] = ','; //inject the separator
+      }
+      pos ++ ;
+   }
+   buf += toffs;
+   return buf;
+}
+
 // **************************************************************************************
 int main(int argc, char *argv[]) {
     int opt;
-    options_t options = { "default", 0, 0x0200, -1, 19, 0, stdin, "" };
+    options_t options = { "default", 0, 0x0200, -1, 19, 0UL, stdin, "" };
+    char cbuf[32];
 
     opterr = 0;
 
@@ -129,12 +155,13 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 'r':
-                //printf("random string: '%s'\n", optarg);
                 options.random = strtoull(optarg, NULL, 0);
                 if (options.random == ULONG_LONG_MAX) {
                     options.random = 0;
                 }
-                //printf("random: %llu\n", options.random);
+                if (options.random != 0) {
+                    printf("Randomly test %s executions on each thread\n", th_sep_u64(options.random, cbuf));
+                }
                 break;
 
             case 'h':
@@ -255,7 +282,10 @@ int process(options_t *options) {
                 printf("Error: unable to seek input file\n");
                 exit(-1);
             }
+            //printf("load address %llx\n", options->load_address);
             bytes_read = fread(memory + options->load_address, 1, 65536-options->load_address, options->input);
+            //printf("hello 4b!\n");
+            //fclose(options->input);
             printf("read binary file of %zu bytes\n", bytes_read);
         } else {
             // Once loaded, we copy the memory from the file data already loaded
