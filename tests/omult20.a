@@ -2,7 +2,7 @@
 ; from 6502.org, based on '6502 Software Design' by Leo J. Scanlon, expanded by Greg http://6502.org/source/integers/32muldiv.htm
 ;
 ; 32 bit x 32 bit unsigned multiply, 64 bit result
-; Average cycles: 2469.00
+; Average cycles: 2741.00
 ; 66 bytes
 
 

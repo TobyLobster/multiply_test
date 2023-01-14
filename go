@@ -116,5 +116,10 @@ function test() {
 #test "omult17" 0x200
 #test "omult18" 0x200
 #test "omult19" 0x200
-#test "omult19" 0x200 1000000        # test one million random inputs on each thread
-#test "omult20" 0x200 1000000
+#test "omult19" 0x200 10000000        # test ten million random inputs on each thread
+test "omult20" 0x200
+test "omult20" 0x200 10000000
+#test "omult21" 0x200
+#test "omult21" 0x200 10000000
+#test "omult22" 0x200
+#test "omult22" 0x200 10000000

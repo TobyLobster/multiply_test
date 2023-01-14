@@ -157,6 +157,8 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult18.a](tests/omult18.a) | mxn=n+m (*variable size multiply*)            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n113/mode/2up) article by Leo J Scanlon |
 | [omult19.a](tests/omult19.a) | 24x24=48                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) |
 | [omult20.a](tests/omult20.a) | 32x32=64                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [6502.org](http://6502.org/source/integers/32muldiv.htm) based on '6502 Software Design' by Leo J. Scanlon, expanded by Greg |
+| [omult21.a](tests/omult21.a) | 24x24=48                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and expanded to 24 bit |
+| [omult22.a](tests/omult22.a) | 32x32=64                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications and expanded to 32 bit |
 
 ## The Results
 
@@ -276,7 +278,7 @@ Here are some example signed multiply routines. The signed routines are usually 
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                                       |
 | ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------- |
-| [smult1.a](tests/smult1.a)   |  62.99         | 2095           | 8 x 8 bit *signed* multiply (16 bit result), tweaked for size and speed (based on mult14.a) |
+| [smult1.a](tests/smult1.a)   | 62.99          | 2095           | 8 x 8 bit *signed* multiply (16 bit result), tweaked for size and speed (based on mult14.a) |
 | [smult2.a](tests/smult2.a)   | 329.67         | 49             | 8 x 8 bit *signed* multiply (16 bit result), Booth's Algorithm, *bug fixed* and optimised   |
 | [smult3.a](tests/smult3.a)   | 277.57         | 2253           | 16 x 16 bit *signed* multiply (32 bit result), tweaked slightly (based on mult31.a)         |
 | [smult4.a](tests/smult4.a)   | 242.52         | 67             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult19                    |
@@ -296,9 +298,9 @@ Variable bit length multiply is available in omult18.a, but see also [*BBC Micro
 | [omult4.a](tests/omult3.a)   | 686.88         | 70             | 24 x 8 bit *sign-magnitude* multiply, 32 bit result                                |
 | [omult5.a](tests/omult5.a)   | 492.96         | 196            | 16 x 16 bit *signed/sign-magnitude* multiply, 16 bit signed *approximate* result   |
 | [omult6.a](tests/omult6.a)   | 153.46         | 38             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
-| [omult7.a](tests/omult7.a)   |  46.72         | 802            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
-| [omult8.a](tests/omult8.a)   |  49.20         | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
-| [omult9.a](tests/omult9.a)   |  22.97         | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
+| [omult7.a](tests/omult7.a)   | 46.72          | 802            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
+| [omult8.a](tests/omult8.a)   | 49.20          | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
+| [omult9.a](tests/omult9.a)   | 22.97          | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
 | [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                             |
 | [omult11.a](tests/omult11.a) | 43.00          | 547            | 8 x 8 bit unsigned multiply, *ONLY approximate high 8 bit* result                  |
 | [omult12.a](tests/omult12.a) | 181.04         | 27             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                               |
@@ -308,8 +310,10 @@ Variable bit length multiply is available in omult18.a, but see also [*BBC Micro
 | [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
 | [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
 | [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
-| [omult19.a](tests/omult19.a) | 2057.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random 24 bit inputs, and all 16 bit inputs) |
-| [omult20.a](tests/omult20.a) | 2469.00        | 66             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random 24 bit inputs, and all 16 bit inputs) |
+| [omult19.a](tests/omult19.a) | 2169.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult20.a](tests/omult20.a) | 2741.00        | 66             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult21.a](tests/omult21.a) | 1020.00        | 50             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult22.a](tests/omult22.a) | 1661.00        | 60             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 
 ## The Algorithms
 

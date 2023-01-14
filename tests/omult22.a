@@ -1,0 +1,112 @@
+; omult22.a
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; - adjusted to use fixed zero page addresses
+; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - i.e. mult60 expanded into 32 bit x 32 bit
+; - could be unrolled for more speed at the cost of more memory
+;
+;
+; multiplicand
+; +------+------+------+------+
+; |  +3  |  +2  |  +1  |  +0  |
+; +------+------+------+------+
+;              ||
+;             _||_  add
+;             \  /               initially set to
+; result       \/                multiplier
+; +------+------+------+------+  +------+------+------+------+
+; |  +7  |  +6  |  +5  |  +4  |  |  +3  |  +2  |  +1  |  +0  |
+; +------+------+------+------+  +------+------+------+------+
+;
+; (1) first 8 times around loop, shift right: result+7 into +6 into +5 into +4 into +0:
+;
+; ----------------------------> shift                 >
+;                              \_____________________/
+;
+;
+; (2)  next 8 times around loop, shift right: result+7 into +6 into +5 into +4 into +1:
+;
+; ----------------------------> shift          >
+;                              \______________/
+;
+;
+; (3)  next 8 times around loop, shift right: result+7 into +6 into +5 into +4 into +2:
+;
+; ----------------------------> shift   >
+;                              \_______/
+;
+;
+; (3) final 8 times around loop, shift right: result+7 into +6 into +5 into +4 into +3:
+;
+; -------------------------------> shift
+;
+;
+; 32 bit x 32 bit unsigned multiply, 64 bit result
+; Average cycles: 1661.00
+; 60 bytes
+
+multiplicand    = $02   ; 4 bytes
+multiplier      = $06   ; 4 bytes
+result          = $06   ; 8 bytes   (note: shares memory with multiplier)
+temp            = $0e   ;
+
+* = $0200
+
+; 32 bit x 32 bit unsigned multiply, 64 bit result
+;
+; On Entry:
+;   multiplier:     four byte value
+;   multiplicand:   four byte value
+; On Exit:
+;   result:         eight byte product (note: 'result' shares memory with 'multiplier')
+mult
+    lda #0              ;
+    tax                 ; count for outer loop
+    sta result+6        ;
+    sta result+5        ;
+    sta result+4        ; 32 bits of zero in A, result+6, result+5, result+4
+                        ; (think of A as a local cache of result+7)
+                        ;  Note:    First 8 shifts are  A -> result+6 -> result+5 -> result+4 -> result
+                        ;           Next  8 shifts are  A -> result+6 -> result+5 -> result+4 -> result+1
+                        ;           Next  8 shifts are  A -> result+6 -> result+5 -> result+4 -> result+2
+                        ;           Final 8 shifts are  A -> result+6 -> result+5 -> result+4 -> result+3
+
+    ; outer loop (4 times)
+outer_loop
+    ldy #8              ; count for inner loop
+    lsr result,x        ; think "result" then later "result+1" then "result+2" then "result+3"
+
+    ; inner loop (8 times)
+inner_loop
+    bcc +
+
+    sta temp            ; (result+4, result+5, result+6, A) += (multiplicand, multiplicand+1, multiplicand+2. multiplicand+3)
+    lda result+4
+    clc
+    adc multiplicand
+    sta result+4
+    lda result+5
+    adc multiplicand+1
+    sta result+5
+    lda result+6
+    adc multiplicand+2
+    sta result+6
+    lda temp
+    adc multiplicand+3
+
++
+    ror                 ; shift
+    ror result+6        ;
+    ror result+5        ;
+    ror result+4        ;
+    ror result,x        ; think "result" then later "result+1" then "result+2" then "result+3"
+    dey
+    bne inner_loop      ; go back for 1 more shift?
+
+    inx
+    cpx #4
+    bne outer_loop      ; go back for 8 more shifts?
+
+    sta result+7        ;
+    rts

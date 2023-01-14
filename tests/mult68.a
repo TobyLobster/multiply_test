@@ -1,5 +1,5 @@
 ; mult68.a
-; from Programming The 6502 by Rodnay Zaks (1983) https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up
+; from Programming The 6502 by Rodnay Zaks (1983) p84 https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up
 ;
 ; 8 bit x 8bit unsigned multiply, 16 bit result
 ; Average cycles: 188.00

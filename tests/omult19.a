@@ -3,7 +3,7 @@
 ; bug fix by TobyLobster (this routine may have been inspired by omult18.a, as it had the same carry bug)
 ;
 ; 24 bit x 24 bit unsigned multiply
-; Average cycles: 2057.00
+; Average cycles: 2169.00
 ; 48 bytes
 
 

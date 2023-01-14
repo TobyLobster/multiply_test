@@ -4,6 +4,31 @@
 ; - removed 'decrement to avoid clc' as this is slower on average
 ; - rearranged memory use to remove final memory copy and give LSB first order to result
 ;
+;
+; multiplicand
+; +------+------+
+; |  +1  |  +0  |
+; +------+------+
+;       ||
+;      _||_  add
+;      \  /
+;       \/         initially set to
+; result           multiplier
+; +------+------+  +------+------+
+; |  +3  |  +2  |  |  +1  |  +0  |
+; +------+------+  +------+------+
+;
+; (1) first 8 times around loop, shift right: result+3 into +2 into +0:
+;
+; --------> shift         >
+;                \_______/
+;
+; (2) final 8 times around loop, shift right: result+3 into +2 into +1:
+;
+; --------> shift ->
+;
+
+
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 531.00
 ; 40 bytes
@@ -26,6 +51,7 @@ mult
     lda #0              ;
     tax                 ; count for outer loop
     sta result+2        ; 16 bits of zero in A, result+2
+                        ; (think of A as a local cache of result+3)
                         ;  Note:    First 8 shifts are  A -> result+2 -> result
                         ;           Final 8 shifts are  A -> result+2 -> result+1
 

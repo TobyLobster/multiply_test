@@ -1,0 +1,100 @@
+; omult21.a
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; - adjusted to use fixed zero page addresses
+; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - i.e. mult60 expanded into 24 bit x 24 bit
+; - could be unrolled for more speed at the cost of more memory
+;
+;
+; multiplicand
+; +------+------+------+
+; |  +2  |  +1  |  +0  |
+; +------+------+------+
+;           ||
+;          _||_  add
+;          \  /           initially set to
+; result    \/            multiplier
+; +------+------+------+  +------+------+------+
+; |  +5  |  +4  |  +3  |  |  +2  |  +1  |  +0  |
+; +------+------+------+  +------+------+------+
+;
+; (1) first 8 times around loop, shift right: result+5 into +4 into +3  into +0:
+;
+; ---------------------> shift          >
+;                       \______________/
+;
+;
+; (2)  next 8 times around loop, shift right: result+5 into +4 into +3 into +1:
+;
+; ---------------------> shift   >
+;                       \_______/
+;
+;
+; (3) final 8 times around loop, shift right: result+5 into +4 into +3 into +2:
+;
+; ------------------------> shift
+;
+;
+; 24 bit x 24 bit unsigned multiply, 48 bit result
+; Average cycles: 1020
+; 50 bytes
+
+multiplicand    = $02   ; 3 bytes
+multiplier      = $05   ; 3 bytes
+result          = $05   ; 6 bytes   (note: shares memory with multiplier)
+temp            = $0b   ;
+
+* = $0200
+
+; 24 bit x 24 bit unsigned multiply, 48 bit result
+;
+; On Entry:
+;   multiplier:     three byte value
+;   multiplicand:   three byte value
+; On Exit:
+;   result:         six byte product (note: 'result' shares memory with 'multiplier')
+mult
+    lda #0              ;
+    tax                 ; count for outer loop
+    sta result+4        ;
+    sta result+3        ; 24 bits of zero in A, result+4, result+3
+                        ; (think of A as a local cache of result+5)
+                        ;  Note:    First 8 shifts are  A -> result+4 -> result+3 -> result
+                        ;           Next  8 shifts are  A -> result+4 -> result+3 -> result+1
+                        ;           Final 8 shifts are  A -> result+4 -> result+3 -> result+2
+
+    ; outer loop (3 times)
+outer_loop
+    ldy #8              ; count for inner loop
+    lsr result,x        ; think "result" then later "result+1" then "result+2"
+
+    ; inner loop (8 times)
+inner_loop
+    bcc +
+
+    sta temp            ; (result+3, result+4, A) += (multiplicand, multiplicand+1, multiplicand+2)
+    lda result+3
+    clc
+    adc multiplicand
+    sta result+3
+    lda result+4
+    adc multiplicand+1
+    sta result+4
+    lda temp
+    adc multiplicand+2
+
++
+    ror                 ; shift
+    ror result+4        ;
+    ror result+3        ;
+    ror result,x        ; think "result" then later "result+1" then "result+2"
+    dey
+    bne inner_loop      ; go back for 1 more shift?
+
+    inx
+    cpx #3
+    bne outer_loop      ; go back for 8 more shifts?
+
+    sta result+5        ;
+    rts
