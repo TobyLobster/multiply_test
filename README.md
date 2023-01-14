@@ -138,7 +138,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | Source code                  | Bits                                          | Method                    | From  |
 | ---------------------------- | :-------------------------------------------: | :-----------------------: | :---- |
 | [omult1.a](tests/omult1.a)   | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming the 65816*](https://archive.org/details/0893037893ProgrammingThe65816/page/n295/mode/2up?q=multiply) by David Eyes (1986) |
-| [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) |
+| [omult2.a](tests/omult2.a)   | 8x8=8    (*partial result, low byte only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The BBC Micro Compendium*](https://archive.org/details/BBCMicroCompendium/page/38/mode/2up) by Jeremy Ruston (1983), also [*Nightshade*](http://level7.org.uk/miscellany/nightshade-disassembly.txt) at $6121 |
 | [omult3.a](tests/omult3.a)   | 8x8=8    (*partial result, high byte only*)   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/fmltu.html) |
 | [omult4.a](tests/omult4.a)   | 24x8=32  (*sign-magnitude* numbers)           | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* for the BBC Micro](https://www.bbcelite.com/cassette/main/subroutine/mult3.html) |
 | [omult5.a](tests/omult5.a)   | 16x16=16 (approximate 2 high bytes only)      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*The Sentinel* for the BBC Micro](http://level7.org.uk/miscellany/the-sentinel-disassembly.txt) |
@@ -219,7 +219,6 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
 | [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
 | [mult68.a](tests/mult68.a) | 188.00         | 20             | at label 'noadd' use 'ror' not 'lsr' as seen in some editions of the book |
-| [mult69.a](tests/mult69.a) | 946.52         | 65             |                                              |
 | [mult70.a](tests/mult70.a) | 1987.11        | 31             |                                              |
 | [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |
 | [mult72.a](tests/mult72.a) | 1544.56        | 16             |                                              |
@@ -270,6 +269,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult63.a](tests/mult63.a) | 422.00         | 165            | ...then unrolled the two inner loops twice                                   |
 | [mult64.a](tests/mult64.a) | 392.00         | 285            | ...then unrolled the two inner loops fully, and optimise register use        |
 | [mult67.a](tests/mult67.a) | 633.00         | 37             |                                                                              |
+| [mult69.a](tests/mult69.a) | 946.52         | 65             |                                                                              |
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 
 ### Signed multiply

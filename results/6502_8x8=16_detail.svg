@@ -84,7 +84,7 @@ z
      <use xlink:href="#mad22b90ff5" x="240.975" y="71.26" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="240.975" y="43.232" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="241.893663" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
-     <use xlink:href="#mad22b90ff5" x="271.300943" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
+     <use xlink:href="#mad22b90ff5" x="270.349147" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="270.27" y="4.6396" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="226.3275" y="49.7" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="268.12935" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
@@ -1561,7 +1561,6 @@ L 394.77375 -1
     <path d="M 299.565 383.88 
 L 299.565 -1 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
-    <path clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
     <path d="M 270.27 77.728 
 L 270.27 -1 
 " clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
@@ -1616,8 +1615,6 @@ L -3 -0
      <use xlink:href="#m408c75a34d" x="321.53625" y="405.44" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="394.77375" y="401.128" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="299.565" y="383.88" style="fill: #d3d3d3; stroke: #d3d3d3"/>
-     <use xlink:href="#m408c75a34d" x="424.284544" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
-     <use xlink:href="#m408c75a34d" x="305.851131" y="-1" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="270.27" y="77.728" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="226.3275" y="84.196" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="409.42125" y="19.516" style="fill: #d3d3d3; stroke: #d3d3d3"/>
