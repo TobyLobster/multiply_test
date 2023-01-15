@@ -3,13 +3,13 @@
 ; (see mult65.a)
 ;
 ; 8 bit x 8bit unsigned multiply, 16 bit result
-; Average cycles: 45.50
+; Average cycles: 45.49
 ; 1580 bytes
 
 result          = $04   ; 2 bytes
 
-lmul0           = $06   ; pointer into table 2 low
-lmul1           = $08   ; pointer into table 2 high
+lmul0           = $06   ; pointer into table 1 low
+lmul1           = $08   ; pointer into table 1 high
 prod_low        = $0a
 
 * = $0200
@@ -68,18 +68,17 @@ mult
     sbc lmul0
     tax
     lda (lmul0),Y
-    bcs +
-    sbc squaretable2_lsb,X
-    sta prod_low
-    lda (lmul1),Y
-    sbc squaretable2_msb,X
-    rts
-
-+
+    bcc +
     sbc squaretable1_lsb,X
     sta prod_low
     lda (lmul1),Y
     sbc squaretable1_msb,X
+    rts
++
+    sbc squaretable2_lsb,X
+    sta prod_low
+    lda (lmul1),Y
+    sbc squaretable2_msb,X
     rts
 
 ; call this once to initialise high bytes of pointers to table

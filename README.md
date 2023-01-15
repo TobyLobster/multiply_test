@@ -217,7 +217,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult47.a](tests/mult47.a) | 175.00         | 20             |                                              |
 | [mult57.a](tests/mult57.a) | 48.49          | 1058           |                                              |
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
-| [mult66.a](tests/mult66.a) | 45.50          | 1580           |                                              |
+| [mult66.a](tests/mult66.a) | 45.49          | 1580           |                                              |
 | [mult68.a](tests/mult68.a) | 188.00         | 20             | at label 'noadd' use 'ror' not 'lsr' as seen in some editions of the book |
 | [mult70.a](tests/mult70.a) | 1987.11        | 31             |                                              |
 | [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |

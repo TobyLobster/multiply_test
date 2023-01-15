@@ -2,7 +2,7 @@
     "results": {
         "title": "mult66",
         "bytes": "1580",
-        "AverageCycles": "45.50",
+        "AverageCycles": "45.49",
         "MinCycles": "44",
         "MaxCycles": "47"
     }
