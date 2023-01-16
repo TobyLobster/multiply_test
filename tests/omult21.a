@@ -3,6 +3,7 @@
 ; - adjusted to use fixed zero page addresses
 ; - removed 'decrement to avoid clc' as this is slower on average
 ; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - X counter counts up from $fd to avoid cpx
 ; - i.e. mult60 expanded into 24 bit x 24 bit
 ; - could be unrolled for more speed at the cost of more memory
 ;
@@ -37,8 +38,8 @@
 ;
 ;
 ; 24 bit x 24 bit unsigned multiply, 48 bit result
-; Average cycles: 1020
-; 50 bytes
+; Average cycles: 1014.00
+; 49 bytes
 
 multiplicand    = $02   ; 3 bytes
 multiplier      = $05   ; 3 bytes
@@ -56,18 +57,18 @@ temp            = $0b   ;
 ;   result:         six byte product (note: 'result' shares memory with 'multiplier')
 mult
     lda #0              ;
-    tax                 ; count for outer loop
     sta result+4        ;
     sta result+3        ; 24 bits of zero in A, result+4, result+3
                         ; (think of A as a local cache of result+5)
                         ;  Note:    First 8 shifts are  A -> result+4 -> result+3 -> result
                         ;           Next  8 shifts are  A -> result+4 -> result+3 -> result+1
                         ;           Final 8 shifts are  A -> result+4 -> result+3 -> result+2
+    ldx #$fd            ; count for outer loop. Loops three times.
 
     ; outer loop (3 times)
 outer_loop
     ldy #8              ; count for inner loop
-    lsr result,x        ; think "result" then later "result+1" then "result+2"
+    lsr result+3,x      ; think "result" then later "result+1" then "result+2"
 
     ; inner loop (8 times)
 inner_loop
@@ -88,12 +89,11 @@ inner_loop
     ror                 ; shift
     ror result+4        ;
     ror result+3        ;
-    ror result,x        ; think "result" then later "result+1" then "result+2"
+    ror result+3,x      ; think "result" then later "result+1" then "result+2"
     dey
     bne inner_loop      ; go back for 1 more shift?
 
     inx
-    cpx #3
     bne outer_loop      ; go back for 8 more shifts?
 
     sta result+5        ;

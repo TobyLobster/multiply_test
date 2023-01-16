@@ -115,7 +115,7 @@ z
      <use xlink:href="#m13cfef3782" x="113.751" y="427.79772" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="389.682" y="439.151" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="390.519" y="439.34504" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#m13cfef3782" x="535.32" y="439.73118" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#m13cfef3782" x="535.32" y="439.73312" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="98.964" y="148.853578" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
@@ -2286,7 +2286,7 @@ z
    </g>
    <g id="text_58">
     <!-- mult66 -->
-    <g transform="translate(540.32 442.73118) scale(0.1 -0.1)">
+    <g transform="translate(540.32 442.73312) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-6d"/>
      <use xlink:href="#DejaVuSans-75" x="97.412109"/>
      <use xlink:href="#DejaVuSans-6c" x="160.791016"/>

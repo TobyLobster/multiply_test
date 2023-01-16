@@ -119,8 +119,8 @@ z
      <use xlink:href="#m13cfef3782" x="112.875955" y="211.2768" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="376.264636" y="341.028576" style="fill: #ffa500; stroke: #ffa500"/>
      <use xlink:href="#m13cfef3782" x="377.063591" y="343.246176" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#m13cfef3782" x="515.282727" y="347.6592" style="fill: #ffa500; stroke: #ffa500"/>
-     <use xlink:href="#m13cfef3782" x="471.597312" y="-1" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#m13cfef3782" x="515.282727" y="347.681376" style="fill: #ffa500; stroke: #ffa500"/>
+     <use xlink:href="#m13cfef3782" x="471.594825" y="-1" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="matplotlib.axis_1">
@@ -2145,7 +2145,7 @@ z
    </g>
    <g id="text_48">
     <!-- mult66 -->
-    <g transform="translate(520.282727 350.6592) scale(0.1 -0.1)">
+    <g transform="translate(520.282727 350.681376) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-6d"/>
      <use xlink:href="#DejaVuSans-75" x="97.412109"/>
      <use xlink:href="#DejaVuSans-6c" x="160.791016"/>

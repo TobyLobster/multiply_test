@@ -263,7 +263,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult56.a](tests/mult56.a) | 259.96         | 1210           | I use mult27 and combine to make 16x16                                       |
 | [mult58.a](tests/mult58.a) | 383.93         | 776            | I use mult16 and combine to make 16x16                                       |
 | [mult59.a](tests/mult59.a) | 553.99         | 67             |                                                                              |
-| [mult60.a](tests/mult60.a) | 531.00         | 40             | mult59 but I use fixed zero page addresses, remove 'decrement to avoid clc'  |
+| [mult60.a](tests/mult60.a) | 527.00         | 39             | mult59 but I use fixed zero page addresses, remove 'decrement to avoid clc'  |
 | [mult61.a](tests/mult61.a) | 482.00         | 57             | ...then unrolled the outer loop                                              |
 | [mult62.a](tests/mult62.a) | 442.00         | 93             | ...then unrolled the two inner loops once                                    |
 | [mult63.a](tests/mult63.a) | 422.00         | 165            | ...then unrolled the two inner loops twice                                   |
@@ -312,8 +312,8 @@ Variable bit length multiply is available in omult18.a, but see also [*BBC Micro
 | [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
 | [omult19.a](tests/omult19.a) | 2169.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult20.a](tests/omult20.a) | 2741.00        | 66             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
-| [omult21.a](tests/omult21.a) | 1020.00        | 50             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
-| [omult22.a](tests/omult22.a) | 1661.00        | 60             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult21.a](tests/omult21.a) | 1014.00        | 49             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult22.a](tests/omult22.a) | 1653.00        | 59             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 
 ## The Algorithms
 
