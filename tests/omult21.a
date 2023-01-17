@@ -44,7 +44,6 @@
 multiplicand    = $02   ; 3 bytes
 multiplier      = $05   ; 3 bytes
 result          = $05   ; 6 bytes   (note: shares memory with multiplier)
-temp            = $0b   ;
 
 * = $0200
 
@@ -74,7 +73,8 @@ outer_loop
 inner_loop
     bcc +
 
-    sta temp            ; (result+3, result+4, A) += (multiplicand, multiplicand+1, multiplicand+2)
+    ; (result+3, result+4, A) += (multiplicand, multiplicand+1, multiplicand+2)
+    sta result+5        ; remember A
     lda result+3
     clc
     adc multiplicand
@@ -82,7 +82,7 @@ inner_loop
     lda result+4
     adc multiplicand+1
     sta result+4
-    lda temp
+    lda result+5        ; recall A
     adc multiplicand+2
 
 +

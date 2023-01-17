@@ -117,7 +117,7 @@ I have tested the following routines:
 | [mult76.a](tests/mult76.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n109/mode/2up) article by Leo Scanlon |
 | [mult77.a](tests/mult77.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Instrumentation of a Savonius Wind Turbine*](https://archive.org/details/instrumentationo00babb/page/108/mode/2up) by Samuel Martin Babb (1979) |
 | [mult78.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Commodore 128 Assembly Language Programming*](https://archive.org/details/Commodore_128_Assembly_Language_Programming/page/n165/mode/2up) by Mark Andrews (1986) |
-| [mult79.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*NASA Report*](https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up) |
+| [mult79.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*NASA Report*](https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up) (1981) |
 | [mult80.a](tests/mult80.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [Kakemoms at *Denial, the Commodore Vic 20 Forum*](http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071) |
 
 ### Signed multiply
