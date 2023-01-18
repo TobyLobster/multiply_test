@@ -130,6 +130,8 @@ I have tested the following routines:
 | [smult4.a](tests/smult4.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [smult5.a](tests/smult5.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
 | [smult6.a](tests/smult6.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*EDN* magazine (5th Sept 1979)](https://archive.org/details/edn-1979_09_05/page/118/mode/2up), article by Arch D Robison |
+| [smult7.a](tests/smult7.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:fast_8bit_multiplication_16bit_product) by Oswald/Resource |
+| [smult8.a](tests/smult8.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares) | mult65, converted to signed multiply by TobyLobster |
 
 ### Miscellaneous multiply
 
@@ -284,6 +286,8 @@ Here are some example signed multiply routines. The signed routines are usually 
 | [smult4.a](tests/smult4.a)   | 242.52         | 67             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult19                    |
 | [smult5.a](tests/smult5.a)   | 180.50         | 35             | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult9                     |
 | [smult6.a](tests/smult6.a)   | 158.00         | 39             | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
+| [smult7.a](tests/smult7.a)   | 88.50          | 1400           | 8 x 8 bit *signed* multiply (16 bit result) with *bug fix*                                  |
+| [smult8.a](tests/smult8.a)   | 62.99          | 1068           | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult65                    |
 
 ### Miscellaneous multiply
 

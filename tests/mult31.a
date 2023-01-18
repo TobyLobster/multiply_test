@@ -1,5 +1,5 @@
 ; mult31.a
-; from https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
+; from codebase by JackAsser/Instinct: https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
 ;
 ; 16 bit x 16 bit unsigned multiplication, 32 bit result
 ; Average cycles: 238.07

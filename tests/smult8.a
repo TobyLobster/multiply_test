@@ -1,0 +1,66 @@
+; smult8.a
+; from mult65 (Nick Jameson's 3D Demo for the BBC Micro (1994), https://github.com/simondotm/bbc-micro-3d/blob/master/source/culling.asm)
+; adjusted by TobyLobster for signed multiply
+;
+; 8 bit x 8 bit signed multiplication, 16 bit result
+; Average cycles: 62.99
+; 1068 bytes
+
+
+* = $0200
+
+multiplicand    = $02   ; 1 byte
+multiplier      = $03   ; 1 byte
+result          = $04   ; 2 bytes
+
+lmul0           = $06   ; pointer into square table low
+lmul1           = $08   ; pointer into square table high
+prod_low        = $0a
+
+; Align tables to start of page
+squaretable1_lsb
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+squaretable1_msb
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; 8 bit x 8bit signed multiply, 16 bit result
+;
+; On Entry:
+;  X: multiplier
+;  Y: multiplicand
+; On Exit:
+;  (prod_low, A): product
+mult
+    stx lmul0
+    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0          ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),Y
+    sbc squaretable1_lsb,X
+    sta prod_low
+    lda (lmul1),Y
+    sbc squaretable1_msb,X
+
+    ; Step 2: apply sign (See C=Hacking16 for details).
+    cpy #$80
+    bcc +
+    sbc lmul0
++
+    bit lmul0
+    bpl +
+    sty temp
+    sec
+temp = * + 1
+    sbc #0
++
+    rts

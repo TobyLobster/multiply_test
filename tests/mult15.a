@@ -1,5 +1,5 @@
 ; mult15.a
-; from codebase64: https://www.codebase64.org/doku.php?id=base:fastest_multiplication
+; from codebase64, by Repose: https://www.codebase64.org/doku.php?id=base:fastest_multiplication
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
 ; Average cycles: 206.60

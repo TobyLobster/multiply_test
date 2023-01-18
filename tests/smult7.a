@@ -1,0 +1,223 @@
+; smult7.a
+; from codebase64 by Oswald/Resource: https://www.codebase64.org/doku.php?id=base:fast_8bit_multiplication_16bit_product
+; with BUG FIX by TobyLobster to handle -128 * -128
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 88.50
+; 1400 bytes
+
+
+XTMP     = $02  ;temporary for X reg
+RL       = $03  ;result lo
+RH       = $04  ;result hi
+
+* = $0200
+
+; Tables must be aligned with page boundary
+SQRL
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+
+SQRH
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+ABS
+    !for i, 0, 255 {
+        !if (i < 128) {
+            !byte i
+        } else {
+            !byte 256 - i
+        }
+    }
+
+; ------- MULTIPLY ----------------------
+; 8x8bits -> 16 bits, signed input and output
+; x*y -> y(hi) & x(lo)
+;
+; warning: there are quite a few undeclared
+; zero page addresses used by the mulgen subroutine
+;
+; the routine is based on this equation:
+;
+;  a*b = ((a+b)/2)^2-((a-b)/2)^2
+;
+; Oswald/Resource
+
+MUL
+    stx XTMP    ; storing X for later use
+    tya
+    eor XTMP    ; getting the sign of the final product
+    bmi NEG     ; take another routine if the final product will be negative
+
+    lda ABS,X   ; this is the (a+b) part, we strip a&b from their signs using the abs table.
+    clc         ; it is safe to force both numbers to be positive knowing the final sign of the product which we will set later
+    adc ABS,Y   ; this is done to avoid overflows, and the extra code/tables needed to handle them.
+    sta XTMP
+
+    bcs special ; BUG FIX: special case for -128 * -128
+
+    lda ABS,X   ; (abs(a)-abs(b))
+    sec
+    sbc ABS,Y
+    tay
+
+    ldx ABS,Y   ; ((a-b)/2)^2 will be always positive so its safe to do abs(a-b)
+    ldy XTMP    ; we do this since the sqr table can only handle positive numbers
+
+    ;now we have a+b in Y and a-b in X
+
+                ;low 8 bits of the product calculated here
+    lda SQRL,Y  ;((a+b)/2)^2
+    sec
+    sbc SQRL,X  ;-((a-b)/2)^2
+    sta RL
+                ;same as above for high 8 bits
+    lda SQRH,Y
+    sbc SQRH,X
+    tay
+    ldx RL
+    rts
+
+;case for negative final product, all the same except inverting the result at the end.
+
+NEG
+    lda ABS,X
+    clc
+    adc ABS,Y
+    sta XTMP
+
+    lda ABS,X
+    sec
+    sbc ABS,Y
+    tay
+
+    ldx ABS,Y
+    ldy XTMP
+
+    lda SQRL,Y
+    sec
+    sbc SQRL,X
+    sta RL
+
+    lda SQRH,Y
+    sbc SQRH,X
+    sta RH
+
+    ;inverting the result's sign
+    lda RL
+    eor #$FF
+    clc
+    adc #$01
+    sta RL
+    lda RH
+    eor #$FF
+    adc #$00
+    sta RH
+
+    ldy RH
+    ldx RL
+    rts
+
+special
+    ldy #$40
+    sty RH
+    ldx #0
+    stx RL
+    rts
+
+; generating a 16 bit table with 512 entrys where x=(x*x)/4
+;
+; MULGEN
+;     lda #1
+;     sta $F0
+;     lda #0
+;     sta $F1
+;
+;     lda #0
+;     sta $F4
+;     sta $F5
+;     sta $F6
+;     sta SQRL
+;     sta SQRH
+;
+;     lda #<SQRH
+;     sta $FE
+;     lda #>SQRH
+;     sta $FF
+;
+;     lda #<SQRL
+;     sta $FA
+;     lda #>SQRL
+;     sta $FB
+;
+;     ldx #$01
+;     ldy #$01
+; FFV2
+;
+; FFV
+;      lda $F0
+;      clc
+;      adc $F4
+;      sta $F4
+;
+;      lda $F1
+;      adc $F5
+;      sta $F5
+;
+;      lda $F6
+;      adc #$00
+;      sta $F6
+;
+;      lda $F6
+;      sta $B2
+;      lda $F5
+;      sta $B1
+;      lda $F4
+;      sta $B0
+;
+;      lsr $B2
+;      ror $B1
+;      ror $B0
+;
+;      lsr $B2
+;      ror $B1
+;      ror $B0
+;
+;      lda $B0
+;      sta ($FA),Y
+;      lda $B1
+;      sta ($FE),Y
+;
+;      lda $F0
+;      clc
+;      adc #2
+;      sta $F0
+;      bcc *+4
+;      inc $F1
+;
+;
+;      iny
+;      bne FFV
+;
+;      ldy #$00
+;      inc $FF
+;      inc $FB
+;      dex
+;      bpl FFV2
+;
+; MKABS
+;     ldx #$00     ;generating a table to get the absolute value of signed numbers
+; ABSLP
+;     txa
+;     bpl POS
+;     eor #$FF
+;     clc
+;     adc #$01
+; POS
+;     sta ABS,X
+;     dex
+;     bne ABSLP
+;     rts
+;

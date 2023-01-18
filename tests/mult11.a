@@ -1,5 +1,5 @@
 ; mult11.a
-; from codebase64: https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product
+; from codebase64 by Graham: https://www.codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 162

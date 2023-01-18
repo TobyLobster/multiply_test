@@ -1,5 +1,5 @@
 ; mult14.a
-; from codebase64: https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
+; from codebase64 by AackAsser/Instinct: https://codebase64.org/doku.php?id=base:seriously_fast_multiplication
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
 ; Average cycles: 45.99

@@ -1,5 +1,5 @@
 ; mult12.a
-; from codebase64: https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
+; from codebase64 by djmips: https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
 ; slightly tweaked
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result

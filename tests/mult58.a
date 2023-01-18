@@ -1,5 +1,5 @@
 ; mult58.a
-; from codebase64: https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication
+; from codebase64, by litwr: https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication
 ; TobyLobster combined 8 bit results to make a 16 bit multiply, see mult16 for 8 bit version
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
