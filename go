@@ -98,6 +98,7 @@ function test() {
 #test "smult6" 0x200
 #test "smult7" 0x700
 #test "smult8" 0x600
+#test "smult9" 0x200
 
 #test "omult1" 0x200
 #test "omult2" 0x200

@@ -124,14 +124,15 @@ I have tested the following routines:
 
 | Source code                  | Bits                | Method                    | From  |
 | ---------------------------- | :-----------------: | :-----------------------: | :---- |
-| [smult1.a](tests/smult1.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
-| [smult2.a](tests/smult2.a)   | 8x8=16   (*signed*) | [Booth's algorithm](#6-booths-algorithm)  | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
-| [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*) | [tables of squares](#3-tables-of-squares) | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult1.a](tests/smult1.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
+| [smult2.a](tests/smult2.a)   | 8x8=16   (*signed*) | [Booth's algorithm](#6-booths-algorithm)                          | [Marcus Thill](https://markusthill.github.io/programming/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/) |
+| [smult3.a](tests/smult3.a)   | 16x16=32 (*signed*) | [tables of squares](#3-tables-of-squares)                         | [codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) |
 | [smult4.a](tests/smult4.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) |[Neil Parker](https://llx.com/Neil/a2/mult.html) |
 | [smult5.a](tests/smult5.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster, converting mult9 to a signed multiply |
 | [smult6.a](tests/smult6.a)   | 8x8=16   (*signed*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*EDN* magazine (5th Sept 1979)](https://archive.org/details/edn-1979_09_05/page/118/mode/2up), article by Arch D Robison |
-| [smult7.a](tests/smult7.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares) | [codebase64](https://www.codebase64.org/doku.php?id=base:fast_8bit_multiplication_16bit_product) by Oswald/Resource |
-| [smult8.a](tests/smult8.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares) | mult65, converted to signed multiply by TobyLobster |
+| [smult7.a](tests/smult7.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | [codebase64](https://www.codebase64.org/doku.php?id=base:fast_8bit_multiplication_16bit_product) by Oswald/Resource |
+| [smult8.a](tests/smult8.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | mult65, converted to signed multiply by TobyLobster |
+| [smult9.a](tests/smult9.a)   | 16x16=32 (*signed*) | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) with modifications by TobyLobster |
 
 ### Miscellaneous multiply
 
@@ -288,6 +289,7 @@ Here are some example signed multiply routines. The signed routines are usually 
 | [smult6.a](tests/smult6.a)   | 158.00         | 39             | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
 | [smult7.a](tests/smult7.a)   | 88.50          | 1400           | 8 x 8 bit *signed* multiply (16 bit result) with *bug fix*                                  |
 | [smult8.a](tests/smult8.a)   | 62.99          | 1068           | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult65                    |
+| [smult9.a](tests/smult9.a)   | 570.00         | 81             | 16 x 16 bit *signed* multiply (32 bit result) based on the unsigned mult60                  |
 
 ### Miscellaneous multiply
 

@@ -1,0 +1,116 @@
+; smult9.a
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; with modifications by TobyLobster:
+; - adjusted to use fixed zero page addresses
+; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - X counter counts up from $fe to avoid cpx
+; - ie. mult60, then converted to signed multiply
+;
+;
+; multiplicand
+; +------+------+
+; |  +1  |  +0  |
+; +------+------+
+;       ||
+;      _||_  add
+;      \  /
+;       \/         initially set to
+; result           multiplier
+; +------+------+  +------+------+
+; |  +3  |  +2  |  |  +1  |  +0  |
+; +------+------+  +------+------+
+;
+; (1) first 8 times around loop, shift right: result+3 into +2 into +0:
+;
+; --------> shift         >
+;                \_______/
+;
+; (2) final 8 times around loop, shift right: result+3 into +2 into +1:
+;
+; --------> shift ->
+;
+
+
+; 16 bit x 16 bit signed multiply, 32 bit result
+; Average cycles: 570
+; 81 bytes
+
+multiplicand    = $02   ; 2 bytes
+multiplier      = $04   ; 2 bytes
+result          = $06   ; 4 bytes
+
+* = $0200
+
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+;
+; On Entry:
+;   multiplier:     two byte value
+;   multiplicand:   two byte value
+; On Exit:
+;   result:         four byte product (note: 'result' shares memory with 'multiplier')
+mult
+    ; Step 1: unsigned multiply
+    ; copy multiplier into result (multiplier preserved for sign calculation later)
+    lda multiplier
+    sta result
+    lda multiplier+1
+    sta result+1
+
+    lda #0              ;
+    sta result+2        ; 16 bits of zero in A, result+2
+                        ; (think of A as a local cache of result+3)
+                        ;  Note:    First 8 shifts are  A -> result+2 -> result
+                        ;           Final 8 shifts are  A -> result+2 -> result+1
+    ldx #$fe            ; count for outer loop. Loops twice.
+
+    ; outer loop (2 times)
+outer_loop
+    ldy #8              ; count for inner loop
+    lsr result+2,x      ; think "result" then later "result+1"
+
+    ; inner loop (8 times)
+inner_loop
+    bcc +
+    sta result+3        ; remember A
+    lda result+2
+    clc
+    adc multiplicand
+    sta result+2
+    lda result+3        ; recall A
+    adc multiplicand+1
+
++
+    ror                 ; shift
+    ror result+2
+    ror result+2,x      ; think "result" then later "result+1"
+    dey
+    bne inner_loop      ; go back for 1 more shift?
+
+    inx
+    bne outer_loop      ; go back for 8 more shifts?
+
+    sta result+3        ; ms byte of hi-word of result
+
+    ; Step 2: apply sign (See C=Hacking16 for details).
+    bit multiplier+1
+    bpl +               ; skip if multiplier is positive
+    sec
+    lda result+2
+    sbc multiplicand
+    sta result+2
+    lda result+3
+    sbc multiplicand+1
+    sta result+3
++
+    bit multiplicand+1
+    bpl +               ; skip if multiplicand is positive
+    sec
+    lda result+2
+    sbc multiplier
+    sta result+2
+    lda result+3
+    sbc multiplier+1
+    sta result+3
++
+    rts
