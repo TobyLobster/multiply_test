@@ -495,9 +495,9 @@ Only one (mult72, being smallest) is *just* worthy of an orange dot, in the unli
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-It's better generally to use binary multiplication instead (e.g. mult9 or mult11 are 17 bytes). However, for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
-
 The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
+
+So it's better generally to use binary multiplication instead (e.g. mult9 or mult11 are 17 bytes). However, for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
 
 ## Customising
 
