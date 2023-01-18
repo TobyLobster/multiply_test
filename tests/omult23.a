@@ -1,0 +1,103 @@
+; omult23.a
+; based on Dr Jefyll, http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958
+; modifications by TobyLobster:
+; - adjusted to use fixed zero page addresses
+; - removed 'decrement to avoid clc' as this is slower on average
+; - rearranged memory use to remove final memory copy and give LSB first order to result
+; - converted to variable length
+
+
+; multiplicand
+; +--------+--------+   +------+------+
+; | +(m-1) | +(m-2) |...|  +1  |  +0  |
+; +--------+--------+   +------+------+
+;                    ||
+;                   _||_  add
+;                   \  /                  initially set to
+; result             \/                   multiplier
+; +--------+--------+   +------+------+   +------+------+   +------+------+
+; |+(n+m-1)|+(n+m-2)|...|+(n+1)|  +n  |   |+(n-1)|+(n-2)|...|  +1  |  +0  |
+; +--------+--------+   +------+------+   +------+------+   +------+------+
+;
+; Average cycles: 1381.00 (for the 16 x 16 bit case)
+; 76 bytes
+
+n               = $02       ; multiplier length
+m               = $03       ; multiplicand length
+multiplicand    = $04       ; m bytes
+result          = $14       ; m+n bytes
+multiplier      = $24       ; n bytes
+total_bytes     = $44       ; length of result: m+n, calculated at start of routine
+outer_counter   = $45       ;
+inner_counter   = $46       ;
+
+* = $0200
+
+mult
+    lda n                   ;
+    clc                     ;
+    adc m                   ;
+    sta total_bytes         ;
+
+    ; clear top m bytes of result, from X=m+n-1 to n inclusive
+    tax                     ; X=m+n
+    lda #0                  ;
+-
+    sta result-1,x          ;
+    dex                     ;
+    cpx n                   ;
+    bne -                   ;
+
+    ldx #0                  ; count for outer loop (stored in outer_counter): goes from 0 to n-1
+
+    ; outer loop (n times)
+outer_loop
+    stx outer_counter       ; remember outer counter
+    ldy #8                  ; count for inner loop: from 8 to 1
+    sty inner_counter       ;
+    lsr result,x            ; think "result" then later "result+1" then "result+2"...
+
+    ; inner loop (m times)
+inner_loop
+    bcc +
+
+    ; add multiplicand to the top m bits of result
+    ldx n                   ; loop from X=n to n+m-1
+    ldy #0                  ;  and from Y=0 to m-1
+    tya                     ; A=0. lowest bit of A will hold the carry from the previous time around this next loop
+-
+    lsr                     ; recall carry from A
+    lda result,x            ;
+    adc multiplicand,y      ;
+    sta result,x            ;
+    rol                     ; remember carry in A
+    inx                     ;
+    iny                     ;
+    cpy m                   ;
+    bne -                   ;
+    lsr                     ; recall carry from A
+
++
+    ; shift result
+    ldx total_bytes         ; loop m times from n+m to n
+    ldy m                   ;  and m times from m to 0
+-
+    ror result-1,x          ;
+    dex                     ;
+    dey                     ; we don't use 'cpx n' here because we want to preserve carry. So we use a Y counter instead.
+    bne -                   ;
+
+    ldx outer_counter       ;
+    ror result,x            ; shift final byte. think "result" then later "result+1" then "result+2"...
+
+    ; check inner loop count
+    dec inner_counter       ;
+    bne inner_loop          ;
+
+    ; check outer loop count
+    ldx outer_counter       ;
+    inx                     ;
+    cpx n                   ;
+    bne outer_loop          ;
+
+    rts                     ;

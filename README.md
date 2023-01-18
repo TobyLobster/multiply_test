@@ -162,6 +162,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult20.a](tests/omult20.a) | 32x32=64                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [6502.org](http://6502.org/source/integers/32muldiv.htm) based on [*6502 Software Design*](https://archive.org/details/6502softwaredesi0000scan/page/124/mode/1up) by Leo J Scanlon (1980), expanded by Greg (1999) |
 | [omult21.a](tests/omult21.a) | 24x24=48                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 24 bit by TobyLobster (2023) |
 | [omult22.a](tests/omult22.a) | 32x32=64                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 32 bit by TobyLobster (2023) |
+| [omult23.a](tests/omult23.a) | mxn=n+m (*variable size multiply*)            | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and generalised to mxn by TobyLobster (2023) |
 
 ## The Results
 
@@ -320,6 +321,7 @@ Variable bit length multiply is available in omult18.a, but see also [*BBC Micro
 | [omult20.a](tests/omult20.a) | 2741.00        | 66             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult21.a](tests/omult21.a) | 1014.00        | 49             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult22.a](tests/omult22.a) | 1653.00        | 59             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult23.a](tests/omult23.a) | 1381.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
 
 ## The Algorithms
 

@@ -126,3 +126,4 @@ function test() {
 #test "omult21" 0x200 10000000
 #test "omult22" 0x200
 #test "omult22" 0x200 10000000
+test "omult23" 0x200
