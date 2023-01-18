@@ -2,8 +2,8 @@
     "results": {
         "title": "omult23",
         "bytes": "76",
-        "AverageCycles": "1381.00",
-        "MinCycles": "909",
-        "MaxCycles": "1853"
+        "AverageCycles": "4405.00",
+        "MinCycles": "2962",
+        "MaxCycles": "6070"
     }
 }

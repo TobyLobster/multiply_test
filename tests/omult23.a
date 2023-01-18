@@ -5,7 +5,8 @@
 ; - removed 'decrement to avoid clc' as this is slower on average
 ; - rearranged memory use to remove final memory copy and give LSB first order to result
 ; - converted to variable length
-
+;
+; m x n byte unsigned multiply, m+n byte result
 
 ; multiplicand
 ; +--------+--------+   +------+------+
@@ -19,7 +20,18 @@
 ; |+(n+m-1)|+(n+m-2)|...|+(n+1)|  +n  |   |+(n-1)|+(n-2)|...|  +1  |  +0  |
 ; +--------+--------+   +------+------+   +------+------+   +------+------+
 ;
-; Average cycles: 1381.00 (for the 16 x 16 bit case)
+
+; m x n byte unsigned multiply, m+n byte result
+;
+; Limits on sizes:
+;
+;      2 <= n <= 253
+;      2 <= m <= 253
+;    n+m <= 255
+;
+; Average cycles: 1381.00 for the 2 byte x 2 byte case
+;                 2685.00 for the 3 byte x 3 byte case
+;                 4405.00 for the 4 byte x 4 byte case
 ; 76 bytes
 
 n               = $02       ; multiplier length
