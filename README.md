@@ -163,7 +163,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult21.a](tests/omult21.a) | 24x24=48                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 24 bit by TobyLobster (2023) |
 | [omult22.a](tests/omult22.a) | 32x32=64                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 32 bit by TobyLobster (2023) |
 | [omult23.a](tests/omult23.a) | mxn=n+m (*variable size multiply*)            | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and generalised to mxn by TobyLobster (2023) |
-| [omult24.a](tests/omult24.a) | 24x24=24                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neils at codebase64](https://www.codebase64.org/doku.php?id=base:24bit_multiplication_24bit_product) |
+| [omult24.a](tests/omult24.a) | 24x24=24                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neils at codebase64](https://www.codebase64.org/doku.php?id=base:24bit_multiplication_24bit_product) (2018) |
 
 ## The Results
 
