@@ -5,9 +5,10 @@
 ; Average cycles: 43.00
 ; 547 bytes
 ;
-; Error 0: 35492
-; Error 1: 30044
-; Root-mean-square deviation: 173.33 (smaller is better)
+; Error -1: 4707
+; Error 0: 43681
+; Error 1: 17148
+; Root-mean-square deviation: 147.83 (smaller is better)
 
 temp_m2   = $02
 
@@ -16,7 +17,7 @@ temp_m2   = $02
 ; align table to start of a page for speed
 squares_high
     !for i, 0, 511 {
-        !byte >((i*i)/4)
+        !byte >(((i-0.74)*(i-0.74))/4)
     }
 
 ; ----------------------------------------------------------------------------------

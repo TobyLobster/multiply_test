@@ -444,12 +444,13 @@ Root-mean-square deviation: 167.60 (smaller is better)
 
 The same log and antilog tables can be used to implement an approximate division.
 
-If division is not needed however, then a table of squares method can be used, and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by no more than one:
+If division is not needed however, then a table of squares method can be used (total: 512 bytes of data), and assuming (as with log based methods above) only the high byte of the product is required, the code for the low byte can be removed, for a version that is wrong by no more than one:
 
 ```
-Error 0: 35492
-Error 1: 30044
-Root-mean-square deviation: 173.33 (smaller is better)
+Error -1: 4707
+Error 0: 43681
+Error 1: 17148
+Root-mean-square deviation: 147.83 (smaller is better)
 ```
 
 ![omult11 results](results/log11.svg)
