@@ -15,6 +15,7 @@ temp_m2   = $02
 * = $0200
 
 ; align table to start of a page for speed
+; the table has been biased by '-0.74' by manual experimentation to minimize the root mean square deviation.
 squares_high
     !for i, 0, 511 {
         !byte >(((i-0.74)*(i-0.74))/4)

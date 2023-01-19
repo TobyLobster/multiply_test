@@ -453,6 +453,8 @@ Error 1: 17148
 Root-mean-square deviation: 147.83 (smaller is better)
 ```
 
+The table has been biased by '-0.74' by manual experimentation to minimize the root mean square deviation.
+
 ![omult11 results](results/log11.svg)
 
 ### 5. Four bit multiply
