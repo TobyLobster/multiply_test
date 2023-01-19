@@ -1,0 +1,59 @@
+// omult24.c
+
+// specify range of input values
+static const uint64_t INPUT_START = 0UL;
+static const uint64_t INPUT_END   = 65536UL * 65536UL;
+
+// **************************************************************************************
+void get_x_y_from_input(thread_context_t* threadContext, uint64_t input, uint64_t *x, uint64_t *y) {
+    if (threadContext->options->random > 0) {
+        *x = input & ((65536UL * 65536UL)-1);
+        *y = input >> 32;
+    } else {
+        *x = input & 65535;
+        *y = (input / 65536) & 65535;
+    }
+}
+
+// **************************************************************************************
+void test_pre(thread_context_t* threadContext, uint64_t input) {
+    zuint8* memory = threadContext->machine.context;
+
+    uint64_t x, y;
+    get_x_y_from_input(threadContext, input, &x, &y);
+
+    memory[0x2] = x & 255UL;
+    memory[0x3] = (x / 256UL) & 255UL;
+    memory[0x4] = (x / 65536UL) & 255UL;
+    memory[0x5] = y & 255UL;
+    memory[0x6] = (y / 256UL) & 255UL;
+    memory[0x7] = (y / 65536UL) & 255UL;
+}
+
+// **************************************************************************************
+uint64_t test_post(thread_context_t* threadContext) {
+    zuint8* memory = threadContext->machine.context;
+
+    uint64_t a = memory[8];
+    uint64_t b = memory[9];
+    uint64_t c = memory[10];
+
+    return a + 256UL*(b + 256UL*c);
+}
+
+// **************************************************************************************
+int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_result, uint64_t* expected) {
+    uint64_t x, y;
+    get_x_y_from_input(threadContext, input, &x, &y);
+
+    uint64_t e = (x * y) & (256UL * 65536UL - 1);
+    *expected = e;
+
+    return actual_result == e;
+}
+
+
+// **************************************************************************************
+void test_cleanup()
+{
+}

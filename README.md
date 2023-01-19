@@ -163,6 +163,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult21.a](tests/omult21.a) | 24x24=48                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 24 bit by TobyLobster (2023) |
 | [omult22.a](tests/omult22.a) | 32x32=64                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 32 bit by TobyLobster (2023) |
 | [omult23.a](tests/omult23.a) | mxn=n+m (*variable size multiply*)            | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and generalised to mxn by TobyLobster (2023) |
+| [omult24.a](tests/omult24.a) | 24x24=24                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neils at codebase64](https://www.codebase64.org/doku.php?id=base:24bit_multiplication_24bit_product) |
 
 ## The Results
 
@@ -295,7 +296,7 @@ Here are some example signed multiply routines. The signed routines are usually 
 ### Miscellaneous multiply
 
 Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths.
-A decent variable bit length multiply is available in omult23.a, but for other variable bit length maths routines, see [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984).
+A decent variable bit length multiply is available in omult23.a, but for other maths operations, see [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984).
 
 | Source                       | Average cycles | Memory (bytes) | Notes                                                                              |
 | ---------------------------- | -------------: | -------------: | ---------------------------------------------------------------------------------- |
@@ -322,6 +323,7 @@ A decent variable bit length multiply is available in omult23.a, but for other v
 | [omult21.a](tests/omult21.a) | 1014.00        | 49             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult22.a](tests/omult22.a) | 1653.00        | 59             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult23.a](tests/omult23.a) | 1381.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
+| [omult24.a](tests/omult24.a) | 1356.94        | 61             | 24 x 24 bit unsigned multiply, *ONLY low 24 bit* result (tested over millions of random inputs, and all 16 bit inputs) |
 
 ## The Algorithms
 
@@ -590,7 +592,12 @@ temp = * + 1
 For a 16 bit x 16 bit multiply where only the lower 16 bits are required, the same is true.
 
 ### 5. Self modifying code
-Some implementations use self modifying code for speed, so won't work without change from ROM. But if you can use self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
+If not running from ROM, self-modifying code can be used to optimise for speed. The table of squares routines often do this, for example.
+Implementations that use the shift-and-add algorithm will often add the multiplicand in a single location in the loop.
+It may be possible to replace these 'adc multiplicand' and 'adc multiplicand+1' instructions with immediate versions 'adc #0'
+and write the multiplicand into the adc operands directly from the caller code.
+
+If using self-modifying code, putting the code itself in zero page can make it run a little faster, if you have the space!
 
 ### 6. Multiply using Binary Coded Decimal (BCD)
 

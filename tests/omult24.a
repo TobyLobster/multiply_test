@@ -1,0 +1,60 @@
+; omult24.a
+; from codebase64: https://www.codebase64.org/doku.php?id=base:24bit_multiplication_24bit_product
+;
+; 24 bit x 24 bit unsigned multiply, 24 bit result
+; Average cycles: 1356.94
+; 61 bytes
+
+
+factor1 = $02       ; 3 bytes
+factor2 = $05       ; 3 bytes
+product = $08       ; 3 bytes
+
+* = $0200
+
+unsigned_mul24
+    lda #0              ; set product to zero
+    sta product
+    sta product+1
+    sta product+2
+
+loop
+    lda factor2         ; while factor2 != 0
+    beq test_zero       ; OPTIMISATION: faster check for zero
+continue
+    ;and #$01
+    ;beq skip
+    lsr                 ; OPTIMISATION: saves a byte over original 'and #$01; beq skip;'
+    bcc skip            ;
+
+    lda factor1         ; product += factor1
+    clc
+    adc product
+    sta product
+
+    lda factor1+1
+    adc product+1
+    sta product+1
+
+    lda factor1+2
+    adc product+2
+    sta product+2       ; end if
+
+skip
+    asl factor1         ; << factor1
+    rol factor1+1
+    rol factor1+2
+    lsr factor2+2       ; >> factor2
+    ror factor2+1
+    ror factor2
+
+    jmp loop            ; end while
+
+test_zero
+    lda factor2+1
+    ora factor2+2
+    bne nz
+    rts
+nz
+    lda factor2
+    jmp continue
