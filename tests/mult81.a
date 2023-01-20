@@ -1,0 +1,45 @@
+; mult81.a
+; from the Graphics Extension ROM 1.2 at $B8D4
+;
+; 8 bit x 8 bit unsigned multiply, 16 bit result
+; Average cycles: 199
+; 26 bytes
+
+
+productLow  = $02
+productHigh = $03
+
+* = $0200
+
+; ***************************************************************************************
+;
+; 8 bit unsigned multiply, 16 bit result
+;
+; On Entry:
+;   X = multiplicand
+;   Y = multiplier
+; On Exit:
+;   productLow/High: product (16 bit)
+;
+; ***************************************************************************************
+mult
+    lda #0                                              ;
+    sta productHigh                                     ;
+    tya                                                 ;
+    lsr                                                 ;
+    sta productLow                                      ;
+    ldy #8                                              ;
+multiplyLoop
+    bcc skipAdd                                         ;
+
+    clc                                                 ;
+    txa                                                 ;
+    adc productHigh                                     ;
+    sta productHigh                                     ;
+skipAdd
+    ror productHigh                                     ;
+    ror productLow                                      ;
+    dey                                                 ;
+    bne multiplyLoop                                    ;
+
+    rts                                                 ;

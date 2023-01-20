@@ -13,25 +13,17 @@ class Diagram:
         self.ylimit = ylimit
         self.results_list = results_list
 
+all_8bit_multiplies = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80, 81]
+all_16bit_multiplies = [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 67, 69, 74]
+
 diagrams = [
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16_all", [0, 2100], [0, 2000],
-        [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80]),
-
-    Diagram("Multiply by repeated addition (8x8=16 bit), Memory vs speed", "6502_8x8=16_repeated_addition", [0, 50], [0, 5200],
-        [70, 71, 72, 73]),
-
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16", [0, 2200], [0, 175],
-        [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80]),
-
-    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed (detail)", "6502_8x8=16_detail", [0,80], [0,180],
-        [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 34, 35, 37, 38, 39, 40, 43, 44, 47, 57, 65, 66, 68, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80]),
-
-    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", "6502_16x16=32", [0, 2300], [0, 760],
-        [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 67, 69, 74]),
-
-    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed (detail)", "6502_16x16=32_detail", [0, 400], [0, 650],
-        [1, 2, 3, 4, 15, 31, 33, 36, 41, 42, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 67, 69, 74]),
-        ]
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16_all",                      [0, 2100],  [0, 2000],  all_8bit_multiplies),
+    Diagram("Multiply by repeated addition (8x8=16 bit), Memory vs speed", "6502_8x8=16_repeated_addition", [0, 50],    [0, 5200],  [70, 71, 72, 73]),
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed", "6502_8x8=16",                          [0, 2200],  [0, 175],   all_8bit_multiplies),
+    Diagram("6502 unsigned multiply (8x8=16 bit), Memory vs speed (detail)", "6502_8x8=16_detail",          [0,80],     [0,180],    all_8bit_multiplies),
+    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed", "6502_16x16=32",                      [0, 2300],  [0, 760],   all_16bit_multiplies),
+    Diagram("6502 unsigned multiply (16x16=32 bit), Memory vs speed (detail)", "6502_16x16=32_detail",      [0, 400],   [0, 650],   all_16bit_multiplies),
+    ]
 
 class Result:
     def __init__(self, title, bytes, ave, min, max):
