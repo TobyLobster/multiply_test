@@ -1,0 +1,63 @@
+; mult82.a
+; from Retro Software (2008): http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines
+;
+; 8 bit x 8 bit unsigned multiply
+; Average cycles: 67.24
+; 827 bytes
+
+
+num1 = $02
+num2 = $03
+result = $04    ; 2 bytes
+
+* = $0200
+
+; Align tables to start of page for speed
+sqrlo
+    !for i, 0, 255 {
+        !byte <((i*i)/4)
+    }
+sqrhi256
+    !for i, 0, 255 {
+        !byte >((i*i)/4)
+    }
+sqrhi512
+    !for i, 0, 255 {
+        !byte >(((i+256)*(i+256))/4)
+    }
+
+mult
+    sec
+    lda num1
+    sbc num2
+    bcs positive
+    eor #255
+    adc #1
+positive
+    tay
+    clc
+    lda num1
+    adc num2
+    tax
+    bcs morethan256
+    lda sqrhi256,X
+    sta result+1
+    lda sqrlo,X
+    sec
+    bcs lessthan256
+morethan256
+    lda sqrhi512,X
+    sta result+1
+    txa
+    and #1
+    beq skip
+    lda #$80
+skip
+    eor sqrlo,X
+lessthan256
+    sbc sqrlo,Y
+    sta result
+    lda result+1
+    sbc sqrhi256,Y
+    sta result+1
+    rts

@@ -120,6 +120,8 @@ I have tested the following routines:
 | [mult79.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*NASA Report*](https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up) (1981) |
 | [mult80.a](tests/mult80.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [Kakemoms at *Denial, the Commodore Vic 20 Forum*](http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071) (2015) |
 | [mult81.a](tests/mult81.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) at $b8d4 |
+| [mult82.a](tests/mult82.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
+| [mult83.a](tests/mult83.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
 
 ### Signed multiply
 
@@ -236,6 +238,8 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult79.a](tests/mult79.a) | 399.00         | 39             |                                              |
 | [mult80.a](tests/mult80.a) | 110.00         | 325            |                                              |
 | [mult81.a](tests/mult81.a) | 199.00         | 26             |                                              |
+| [mult82.a](tests/mult82.a) | 67.24          | 827            |                                              |
+| [mult83.a](tests/mult83.a) | 56.00          | 1079           |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
