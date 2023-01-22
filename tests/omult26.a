@@ -1,0 +1,32 @@
+; omult26.a
+; from Starship Command at 0x0fc3: http://www.level7.org.uk/miscellany/starship-command-disassembly.txt
+;
+; 8 bit x 8 bit unsigned multiply, 8 bit result (high byte)
+; Average cycles: 145.00
+; 16 bytes
+
+multiplicand    = $02       ;
+multiplier      = $03       ;
+
+* = $0200
+
+; 8 bit x 8 bit unsigned multiply, 8 bit result (high byte)
+;
+; On Entry:
+;   multiplicand: 8 bit
+;   multiplier: 8 bit multiplier
+; On Exit:
+;   A: product
+mult
+    lda #0
+    ldx #8                  ; 8-bit multiplication of input by multiplier
+loop_over_bits_of_multiplier
+    lsr multiplier
+    bcc multiplier_bit_unset
+    clc
+    adc multiplicand
+multiplier_bit_unset
+    ror
+    dex
+    bne loop_over_bits_of_multiplier
+    rts

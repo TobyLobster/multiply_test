@@ -1,0 +1,46 @@
+; omult29.a
+; from 'Splitting the Atom (The Acorn Recommended Advanced User Guide)' by J.R. Stevenson and John C. Rockett: https://site.acornatom.nl/boeken/splitting-the-atom.pdf
+;
+; 16 bit x 8 bit unsigned multiply, 16 bit result (low bytes)
+; Average cycles: 267.00
+; 34 bytes
+
+* = $0200
+
+M = $02     ; multiplicand 2 bytes
+R = $04     ; result 2 bytes
+
+
+; On Entry:
+;   A: multiplier
+;   M: multiplicand
+; On Exit:
+;   (R, R+1): product
+JJ0
+;    pha
+    ldx #0          ;
+    stx R           ; [OPTIMISATION: used X to avoid 'pha' and 'pla']
+    stx R+1         ;
+;    pla
+    ldx #8
+JJ1
+    ;clc            ; [OPTIMISATION: replace 'clc:rol R' with 'asl R']
+    asl R           ;
+    rol R+1
+    asl
+    bcc JJ2
+    ;pha
+    tay             ; [OPTIMISATION: use Y to remember A instead of stack]
+    clc
+    lda R
+    adc M
+    sta R
+    lda R+1
+    adc M+1
+    sta R+1
+    ;pla
+    tya             ; [OPTIMISATION: use Y to remember A instead of stack]
+JJ2
+    dex
+    bne JJ1
+    rts

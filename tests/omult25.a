@@ -1,0 +1,32 @@
+; omult25.a
+; from Starship Command at $1e69: http://www.level7.org.uk/miscellany/starship-command-disassembly.txt
+;
+; 3 bit x 8 bit unsigned multiply, 8 bit result (high bits)
+; Average cycles: 60.00
+; 16 bytes
+
+sine    = $02   ; multiplicand (3 bits)
+radius  = $03   ; multiplier (8 bits)
+
+* = $0200
+
+; 3 bit x 8 bit unsigned multiply, 8 bit result
+;
+; On Entry:
+;   sine:   3 bit multiplicand
+;   radius: 8 bit multiplier
+; On Exit:
+;   A: product
+mult
+    ldx #3                   ; 3-bit multiplication of sine by radius
+    lda #0
+loop_over_bits_of_sine
+    lsr sine
+    bcc sine_bit_unset
+    clc
+    adc radius
+sine_bit_unset
+    ror
+    dex
+    bne loop_over_bits_of_sine
+    rts

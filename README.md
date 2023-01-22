@@ -167,6 +167,11 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult22.a](tests/omult22.a) | 32x32=64                                      | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and expanded to 32 bit by TobyLobster (2023) |
 | [omult23.a](tests/omult23.a) | mxn=n+m (*variable size multiply*)            | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and generalised to mxn by TobyLobster (2023) |
 | [omult24.a](tests/omult24.a) | 24x24=24                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Neils at codebase64](https://www.codebase64.org/doku.php?id=base:24bit_multiplication_24bit_product) (2018) |
+| [omult25.a](tests/omult25.a) | 3x8=8 (*partial result, high 8 bits only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $1e69 (1983) |
+| [omult26.a](tests/omult26.a) | 8x8=8 (*partial result, high 8 bits only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $0fc3 (1983) |
+| [omult27.a](tests/omult27.a) | 16x8=16 (*partial result, high 16 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $0fa8 and $10be (1983) |
+| [omult28.a](tests/omult28.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $1095 (1983) |
+| [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*'Splitting the Atom (The Acorn Recommended Advanced User Guide)* by J.R. Stevenson and John C. Rockett](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) |
 
 ## The Results
 
@@ -330,6 +335,11 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult22.a](tests/omult22.a) | 1653.00        | 59             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult23.a](tests/omult23.a) | 1381.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
 | [omult24.a](tests/omult24.a) | 1356.94        | 61             | 24 x 24 bit unsigned multiply, *ONLY low 24 bit* result (tested over millions of random inputs, and all 16 bit inputs) |
+| [omult25.a](tests/omult25.a) | 60.00          | 16             | 3 x 8 bit unsigned multiply, *ONLY top 8 bit* result                               |
+| [omult26.a](tests/omult26.a) | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY top 8 bit* result                               |
+| [omult27.a](tests/omult27.a) | 444.00         | 22             | 16 x 8 bit unsigned multiply, *ONLY top 16 bit* result                             |
+| [omult28.a](tests/omult28.a) | 897.00         | 24             | 24 x 8 bit unsigned multiply, *ONLY top 24 bit* result                             |
+| [omult29.a](tests/omult29.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
 
 ## The Algorithms
 
