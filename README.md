@@ -171,7 +171,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult26.a](tests/omult26.a) | 8x8=8 (*partial result, high 8 bits only*)    | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $0fc3 (1983) |
 | [omult27.a](tests/omult27.a) | 16x8=16 (*partial result, high 16 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $0fa8 and $10be (1983) |
 | [omult28.a](tests/omult28.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $1095 (1983) |
-| [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*'Splitting the Atom (The Acorn Recommended Advanced User Guide)* by J.R. Stevenson and John C. Rockett](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) |
+| [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*'Splitting the Atom (The Acorn Recommended Advanced User Guide)*](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) by J.R. Stevenson and John C. Rockett (early 1980s) |
 
 ## The Results
 
