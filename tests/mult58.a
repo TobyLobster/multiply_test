@@ -3,9 +3,8 @@
 ; TobyLobster combined 8 bit results to make a 16 bit multiply, see mult16 for 8 bit version
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 376.03
-; 783 bytes
-
+; Average cycles: 365.03
+; 772 bytes
 
 
 inputA = $02        ; 2 bytes (a0,a1)
@@ -14,7 +13,6 @@ result = $06        ; 4 bytes
 
 min         = $0a
 result_low  = $0b
-temp3       = $0c
 
 
 * = $0200
@@ -60,22 +58,20 @@ mult
     tay
     lda sqrlo,x
     sbc sqrlo,y
-    sta result_low
+    sta result
     lda sqrhi,x
     sbc sqrhi,y
-    sta temp3
+    tay
     clc
     ldx min
-    lda result_low
+    lda result
     adc sqrlo,x
-    sta result_low
-    lda temp3
+    sta result
+    tya
     adc sqrhi,x
     ror
     sta result+1        ; x is high byte
-    lda result_low
-    ror
-    sta result          ; a is low byte
+    ror result
 
     ; (a1*b0) 8 bit multiply
     ldx inputB          ; 3
@@ -101,13 +97,13 @@ mult
     sta result_low
     lda sqrhi,x
     sbc sqrhi,y
-    sta temp3
+    tay
     clc
     ldx min
     lda result_low
     adc sqrlo,x
     sta result_low
-    lda temp3
+    tya
     adc sqrhi,x
     ror
     tax
@@ -146,13 +142,13 @@ mult
     sta result_low
     lda sqrhi,x
     sbc sqrhi,y
-    sta temp3
+    tay
     clc
     ldx min
     lda result_low
     adc sqrlo,x
     sta result_low
-    lda temp3
+    tya
     adc sqrhi,x
     ror
     tax
@@ -194,13 +190,13 @@ mult
     sta result_low
     lda sqrhi,x
     sbc sqrhi,y
-    sta temp3
+    tay
     clc
     ldx min
     lda result_low
     adc sqrlo,x
     sta result_low
-    lda temp3
+    tya
     adc sqrhi,x
     ror
     tax

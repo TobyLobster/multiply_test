@@ -277,7 +277,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult54.a](tests/mult54.a) | 497.00         | 192            | unrolled mult2                                                               |
 | [mult55.a](tests/mult55.a) | 483.50         | 344            | fully unrolled mult2                                                         |
 | [mult56.a](tests/mult56.a) | 259.96         | 1210           | I use mult27 and combine to make 16x16                                       |
-| [mult58.a](tests/mult58.a) | 383.93         | 776            | I use mult16 and combine to make 16x16                                       |
+| [mult58.a](tests/mult58.a) | 365.03         | 772            | I use mult16 and combine to make 16x16                                       |
 | [mult59.a](tests/mult59.a) | 553.99         | 67             |                                                                              |
 | [mult60.a](tests/mult60.a) | 527.00         | 39             | mult59 but I use fixed zero page addresses, remove 'decrement to avoid clc'  |
 | [mult61.a](tests/mult61.a) | 482.00         | 57             | ...then unrolled the outer loop                                              |
