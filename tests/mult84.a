@@ -1,0 +1,169 @@
+; mult84.a
+; based on the 8 bit multiply of mult65.a
+; then adjusted for 16 bit multiplication by TobyLobster
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 253.92
+; 1199 bytes
+
+
+inputA = $02        ; 2 bytes (a0,a1)
+inputB = $04        ; 2 bytes (b0,b1)
+result = $06        ; 4 bytes
+lmul0  = $0a        ; address of square table low
+lmul1  = $0c        ; address of square table high
+
+* = $0200
+
+; Tables must be aligned with page boundary
+sqrLow
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+
+sqrHigh
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+; ***************************************************************************************
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+;
+; make sure to call 'jsr mult_init' (once only) before using this multiply
+;
+; On Entry:
+;   inputA: multiplier   (2 bytes)
+;   inputB: multiplicand (2 bytes)
+;
+; On Exit:
+;   result: product (4 bytes)
+mult
+; (a0*b0)
+    ldy inputA          ;
+    ldx inputB          ;
+
+    stx lmul0
+    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0              ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),y
+    sbc sqrLow,x
+    sta result          ; low byte
+    lda (lmul1),y
+    sbc sqrHigh,x
+    sta result+1        ; high byte
+
+; (a1*b0)
+    ldy inputA+1        ;
+    ldx inputB          ;
+
+;    stx lmul0
+;    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0              ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),y
+    sbc sqrLow,x
+    sta temp1
+    lda (lmul1),y
+    sbc sqrHigh,x
+    sta result+2
+temp1 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+
+    bcc +
+    inc result+2
++
+
+;(a0*b1)
+    ldy inputA          ;
+    ldx inputB+1        ;
+
+    stx lmul0
+    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0              ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),y
+    sbc sqrLow,x
+    sta temp2
+    lda (lmul1),y
+    sbc sqrHigh,x
+
+    tax
+temp2 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+1        ;
+    sta result+1        ;
+    txa                 ;
+    adc result+2        ;
+    sta result+2        ;
+
+    lda #0              ;
+    rol                 ; remember the carry for result+3
+    sta result+3        ;
+
+; (a1*b1)
+    ldy inputA+1        ;
+    ldx inputB+1        ;
+
+;    stx lmul0
+;    stx lmul1
+    tya
+    sec
+    sbc lmul0
+    bcs +
+    sbc #0              ; negate A
+    eor #$ff
++
+    tax
+    lda (lmul0),y
+    sbc sqrLow,x
+    sta temp3
+    lda (lmul1),y
+    sbc sqrHigh,x
+
+    tax
+temp3 = *+1
+    lda #0
+
+    clc                 ;
+    adc result+2        ;
+    sta result+2        ;
+    txa                 ;
+    adc result+3        ;
+    sta result+3        ;
+    rts                 ;
+
+; ***************************************************************************************
+; call this once to initialise high bytes of pointers to table
+mult_init
+    lda #>sqrLow          ; high byte (#2 in this instance)
+    sta lmul0+1
+    lda #>sqrHigh         ; high byte (#4 in this instance)
+    sta lmul1+1
+    rts
+
