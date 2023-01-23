@@ -181,13 +181,13 @@ In the diagrams below, grey dots are the also-rans. They are are beaten for both
 
 ![Results of 8 x 8 bit unsigned multiply](results/6502_8x8=16.svg)
 
-To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
-
-![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
-
 Take note that the fastest routines vary largely in size, but with very little difference in cycle counts.
 
 There's a trick however: if you are multiplying lots of numbers by the same multiplier then these routines can be optimised further. e.g. The largest (mult14) takes 45.99 cycles on average normally but takes just 27.99 cycles if the multiplier (in A) doesn't change between calls. This is because the first instructions of the routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, leaving a faster multiply. This same trick can also be done for a smaller benefit to mult66 and mult27.
+
+To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
+
+![Results of 8 x 8 bit unsigned multiply (detail)](results/6502_8x8=16_detail.svg)
 
 All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but do not include any initial JSR mult (3 bytes, 6 cycles).
 
