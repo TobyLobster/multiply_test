@@ -172,6 +172,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult27.a](tests/omult27.a) | 16x8=16 (*partial result, high 16 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $0fa8 and $10be (1983) |
 | [omult28.a](tests/omult28.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $1095 (1983) |
 | [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Splitting the Atom (The Acorn Recommended Advanced User Guide)*](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) by J.R. Stevenson and John C. Rockett (early 1980s) |
+| [omult30.a](tests/omult30.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023) |
 
 ## The Results
 
@@ -340,6 +341,7 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult27.a](tests/omult27.a) | 444.00         | 22             | 16 x 8 bit unsigned multiply, *ONLY high 16 bit* result                            |
 | [omult28.a](tests/omult28.a) | 897.00         | 24             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
 | [omult29.a](tests/omult29.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
+| [omult30.a](tests/omult30.a) | 310.00         | 40             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
 
 ## The Algorithms
 

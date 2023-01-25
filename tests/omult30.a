@@ -1,0 +1,57 @@
+; omult30.a
+; from TobyLobster
+;
+; 24 bit x 8 bit unsigned multiply, 24 bit result (high bytes)
+;
+; It's faster to loop 8 times and do 24 bit adds, than to loop 24 times and do 8 bit adds.
+;
+; Average cycles: 310
+; 40 bytes
+
+
+output0 = $02
+output1 = $03
+output2 = $04
+t       = $05
+
+* = $0200
+
+; On Entry:
+;   input0,1,2: 24 bit multiplicand
+;   t: 8 bit multipler
+; On Exit:
+;   output0,1,2: 24 bit result
+mul24x8
+    lda #0                                                            ; A is local cache of output2
+    sta output0                                                       ;
+    sta output1                                                       ;
+    ldy #8                                                            ; loop counter
+-
+    lsr t                                                             ;
+    bcc skip_add                                                      ; check low bit of t and skip if zero
+
+    ; output += input
+    tax
+    lda output0                                                       ;
+    clc                                                               ;
+input0 = * + 1
+    adc #0                                                            ; self modifying code
+    sta output0                                                       ;
+
+    lda output1                                                       ;
+input1 = * + 1
+    adc #0                                                            ; self modifying code
+    sta output1                                                       ;
+
+    txa
+input2 = * + 1
+    adc #0                                                            ; self modifying code
+
+skip_add
+    ror
+    ror output1                                                       ;
+    ror output0                                                       ;
+    dey                                                               ;
+    bne -                                                             ;
+    sta output2                                                       ;
+    rts                                                               ;

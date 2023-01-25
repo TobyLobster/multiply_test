@@ -139,3 +139,4 @@ function test() {
 #test "omult27" 0x200
 #test "omult28" 0x200
 #test "omult29" 0x200
+#test "omult30" 0x200
