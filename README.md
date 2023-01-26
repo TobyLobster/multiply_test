@@ -173,6 +173,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult28.a](tests/omult28.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Starship Command*](http://www.level7.org.uk/miscellany/starship-command-disassembly.txt) at $1095 (1983) |
 | [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Splitting the Atom (The Acorn Recommended Advanced User Guide)*](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) by J.R. Stevenson and John C. Rockett (early 1980s) |
 | [omult30.a](tests/omult30.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023) |
+| [omult31.a](tests/omult31.a) | 24x8=24 (*partial result, high 24 bits only*) | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023) |
 
 ## The Results
 
@@ -184,7 +185,7 @@ In the diagrams below, grey dots are the also-rans. They are are beaten for both
 
 Take note that the fastest routines vary largely in size, but with very little difference in cycle counts.
 
-There's a trick however: if you are multiplying lots of numbers by the same multiplier then these routines can be optimised further. e.g. The largest (mult14) takes 45.99 cycles on average normally but takes just 27.99 cycles if the multiplier (in A) doesn't change between calls. This is because the first instructions of the routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, leaving a faster multiply. This same trick can also be done for a smaller benefit to mult66 and mult27.
+There's one trick however: if you are multiplying lots of numbers by the same multiplier then these routines can be optimised further. e.g. The largest (mult14) takes 45.99 cycles on average normally but takes just 27.99 cycles if the multiplier (in A) doesn't change between calls. This is because the first instructions of the routine are setup code based on the multiplier that takes 18 cycles. This only needs to be done once, leaving a faster multiply. This same trick can also be done for a smaller benefit (6 cycles) to mult66, mult27 and mult57.
 
 To see the results of the smaller routines more clearly, here is a zoomed in view of the same results:
 
@@ -342,6 +343,7 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult28.a](tests/omult28.a) | 897.00         | 24             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
 | [omult29.a](tests/omult29.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
 | [omult30.a](tests/omult30.a) | 310.00         | 40             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
+| [omult31.a](tests/omult31.a) | 168.90         | 2162           | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
 
 ## The Algorithms
 
@@ -584,6 +586,8 @@ The faster, craftier method is:
 3. If the second input is negative, subtract the first input from the high byte(s) of the result.
 
 This takes less memory and fewer cycles than the more obvious method. See [C=Hacking16](http://www.ffd2.com/fridge/chacking/c=hacking16.txt) for more details.
+
+Caveat: If you are using a shift-and-add (or modified shift-and-add) then a small negative number like -1 will have lots of bits set, meaning lots of adds occur in the unsigned multiply. But it works well for table-of-squares routines.
 
 The code to do this can be optimised to be quite small. For instance smult1.a has:
 

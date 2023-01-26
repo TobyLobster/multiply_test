@@ -1,0 +1,110 @@
+; omult31.a
+; from TobyLobster
+;
+; 24 bit x 8 bit unsigned multiply, 24 bit result (high bytes)
+;
+; Average cycles: 168.90
+; 2162 bytes
+
+multiplier = $02
+input0  = $03
+input1  = $04
+input2  = $05
+result0 = $06
+result1 = $07
+result2 = $08
+
+* = $0200
+; Tables must be aligned to page boundary
+square1_low
+    !for i, 0, 511 {
+        !byte <((i*i)/4)
+    }
+square1_high
+    !for i, 0, 511 {
+        !byte >((i*i)/4)
+    }
+
+square2_low
+    !for i, 0, 511 {
+        !byte <(((i-255)*(i-255))/4)
+    }
+square2_high
+    !for i, 0, 511 {
+        !byte >(((i-255)*(i-255))/4)
+    }
+
+; On Entry:
+;   input0,1,2: 24 bit multiplicand
+;   t: 8 bit multipler
+; On Exit:
+;   output0,1,2: 24 bit result
+mul24x8
+    lda multiplier
+    sta mult_internal1
+    sta mult_internal5
+    sta mult_internal9
+    sta mult_internal3
+    sta mult_internal7
+    sta mult_internal11
+    eor #$ff
+    sta mult_internal2
+    sta mult_internal6
+    sta mult_internal10
+    sta mult_internal4
+    sta mult_internal8
+    sta mult_internal12
+
+    ldx input0
+    sec
+mult_internal1 = * + 1
+    lda square1_low,x
+mult_internal2 = * + 1
+    sbc square2_low,x
+mult_internal3 = * + 1
+    lda square1_high,x
+mult_internal4 = * + 1
+    sbc square2_high,x
+
+    sta result0
+
+    ldx input1
+    sec
+mult_internal5 = * + 1
+    lda square1_low,x
+mult_internal6 = * + 1
+    sbc square2_low,x
+    tay
+mult_internal7 = * + 1
+    lda square1_high,x
+mult_internal8 = * + 1
+    sbc square2_high,x
+    sta result1
+    tya
+    clc
+    adc result0
+    sta result0
+    bcc +
+    inc result1
++
+
+    ldx input2
+    sec
+mult_internal9 = * + 1
+    lda square1_low,x
+mult_internal10 = * + 1
+    sbc square2_low,x
+    tay
+mult_internal11 = * + 1
+    lda square1_high,x
+mult_internal12 = * + 1
+    sbc square2_high,x
+    sta result2
+    tya
+    clc
+    adc result1
+    sta result1
+    bcc +
+    inc result2
++
+    rts

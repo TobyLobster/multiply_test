@@ -3,9 +3,10 @@
 ; tweaked slightly
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
-; Average cycles: 51.49
-; 1316 bytes
+; Average cycles: 46.49
+; 1312 bytes
 
+temp = $02
 
 * = $0200
 
@@ -30,8 +31,8 @@ idTab
 ;   A = multiplicand
 ;   X = multiplier
 ; On Exit:
-;   A: low byte of product
-;   X: high byte of product
+;   temp: low byte of product
+;   A: high byte of product
 mult
    sta getLow+1
    sta getHigh+1
@@ -49,7 +50,7 @@ getLow
 getHigh
    lda sqrHigh,x
    sbc sqrHigh,y
-   tax
-temp = *+1
-   lda #0
+;   tax
+;temp = *+1
+;   lda #0
    rts
