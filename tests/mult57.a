@@ -30,9 +30,10 @@ sqrHigh
 ;   prod_low: low byte of product
 ;   A:        high byte of product
 mult
-    stx temp1
     sta getLow+1
     sta getHigh+1
+
+    stx temp1
     sec
 temp1 = *+1
     sbc #0
