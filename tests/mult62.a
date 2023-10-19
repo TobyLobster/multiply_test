@@ -8,7 +8,7 @@
 ; - unrolled the two inner loops once
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles:
+; Average cycles: 442.00
 ; 93 bytes
 
 multiplicand    = $02   ; 2 bytes
