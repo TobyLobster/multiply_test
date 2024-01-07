@@ -122,6 +122,8 @@ I have tested the following routines:
 | [mult81.a](tests/mult81.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) at $b8d4 |
 | [mult82.a](tests/mult82.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
 | [mult83.a](tests/mult83.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
+| [mult84.a](tests/mult84.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023), based on mult66.a |
+| [mult85.a](tests/mult85.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | jbrandwood (2024), based on mult2.a |
 
 ### Signed multiply
 
@@ -247,6 +249,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult81.a](tests/mult81.a) | 199.00         | 26             |                                              |
 | [mult82.a](tests/mult82.a) | 67.24          | 827            |                                              |
 | [mult83.a](tests/mult83.a) | 56.00          | 1079           |                                              |
+| [mult84.a](tests/mult84.a) | 253.92         | 1199           |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -289,6 +292,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult67.a](tests/mult67.a) | 633.00         | 37             |                                                                              |
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                                                              |
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
+| [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
 
 ### Signed multiply
 

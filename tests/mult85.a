@@ -1,0 +1,47 @@
+; mult85.a
+; from https://github.com/TobyLobster/multiply_test/issues/2
+; based on mult2.a
+;
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 540.50
+; 38 bytes
+
+
+; acc*aux -> [acc,acc+1,ext,ext+1] (low,hi) 32 bit result
+
+aux = $02       ; 2 bytes   input1
+acc = $04       ; 2 bytes   input2   } result
+ext = $06       ; 2 bytes            }
+
+* = $0200
+
+; (acc, acc+1, ext, ext+1) = (aux, aux+1) * (acc, acc+1)
+mult
+    lda #0                          ; A holds the low byte of ext (zero for now)
+    sta ext+1                       ; high byte of ext = 0
+    ldy #16                         ; loop counter. Loop 16 times.
+
+    lsr acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+    bcc loop
+add
+    clc                             ;            }
+    adc aux                         ;            }
+    tax                             ; remember A }
+    lda aux+1                       ;            } ext += aux
+    adc ext+1                       ;            }
+    sta ext+1                       ;            }
+    txa                             ; recall A
+
+loop
+    ror ext+1                       ; }
+    ror                             ; }
+    ror acc+1                       ; } acc_ext >> 1
+    ror acc                         ; }
+
+    dey                             ; decrement loop counter
+    bcs add                         ; jump if carry set
+    bne loop                        ; loop back if not done yet
+
+    sta ext                         ;
+    rts                             ;
