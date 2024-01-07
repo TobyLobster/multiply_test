@@ -53,7 +53,7 @@ I have tested the following routines:
 | [mult12.a](tests/mult12.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [djmips at codebase64](https://www.codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables) (2020) |
 | [mult13.a](tests/mult13.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Apple Assembly Line*, March 1986](http://www.txbobsc.com/aal/1986/aal8603.html#a5) |
 | [mult14.a](tests/mult14.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [Jackasser at codebase64](https://codebase64.org/doku.php?id=base:seriously_fast_multiplication) (2015) |
-| [mult15.a](tests/mult15.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [Repose at codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) (2017) |
+| [mult15.a](tests/mult15.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [Repose at codebase64](https://www.codebase64.org/doku.php?id=base:fastest_multiplication) (2017, updated in 2023) |
 | [mult16.a](tests/mult16.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [litwr (Vladimir Lidovski) and Urusergi codebase64](https://www.codebase64.org/doku.php?id=base:another_fast_8bit_multiplication) (2015) |
 | [mult17.a](tests/mult17.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Micro)](https://www.bbcelite.com/cassette/main/subroutine/mu11.html) (1984) |
 | [mult18.a](tests/mult18.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Elite* (BBC Master version)](https://www.bbcelite.com/master/main/subroutine/mu11.html) (1986) |
@@ -232,11 +232,11 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult47.a](tests/mult47.a) | 175.00         | 20             |                                              |
 | [mult57.a](tests/mult57.a) | 48.49          | 1058           |                                              |
 | [mult65.a](tests/mult65.a) | 47.49          | 1061           |                                              |
-| [mult66.a](tests/mult66.a) | 45.49          | 1580           |                                              |
+| [mult66.a](tests/mult66.a) | 45.49          | 1580           | :1st_place_medal: fastest                    |
 | [mult68.a](tests/mult68.a) | 188.00         | 20             | at label 'noadd' use 'ror' not 'lsr' as seen in some editions of the book |
 | [mult70.a](tests/mult70.a) | 1987.11        | 31             |                                              |
 | [mult71.a](tests/mult71.a) | 1572.91        | 41             |                                              |
-| [mult72.a](tests/mult72.a) | 1544.56        | 16             |                                              |
+| [mult72.a](tests/mult72.a) | 1544.56        | 16             | :1st_place_medal: smallest                   |
 | [mult73.a](tests/mult73.a) | 1174.08        | 28             |                                              |
 | [mult75.a](tests/mult75.a) | 205.90         | 24             | *bugs fixed*                                 |
 | [mult76.a](tests/mult76.a) | 185.00         | 18             |                                              |
@@ -259,10 +259,10 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | Source                     | Average Cycles | Memory (bytes) | My Changes                                                                   |
 | -------------------------- | -------------: | -------------: | :--------------------------------------------------------------------------- |
 | [mult1.a](tests/mult1.a)   | 751.00         | 38             |                                                                              |
-| [mult2.a](tests/mult2.a)   | 578.00         | 33             | optimised slightly                                                           |
+| [mult2.a](tests/mult2.a)   | 578.00         | 33             | :1st_place_medal: smallest. (optimised slightly from original)               |
 | [mult3.a](tests/mult3.a)   | 711.00         | 36             |                                                                              |
 | [mult4.a](tests/mult4.a)   | 567.00         | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
-| [mult15.a](tests/mult15.a) | 206.60         | 2181           |                                                                              |
+| [mult15.a](tests/mult15.a) | 204.60         | 2180           | :1st_place_medal: fastest                                                    |
 | [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
 | [mult33.a](tests/mult33.a) | 609.86         | 1276           | with test code removed, and tables page aligned. Stores numbers in MSB order |
 | [mult36.a](tests/mult36.a) | 957.01         | 55             |                                                                              |

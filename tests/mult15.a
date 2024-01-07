@@ -2,13 +2,13 @@
 ; from codebase64, by Repose: https://www.codebase64.org/doku.php?id=base:fastest_multiplication
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 206.60
-; 2181 bytes
+; Average cycles: 204.60
+; 2180 bytes
 
 
 ; How to use:
 ; call jsr init, before first use
-; put numbers in (x0,x1) and (y0,y1) and result is (Y, X, z1, z0)
+; put numbers in (x0,x1) and (y0,y1) and result is (Y, A, z1, z0)
 
 ; pointers to square tables
 p_sqr_lo    = $8b   ; 2 bytes
@@ -23,7 +23,7 @@ y0  = $04    ; multiplicand, 2 bytes
 y1  = $05
 z0  = $06    ; product, 2 bytes + 2 registers
 z1  = $07
-; z2  = $08 returned in X reg
+; z2  = $08 returned in A reg
 ; z3  = $09 returned in Y reg
 
 * = $0200
@@ -129,14 +129,13 @@ c1c
 	sta z1                      ;
 
     ; add last number of column 2
-	txa                         ; A=z2
+	txa                         ;
 c2c
-    adc #0
-	tax                         ; X=z2
+    adc #0                      ; A=z2
 	bcc fin                     ;
 	iny                         ; z3++
 
-    ; Y=z3, X=z2
+    ; Y=z3, A=z2
 fin
     rts
 

@@ -30,7 +30,7 @@ uint64_t test_post(thread_context_t* threadContext) {
 
     uint64_t a = memory[6];
     uint64_t b = memory[7];
-    uint64_t c = threadContext->machine.state.x;
+    uint64_t c = threadContext->machine.state.a;
     uint64_t d = threadContext->machine.state.y;
 
     return a + 256UL*(b + 256UL*(c + 256UL*d));
