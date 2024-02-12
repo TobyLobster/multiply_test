@@ -515,9 +515,9 @@ This method turns out to be ~2.7 times slower on the 6502 than an equivalent 'sh
 Further explanation of Booth's algorithm [here](https://archive.org/details/AdvancedMicroDevices-AMD-SchottkyAndLow-PowerSchottkyDataBook1977OCR/page/n545/mode/2up).
 
 ### 7. Hardware support
-Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with its extended 6502 instruction set has hardware for 'unsigned 8 bit x 8 bit = 16 bit' and 'signed 16 bit x 8 bit = 24 bit' routines.
+Some hardware has multiplication support in silicon. These are likely to be fastest where available. For instance, the [SNES CPU](https://en.wikipedia.org/wiki/Ricoh_5A22) with its extended 6502 instruction set has hardware for (1) 'unsigned 8 bit x 8 bit = 16 bit' (set registers, wait 8 cycles, then read results) and (2) 'signed 16 bit x 8 bit = 24 bit' (set registers, wait 16 cycles, then read results).
 
-Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiply routines.
+Some early vector based arcade machines like *Tempest* and *Battlezone* were programmed in 6502, with an external processor (Atari's [*Math Box*](https://6502disassembly.com/va-battlezone/mathbox.html)) to handle the vector maths, including multiplication.
 
 ### 8. Repeated addition ###
 To multiply m*n, just add m, n times. This is stupidly slow for anything that isn't very small in n, so avoid in general. With 8 bit multiply, if I show them with all the others, the graph looks like this:
@@ -634,7 +634,7 @@ If using self-modifying code, putting the code itself in zero page can make it r
 
 This can be done, but not very efficiently. [Here](https://llx.com/Neil/a2/decimal.html) is an implementation that uses the '[Russian peasant multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication#Russian_peasant_multiplication)'.
 There is discussion of various methods on the [6502.org forum](http://forum.6502.org/viewtopic.php?t=4978).
-A multibyte BCD multiply (for numbers up to 255 bytes long!) is in [6502 Assembly Lanuage Routines](https://archive.org/details/6502_Assembly_Lanuage_Rountines_part_2/page/n15/mode/2up).
+A multibyte BCD multiply (for numbers up to 255 bytes long!) is in [6502 Assembly Language Routines](https://archive.org/details/6502_Assembly_Lanuage_Rountines_part_2/page/n15/mode/2up).
 
 
 ## How to run the tests
