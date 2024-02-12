@@ -122,7 +122,7 @@ I have tested the following routines:
 | [mult81.a](tests/mult81.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) at $b8d4 |
 | [mult82.a](tests/mult82.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
 | [mult83.a](tests/mult83.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
-| [mult84.a](tests/mult84.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023), based on mult66.a |
+| [mult84.a](tests/mult84.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023), based on mult66.a |
 | [mult85.a](tests/mult85.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | jbrandwood (2024), based on mult2.a |
 | [mult86.a](tests/mult86.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [Repose at 6502.org](http://forum.6502.org/viewtopic.php?p=106519#p106519) (2024), based on mult15 |
 
@@ -528,7 +528,7 @@ Only one (mult72, being smallest) is *just* worthy of an orange dot, in the unli
 
 ![repeated addition results](results/6502_8x8=16_repeated_addition.svg)
 
-The booby prize for the least efficient multiply goes to mult70 at nearly 2000 cycles average.
+The booby prize for the slowest multiply goes to mult70 at nearly 2000 cycles average.
 
 So it's better generally to use binary multiplication instead (e.g. mult9 or mult11 are 17 bytes). However, for multiplying by small numbers (between 0 and 24), mult72 is more efficient than mult9.
 
