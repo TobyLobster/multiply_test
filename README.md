@@ -124,6 +124,7 @@ I have tested the following routines:
 | [mult83.a](tests/mult83.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
 | [mult84.a](tests/mult84.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023), based on mult66.a |
 | [mult85.a](tests/mult85.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | jbrandwood (2024), based on mult2.a |
+| [mult86.a](tests/mult86.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Repose at 6502.org](http://forum.6502.org/viewtopic.php?p=106519#p106519) |
 
 ### Signed multiply
 
@@ -265,7 +266,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult2.a](tests/mult2.a)   | 578.00         | 33             | :1st_place_medal: smallest. (optimised slightly from original)               |
 | [mult3.a](tests/mult3.a)   | 711.00         | 36             |                                                                              |
 | [mult4.a](tests/mult4.a)   | 567.00         | 137            | I use mult39 from *Revs* and combine to make 16x16                           |
-| [mult15.a](tests/mult15.a) | 204.60         | 2180           | :1st_place_medal: fastest                                                    |
+| [mult15.a](tests/mult15.a) | 204.60         | 2180           |                                                                              |
 | [mult31.a](tests/mult31.a) | 238.07         | 2219           |                                                                              |
 | [mult33.a](tests/mult33.a) | 609.86         | 1276           | with test code removed, and tables page aligned. Stores numbers in MSB order |
 | [mult36.a](tests/mult36.a) | 957.01         | 55             |                                                                              |
@@ -293,6 +294,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                                                              |
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
+| [mult86.a](tests/mult86.a) | 194.06         | 2170           | :1st_place_medal: fastest                                                    |
 
 ### Signed multiply
 
