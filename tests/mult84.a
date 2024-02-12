@@ -10,8 +10,8 @@
 inputA = $02        ; 2 bytes (a0,a1)
 inputB = $04        ; 2 bytes (b0,b1)
 result = $06        ; 4 bytes
-lmul0  = $0a        ; address of square table low
-lmul1  = $0c        ; address of square table high
+lmul0  = $0a        ; address of square table low  (2 bytes)
+lmul1  = $0c        ; address of square table high (2 bytes)
 
 * = $0200
 
@@ -40,8 +40,8 @@ sqrHigh
 ;   result: product (4 bytes)
 mult
 ; (a0*b0)
-    ldy inputA          ;
-    ldx inputB          ;
+    ldy inputA
+    ldx inputB
 
     stx lmul0
     stx lmul1
@@ -61,11 +61,8 @@ mult
     sta result+1        ; high byte
 
 ; (a1*b0)
-    ldy inputA+1        ;
-    ldx inputB          ;
-
-;    stx lmul0
-;    stx lmul1
+    ldy inputA+1
+    ldx inputB
     tya
     sec
     sbc lmul0
@@ -83,17 +80,17 @@ mult
 temp1 = *+1
     lda #0
 
-    clc                 ;
-    adc result+1        ;
-    sta result+1        ;
+    clc
+    adc result+1
+    sta result+1
 
     bcc +
     inc result+2
 +
 
 ;(a0*b1)
-    ldy inputA          ;
-    ldx inputB+1        ;
+    ldy inputA
+    ldx inputB+1
 
     stx lmul0
     stx lmul1
@@ -115,23 +112,21 @@ temp1 = *+1
 temp2 = *+1
     lda #0
 
-    clc                 ;
-    adc result+1        ;
-    sta result+1        ;
-    txa                 ;
-    adc result+2        ;
-    sta result+2        ;
+    clc
+    adc result+1
+    sta result+1
+    txa
+    adc result+2
+    sta result+2
 
-    lda #0              ;
+    lda #0
     rol                 ; remember the carry for result+3
-    sta result+3        ;
+    sta result+3
 
 ; (a1*b1)
-    ldy inputA+1        ;
-    ldx inputB+1        ;
+    ldy inputA+1
+    ldx inputB+1
 
-;    stx lmul0
-;    stx lmul1
     tya
     sec
     sbc lmul0
@@ -150,13 +145,13 @@ temp2 = *+1
 temp3 = *+1
     lda #0
 
-    clc                 ;
-    adc result+2        ;
-    sta result+2        ;
-    txa                 ;
-    adc result+3        ;
-    sta result+3        ;
-    rts                 ;
+    clc
+    adc result+2
+    sta result+2
+    txa
+    adc result+3
+    sta result+3
+    rts
 
 ; ***************************************************************************************
 ; call this once to initialise high bytes of pointers to table
