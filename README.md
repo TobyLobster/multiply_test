@@ -294,7 +294,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                                                              |
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
-| [mult86.a](tests/mult86.a) | 194.06         | 2170           | :1st_place_medal: fastest                                                    |
+| [mult86.a](tests/mult86.a) | 193.07         | 2170           | :1st_place_medal: fastest                                                    |
 
 ### Signed multiply
 
