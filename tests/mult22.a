@@ -3,8 +3,8 @@
 ; slightly tweaked for speed
 ;
 ; 8 bit x 8 bit unsigned multiply, 16 bit result
-; Average cycles: 76.48
-; 563 bytes
+; Average cycles: 74.48
+; 562 bytes
 
 
 min         = $02
@@ -68,9 +68,8 @@ continue
     sbc sqtab_lsb,y
     sta result_low
     lda sqtab_msb,x
-    sbc sqtab_msb,y
+    sbc sqtab_msb,y     ; clears carry
     sta temp3
-    clc
     ldx min
     lda result_low
     adc sqtab_lsb,x

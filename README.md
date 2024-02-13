@@ -214,7 +214,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult19.a](tests/mult19.a) | 185.00         | 18             |                                              |
 | [mult20.a](tests/mult20.a) | 244.00         | 27             | *bug fixed*                                  |
 | [mult21.a](tests/mult21.a) | 150.00         | 18             |                                              |
-| [mult22.a](tests/mult22.a) | 77.49          | 563            |                                              |
+| [mult22.a](tests/mult22.a) | 74.48          | 562            |                                              |
 | [mult23.a](tests/mult23.a) | 153.00         | 21             |                                              |
 | [mult24.a](tests/mult24.a) | 110.63         | 70             | slightly tweaked                             |
 | [mult25.a](tests/mult25.a) | 243.00         | 28             | *bug fixed*, tweaked parameter passing       |
