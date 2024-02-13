@@ -29,6 +29,7 @@ z3  = $09
 * = $0200
 
 ; Align tables to start of page
+; Note - the last byte of each table is never referenced, as a+b<=510
 sqrlo
     !for i, 0, 511 {
         !byte <((i*i)/4)
@@ -70,6 +71,9 @@ umult16
 
     ; set multiplicand as y0
     ldy y0
+
+    ;x1y0l =  low(x1*y0)
+    ;x1y0h = high(x1*y0)
     sec
     lda (p_sqr_lo),y
     sbc (p_neg_sqr_lo),y
@@ -104,7 +108,7 @@ umult16
     sbc (p_neg_sqr_lo),y
     sta x0y1l+1
     lda (p_sqr_hi),y
-    sbc (p_neg_sqr_hi ),y
+    sbc (p_neg_sqr_hi),y
     tax
 
     ; set multiplicand as y0

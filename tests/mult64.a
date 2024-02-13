@@ -8,8 +8,8 @@
 ; - unrolled the two inner loops fully
 ;
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 392.00
-; 285 bytes
+; Average cycles: 386.00
+; 279 bytes
 
 multiplicand    = $02   ; 2 bytes
 multiplier      = $04   ; 2 bytes
@@ -38,19 +38,14 @@ mult
 
     ; first time
     bcc +
-    tax                 ; retain A
-    tya                 ; equivalent to lda multiplicand
-    clc
-    adc result+2
-    sta result+2
-    txa                 ; recall A
-    adc multiplicand+1
+    sty result+2
+    lda multiplicand+1
 
-    ror                 ; shift
+    lsr                 ; shift
     ror result+2
 +                       ; normally this should be two instructions earlier but as this
                         ; is the first iteration we know A=result+2=0 and carry clear
-                        ; so those ror instructions have no effect.
+                        ; so those shift instructions have no effect.
     ror result
 
     ; second time
