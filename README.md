@@ -118,7 +118,7 @@ I have tested the following routines:
 | [mult77.a](tests/mult77.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Instrumentation of a Savonius Wind Turbine*](https://archive.org/details/instrumentationo00babb/page/108/mode/2up) by Samuel Martin Babb (1979) |
 | [mult78.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Commodore 128 Assembly Language Programming*](https://archive.org/details/Commodore_128_Assembly_Language_Programming/page/n165/mode/2up) by Mark Andrews (1986) |
 | [mult79.a](tests/mult78.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*NASA Report*](https://archive.org/details/NASA_NTRS_Archive_19820015020/page/n65/mode/2up) (1981) |
-| [mult80.a](tests/mult80.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [Kakemoms at *Denial, the Commodore Vic 20 Forum*](http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071) (2015) |
+| [mult80.a](tests/mult80.a)   | 8x8=16   | [four bit multiply](#5-four-bit-multiply)                         | [Kakemoms at *Denial, the Commodore Vic 20 Forum*](http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?p=82071#p82071) (2015) |
 | [mult81.a](tests/mult81.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) at $b8d4 |
 | [mult82.a](tests/mult82.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
 | [mult83.a](tests/mult83.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [*Retro Software*](http://www.retrosoftware.co.uk/wiki/index.php?title=Fast_multiplication_routines) (2008) |
@@ -294,7 +294,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult69.a](tests/mult69.a) | 946.52         | 65             |                                                                              |
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
-| [mult86.a](tests/mult86.a) | 193.07         | 2170           | :1st_place_medal: fastest                                                    |
+| [mult86.a](tests/mult86.a) | 187.07         | 2170           | :1st_place_medal: fastest                                                    |
 
 ### Signed multiply
 
