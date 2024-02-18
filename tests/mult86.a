@@ -73,8 +73,8 @@ umult16
     ; set multiplicand as y0
     ldy y0
 
-    ;x1y0l =  low(x1*y0)
-    ;x1y0h = high(x1*y0)
+    ; x1y0l =  low(x1*y0)
+    ; x1y0h = high(x1*y0)
     sec
     lda (p_sqr_lo2),y
     sbc (p_neg_sqr_lo),y
