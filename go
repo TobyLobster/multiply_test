@@ -5,7 +5,7 @@ mkdir -p build
 function test() {
     cp tests/$1.c build/parameters.c
     acme -o build/TESTME -r build/report.txt tests/$1.a
-    clang -O3 -Wno-unknown-warning-option -I../Z/API -I/usr/local/Cellar/libpng/1.6.40/include -lpng -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
+    clang -O3 -Wno-unknown-warning-option -I../Z/API -I/usr/local/include/libpng16 -lpng -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
     echo $1
     time build/tester -t$1 -l0x200 -e$2 -n19 -r "$3" -ibuild/TESTME -oresults/results_$1.json
 }

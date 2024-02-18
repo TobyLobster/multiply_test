@@ -9,17 +9,17 @@ void test_pre(thread_context_t* threadContext, uint64_t input) {
     zuint8* memory = threadContext->machine.context;
 
     // point to square tables (equivalent of calling 'init' routine)
-    memory[0x8c] = (0x0200 + 0*512) / 256;
+    memory[0x94] = (0x0200 + 0*512) / 256;
     memory[0x8e] = (0x0200 + 1*512) / 256;
     memory[0x90] = (0x0200 + 2*512) / 256;
     memory[0x92] = (0x0200 + 3*512) / 256;
-    memory[0x94] = (0x0200 + 0*512) / 256;
+    memory[0x8c] = (0x0200 + 0*512) / 256;
     memory[0x96] = (0x0200 + 1*512) / 256;
 
     memory[4] = input & 255UL;
     memory[5] = (input / 256UL) & 255UL;
-    memory[0x93] = (input/65536UL) & 255UL;
-    memory[0x8b] = (input/65536UL) / 256UL;
+    memory[0x8b] = (input/65536UL) & 255UL;
+    memory[0x93] = (input/65536UL) / 256UL;
 }
 
 // **************************************************************************************
