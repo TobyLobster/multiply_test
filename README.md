@@ -139,6 +139,7 @@ I have tested the following routines:
 | [smult7.a](tests/smult7.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | [Oswald/Resource at codebase64](https://www.codebase64.org/doku.php?id=base:fast_8bit_multiplication_16bit_product) (2015) |
 | [smult8.a](tests/smult8.a)   | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | mult65 converted to signed multiply by TobyLobster (2022) |
 | [smult9.a](tests/smult9.a)   | 16x16=32 (*signed*) | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications by TobyLobster (2023) |
+| [smult10.a](tests/smult10.a) | 8x8=16   (*signed*) | [tables of squares](#3-tables-of-squares)                         | [Piotr Fusik in Syzygy 6](http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/) (1999) |
 
 ### Miscellaneous multiply
 
@@ -311,6 +312,7 @@ Here are some example signed multiply routines. The signed routines are usually 
 | [smult7.a](tests/smult7.a)   | 88.50          | 1400           | 8 x 8 bit *signed* multiply (16 bit result) with *bug fix*                                  |
 | [smult8.a](tests/smult8.a)   | 62.99          | 1068           | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult65                    |
 | [smult9.a](tests/smult9.a)   | 570.00         | 81             | 16 x 16 bit *signed* multiply (32 bit result) based on the unsigned mult60                  |
+| [smult10.a](tests/smult10.a) | 53.99          | 2083           | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
 
 ### Miscellaneous multiply
 
