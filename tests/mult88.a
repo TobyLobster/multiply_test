@@ -1,0 +1,40 @@
+; mult88.a
+; From Acornsoft LISP (https://stardot.org.uk/forums/viewtopic.php?p=395940#p395940)
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 1231
+; 36 bytes
+
+* = $0200
+
+ACL  = $02      ; uses memory 2-5 (input, 2 bytes)
+AUXL = $04      ; uses memory 4-5 (four byte result in bytes 4-7 on exit)
+SIGN = $06      ; uses memory 6-7 (input, 2 bytes)
+
+
+MUL
+    lda #0                                                  ; TOBY: Added to clear two
+    sta AUXL                                                ;  bytes of the result to zero
+    sta AUXL+1                                              ;  (remove for multiply and add)
+
+    ldy #16                                                 ; 9fe4: a0 10       ..
+MULB
+    lda ACL                                                 ; 9fe6: a5 72       .r
+    lsr                                                     ; 9fe8: 4a          J
+    bcc MULD                                                ; 9fe9: 90 0c       ..
+    clc                                                     ; 9feb: 18          .
+    ldx #$fe                                                ; 9fec: a2 fe       ..
+MULC
+    lda AUXL+2,x                                            ; 9fee: b5 76       .v
+    adc SIGN+2,x                                            ; 9ff0: 75 78       ux
+    sta AUXL+2,x                                            ; 9ff2: 95 76       .v
+    inx                                                     ; 9ff4: e8          .
+    bne MULC                                                ; 9ff5: d0 f7       ..
+MULD
+    ldx #3                                                  ; 9ff7: a2 03       ..
+MULE
+    ror ACL,x                                               ; 9ff9: 76 72       vr
+    dex                                                     ; 9ffb: ca          .
+    bpl MULE                                                ; 9ffc: 10 fb       ..
+    dey                                                     ; 9ffe: 88          .
+    bne MULB                                                ; 9fff: d0 e5       ..
+    rts                                                     ; a001: 60          `

@@ -125,6 +125,8 @@ I have tested the following routines:
 | [mult84.a](tests/mult84.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023), based on mult66.a |
 | [mult85.a](tests/mult85.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | jbrandwood (2024), based on mult2.a |
 | [mult86.a](tests/mult86.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [Repose at 6502.org](http://forum.6502.org/viewtopic.php?p=106519#p106519) (2024), based on mult15 |
+| [mult87.a](tests/mult87.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [MVittiS at GitHub](https://github.com/MVittiS/Fast6502Mult/blob/master/mult4packed.s) (2018) ]
+| [mult88.a](tests/mult88.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Acornsoft LISP](https://stardot.org.uk/forums/viewtopic.php?p=395940#p395940) (1982) |
 
 ### Signed multiply
 
@@ -252,6 +254,7 @@ All cycle counts and byte counts include the final RTS (1 byte, 6 cycles), but d
 | [mult82.a](tests/mult82.a) | 67.24          | 827            |                                              |
 | [mult83.a](tests/mult83.a) | 56.00          | 1079           |                                              |
 | [mult84.a](tests/mult84.a) | 253.92         | 1199           |                                              |
+| [mult87.a](tests/mult87.a) | 174.00         | 630            |                                              |
 
 ### 16 bit x 16 bit unsigned multiply, with 32 bit result
 
@@ -296,6 +299,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult74.a](tests/mult74.a) | 1358.00        | 86             | *bug fixed*                                                                  |
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
 | [mult86.a](tests/mult86.a) | 187.07         | 2170           | :1st_place_medal: fastest                                                    |
+| [mult88.a](tests/mult88.a) | 1231.00        | 36             |                                                                              |
 
 ### Signed multiply
 
