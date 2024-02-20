@@ -1,0 +1,62 @@
+; smult11.a
+; a variant of Syzygy 6 http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/
+;
+; 8 bit x 8 bit signed multiply, 16 bit result
+; Average cycles: 51.99
+; 2338 bytes
+
+
+* = 0x200
+
+; Tables must be aligned to page boundary
+square1_low
+    !for i, -256, 255 {
+        !byte <((i*i)/4)
+    }
+square1_high
+    !for i, -256, 255 {
+        !byte >((i*i)/4)
+    }
+
+square2_low
+    !for i, -255, 256 {
+        !byte <((i*i)/4)
+    }
+square2_high
+    !for i, -255, 256 {
+        !byte >((i*i)/4)
+    }
+eorx
+    !for i, 0, 255 {
+        !byte i XOR 128
+    }
+
+; ----------------------------------------------------------------------------------
+; Description: Signed 8-bit multiplication with signed 16-bit result.
+;
+; On Entry:
+;   A: 8-bit signed value
+;   Y: 8-bit signed value
+;
+; On Exit:
+;   Y (low byte) and A (high byte): 16-bit signed product
+mult_8bit_signed
+    eor #$80
+    sta sm1
+    sta sm3
+    eor #$ff
+    sta sm2
+    sta sm4
+    ldx eorx,y
+
+    sec
+sm1 = * + 1
+    lda square1_low,x
+sm2 = * + 1
+    sbc square2_low,x
+    tay
+sm3 = * + 1
+    lda square1_high,x
+sm4 = * + 1
+    sbc square2_high,x
+    rts
