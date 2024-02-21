@@ -1,5 +1,5 @@
 ; smult11.a
-; a variant of Syzygy 6 http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/
+; a variant of: smult10 from Piotr Fusik in Syzygy 6 http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/ (1999)
 ;
 ; 8 bit x 8 bit signed multiply, 16 bit result
 ; Average cycles: 51.99
