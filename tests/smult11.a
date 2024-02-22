@@ -1,5 +1,7 @@
 ; smult11.a
-; a variant of: smult10 from Piotr Fusik in Syzygy 6 http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/ (1999)
+; a variant of: smult10 from Piotr Fusik in the short lived Polish Atari Disk Magazine Syzygy 6 http://ftp.pigwa.net/stuff/collections/atari_forever/Ziny/Syzygy/ (1999)
+; (for English version see https://forums.atariage.com/topic/78839-russian-multiplication/#comment-975865)
+
 ;
 ; 8 bit x 8 bit signed multiply, 16 bit result
 ; Average cycles: 51.99
