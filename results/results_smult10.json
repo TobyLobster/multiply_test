@@ -1,7 +1,7 @@
 {
     "results": {
         "title": "smult10",
-        "bytes": "2083",
+        "bytes": "2082",
         "AverageCycles": "53.99",
         "MinCycles": "52",
         "MaxCycles": "56"

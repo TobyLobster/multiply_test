@@ -317,8 +317,8 @@ Here are some example signed multiply routines. The signed routines are usually 
 | [smult7.a](tests/smult7.a)   | 88.50          | 1400           | 8 x 8 bit *signed* multiply (16 bit result) with *bug fix*                                  |
 | [smult8.a](tests/smult8.a)   | 62.99          | 1068           | 8 x 8 bit *signed* multiply (16 bit result) based on the unsigned mult65                    |
 | [smult9.a](tests/smult9.a)   | 570.00         | 81             | 16 x 16 bit *signed* multiply (32 bit result) based on the unsigned mult60                  |
-| [smult10.a](tests/smult10.a) | 53.99          | 2083           | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
-| [smult11.a](tests/smult11.a) | 51.99          | 2338           | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
+| [smult10.a](tests/smult10.a) | 53.99          | 2079           | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
+| [smult11.a](tests/smult11.a) | 51.99          | 2334           | 8 x 8 bit *signed* multiply (16 bit result)                                                 |
 
 ### Miscellaneous multiply
 

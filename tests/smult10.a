@@ -4,27 +4,35 @@
 ;
 ; 8 bit x 8 bit signed multiply, 16 bit result
 ; Average cycles: 53.99
-; 2083 bytes
+; 2079 bytes (+ 3 unused bytes between tables)
 
 
 * = 0x200
 
 ; Tables must be aligned to page boundary
 square1_low
-    !for i, -256, 255 {
+    !for i, -256, 254 {
         !byte <((i*i)/4)
     }
+unused1
+    !byte 0
+
 square1_high
-    !for i, -256, 255 {
+    !for i, -256, 254 {
         !byte >((i*i)/4)
     }
+unused2
+    !byte 0
 
 square2_low
-    !for i, -255, 256 {
+    !for i, -255, 255 {
         !byte <((i*i)/4)
     }
+unused3
+    !byte 0
+
 square2_high
-    !for i, -255, 256 {
+    !for i, -255, 255 {
         !byte >((i*i)/4)
     }
 

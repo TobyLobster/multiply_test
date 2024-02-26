@@ -107,7 +107,7 @@ test "mult86" 0xA00
 #test "smult7" 0x700
 #test "smult8" 0x600
 #test "smult9" 0x200
-#test "smult10" 0xa00
+#test "smult10" 0x9ff
 #test "smult11" 0xb00
 
 #test "omult1" 0x200
