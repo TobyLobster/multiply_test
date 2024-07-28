@@ -302,7 +302,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
 | [mult86.a](tests/mult86.a) | 187.07         | 2170           | :1st_place_medal: fastest                                                    |
 | [mult88.a](tests/mult88.a) | 1231.00        | 36             |                                                                              |
-| [mult89.a](tests/mult89.a) | 557.02         | 192            |                                                                              |
+| [mult89.a](tests/mult89.a) | 492.95         | 175            |                                                                              |
 
 ### Signed multiply
 

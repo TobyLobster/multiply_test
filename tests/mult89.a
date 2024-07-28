@@ -2,23 +2,21 @@
 ; from pdragon on the 6502 forum (http://forum.6502.org/viewtopic.php?p=108840#p108840)
 ; (converted to 6502 from 65C02)
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 525.55
-; 183 bytes
+; Average cycles: 492.95
+; 175 bytes
 
 *   = $200
 
 sgn = $00   ; 1 byte
 n   = $01   ; 1 byte
 
+; The next 6 variables must be contiguous and in this order
 a01 = $02   ; workspace
 b01 = $03   ; workspace
-
 b0  = $04   ; input (2 bytes)
 b1  = $05   ;
 a0  = $06   ; input (2 bytes)
 a1  = $07   ;
-
-    ldx #b0     ; NOTE: the label b0 (i.e. value 4), not the address $b0
 
 karatsuba:
 
@@ -104,30 +102,30 @@ karatsuba:
     ; and swap the positions of a1 and b0
 
     sec
-    ldy 0,x         ; stash Y=b0 so we can swap a1 <-> b0
-    lda 3,x         ; a1
-    sta 0,x         ; a1 -> b0 for a1 x b1
-    sty 3,x         ; b0 -> a1 for a0 x b0
+    ldy b0          ; stash Y=b0 so we can swap a1 <-> b0
+    lda a1          ; a1
+    sta b0          ; a1 -> b0 for a1 x b1
+    sty a1          ; b0 -> a1 for a0 x b0
 
     ldy #1          ; track the sign bit of (a1-a0)(b1-b0), where odd means -ve
 
-    sbc 2,x         ; a1 - a0
+    sbc a0          ; a1 - a0
     bcs +           ; no borrow so a1-a0 is positive
     eor #$ff        ; otherwise negate result
     adc #1
     iny             ; flip sign
     sec             ; reset carry
 +
-    sta $fe,x       ; | a1 - a0 |
+    sta a01         ; | a1 - a0 |
 
-    lda 1,x         ; b1
-    sbc 3,x         ; b0
+    lda b1          ; b1
+    sbc a1          ; b0
     bcs +
     eor #$ff
     adc #1
     iny             ; flip sign
 +
-    sta $ff,x       ; | b1 - b0 |
+    sta b01         ; | b1 - b0 |
     sty sgn         ; y counts 1, 2 or 3 flips, so bit 0 gives sign
 
     ; now we do three in-place multiplies of the stack values
@@ -138,9 +136,7 @@ karatsuba:
     ; and leave with it unchanged.
     ; there's probably room for improvement here
 
-    ldy #3
-    dex
-    dex
+    ldx #a01        ; NOTE: variable a01, not address $a01
 
 _mul8x8:
     ; multiply 0,x by 1,x in place [see mult39.a]
@@ -171,15 +167,12 @@ _mul8x8:
     ror 0,x
     sta 1,x         ; store the high byte
 
-    dey
-    beq _loop_end
     inx
     inx
-    jmp _mul8x8
+    cpx #a01+6
+    bne _mul8x8
 
 _loop_end:
-    dex
-    dex
 
 ; After the in-place multiplies we've got this layout, with sign s01 from the parity bit of sgn
 ;
@@ -207,50 +200,50 @@ _loop_end:
 ; Note the shared v1+v2 term in both d1 and d2
 
     clc
-    lda 3,x
-    adc 0,x         ; v1 + v2
+    lda a1
+    adc b0          ; v1 + v2
     tay
     ; carry is tricky, since it should increment both d2 (from d1)
     ; and d3 (from d2).  incrementing v3 accomplishes both
     ; since we'll add it to d2 momentarily
     bcc +
-    inc 1,x         ; d3 ++
+    inc b1          ; d3 ++
     clc
 +
-    adc 2,x
-    sta 3,x         ; v0 + (v1 + v2) => d1
+    adc a0
+    sta a1          ; v0 + (v1 + v2) => d1
     tya
-    adc 1,x
-    sta 0,x         ; v3 + (v1 + v2) => d2
+    adc b1
+    sta b0          ; v3 + (v1 + v2) => d2
     bcc +
-    inc 1,x         ; carry to d3
+    inc b1          ; carry to d3
 +
 
     ; Finally add or subtract | a01 x b01 | based on sgn
 
-    lda 3,x         ; start with d1 in either case
+    lda a1          ; start with d1 in either case
     ror sgn         ; sign bit to carry (with clc for add, sec for subtract)
     bcc _add
 
     ; subtract:  d1/d2 -= | a01 x b01 |
-    sbc $fe,x
-    sta 3,x
-    lda 0,x
-    sbc $ff,x
-    sta 0,x
+    sbc a01
+    sta a1
+    lda b0
+    sbc b01
+    sta b0
     bcs +
-    dec 1,x         ; borrow from d3
+    dec b1          ; borrow from d3
 +
     rts
 
 _add:
     ; add: d1/d2 += | a01 x b01 |
-    adc $fe,x
-    sta 3,x
-    lda 0,x
-    adc $ff,x
-    sta 0,x
+    adc a01
+    sta a1
+    lda b0
+    adc b01
+    sta b0
     bcc +
-    inc 1,x         ; carry to d3
+    inc b1          ; carry to d3
 +
     rts
