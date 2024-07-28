@@ -9,7 +9,7 @@
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
-      <dc:title>Matplotlib v3.7.2, https://matplotlib.org/</dc:title>
+      <dc:title>Matplotlib v3.9.1, https://matplotlib.org/</dc:title>
      </cc:Agent>
     </dc:creator>
    </cc:Work>
@@ -50,7 +50,7 @@ C -1.55874 2.683901 -0.795609 3 0 3
 z
 " style="stroke: #d3d3d3"/>
     </defs>
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#mad22b90ff5" x="457.758" y="300.260452" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="574.938" y="331.172517" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#mad22b90ff5" x="422.604" y="360.937506" style="fill: #d3d3d3; stroke: #d3d3d3"/>
@@ -70,7 +70,7 @@ C -1.55874 2.683901 -0.795609 3 0 3
 z
 " style="stroke: #ffa500"/>
     </defs>
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#m13cfef3782" x="281.988" y="333.288299" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
@@ -1132,13 +1132,13 @@ z
    <g id="LineCollection_1">
     <path d="M 457.758 447.067385 
 L 457.758 85.854462 
-" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
+" clip-path="url(#pa5df9e7382)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
     <path d="M 574.938 446.918123 
 L 574.938 66.077308 
-" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
+" clip-path="url(#pa5df9e7382)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
     <path d="M 422.604 446.321077 
 L 422.604 160.933015 
-" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
+" clip-path="url(#pa5df9e7382)" style="fill: none; stroke: #d3d3d3; stroke-width: 1.5"/>
    </g>
    <g id="line2d_54">
     <defs>
@@ -1146,14 +1146,14 @@ L 422.604 160.933015
 L -3 -0 
 " style="stroke: #d3d3d3"/>
     </defs>
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#m408c75a34d" x="457.758" y="447.067385" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="574.938" y="446.918123" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="422.604" y="446.321077" style="fill: #d3d3d3; stroke: #d3d3d3"/>
     </g>
    </g>
    <g id="line2d_55">
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#m408c75a34d" x="457.758" y="85.854462" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="574.938" y="66.077308" style="fill: #d3d3d3; stroke: #d3d3d3"/>
      <use xlink:href="#m408c75a34d" x="422.604" y="160.933015" style="fill: #d3d3d3; stroke: #d3d3d3"/>
@@ -1162,7 +1162,7 @@ L -3 -0
    <g id="LineCollection_2">
     <path d="M 281.988 447.142015 
 L 281.988 162.127108 
-" clip-path="url(#p455dd905cc)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
+" clip-path="url(#pa5df9e7382)" style="fill: none; stroke: #ffa500; stroke-width: 1.5"/>
    </g>
    <g id="line2d_56">
     <defs>
@@ -1170,12 +1170,12 @@ L 281.988 162.127108
 L -3 -0 
 " style="stroke: #ffa500"/>
     </defs>
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#me89960d978" x="281.988" y="447.142015" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
    <g id="line2d_57">
-    <g clip-path="url(#p455dd905cc)">
+    <g clip-path="url(#pa5df9e7382)">
      <use xlink:href="#me89960d978" x="281.988" y="162.127108" style="fill: #ffa500; stroke: #ffa500"/>
     </g>
    </g>
@@ -1520,7 +1520,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p455dd905cc">
+  <clipPath id="pa5df9e7382">
    <rect x="94.5" y="60.48" width="585.9" height="388.08"/>
   </clipPath>
  </defs>

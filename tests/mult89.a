@@ -1,0 +1,269 @@
+; mult89
+; from pdragon on the 6502 forum (http://forum.6502.org/viewtopic.php?p=108840#p108840)
+; (converted to 6502 from 65C02)
+; 16 bit x 16 bit unsigned multiply, 32 bit result
+; Average cycles: 557.02
+; 192 bytes
+
+*   = $200
+
+sgn = $00   ; 1 byte
+n   = $01   ; 1 byte
+
+a01 = $02   ; workspace
+b01 = $03   ; workspace
+
+b0  = $04   ; input (2 bytes)
+b1  = $05   ;
+a0  = $06   ; input (2 bytes)
+a1  = $07   ;
+
+    ldx #b0
+
+karatsuba:
+
+; Karatsuba divide and conquer for multiplication.
+; Use 3 8x8=16 multiplies to do a 16x16=32 multiplication
+; See https://en.wikipedia.org/wiki/Karatsuba_algorithm
+;
+; We want to calculate <a0,1> x <b0,1> = <d0,1,2,3>
+; = a0 x b0 + (a0 x b1 + a1 x b0) << 8 + (a1 x b1) << 16
+;
+; i.e. decomposing the four byte result <d0-3> as:
+;
+;     LSB |   d0  |   d1  |   d2  |   d3  | MSB
+;         |    a0 x b0    |
+; +               | a0 b1 + a1 b0 |  <= this is a 17 bit result
+; +                       |    a1 x b1    |
+;
+; This expression still has four multiplies (and several 16 bit adds)
+; so doesn't help us much.  But consider the product (a0 - a1) x (b0 - b1)
+; which involves the same terms:
+;
+;     (a1 - a0) x (b1 - b0) = a0 x b0 - (a0 x b1 + a1 x b0) + a1 x b1
+;
+; rearranging we get
+;
+;     (a0 x b1 + a1 x b0) = (a1 - a0) x (b1 - b0) + a0 x b0 + a1 x b1
+;
+; so we can rewrite our original product as
+;
+;         |   d0  |   d1  |   d2  |   d3  |
+;         |    a0 x b0    |
+; -               | (a1-a0)(b1-b0)|  <= signed multiply
+; +               |    a0 x b0    |
+; +               |    a1 x b1    |
+; +                       |    a1 x b1    |
+;
+; This only has three 8 bit multiplies, two of them used twice,
+; but one of them is signed.  We can avoid that by
+; evaluating |a1-a0| x |b1-b0| = | (a1-a0)(b1-b0) |
+; as an unsigned multiply, and tracking a sign bit based on
+; whether we have to flip 0, 1 or 2 signs to get the two |.| terms.
+; Writing |a1 - a0| as a01 and likewise for b01, with sign bit s01
+; our result becomes
+;
+;         |   d0  |   d1  |   d2  |   d3  |
+;         |    a0 x b0    |    a1 x b1    |
+; +               |    a0 x b0    |
+; +               |    a1 x b1    |
+; -s01            | |a01| x |b01| |
+;
+;
+; Let's try a worked example with $FEED * $CAFE = $CA23F126.
+; So we have:
+;
+;     a0 = ED, a1 = FE, b0 = FE, b1 = CA
+;     a0 x a1 = EB26, b0 x b1 = C86C
+;     a01 = |ED-FE| = 11, b01 = | FE-CA| = 34, s01=-1
+;     a01 * b01 = 0374
+;
+; Plugging in to our tableau we get the desired
+; result in d0..d3, mapped to our normal forth
+; NUXI layout of 2,x 3,x 0,x and 1,x:
+;
+;         |   d0  |   d1  |   d2  |   d3  |
+;         |   26      EB  |   6C      C8  |
+; +               |   26      EB  |
+; +               |   6C      C8  |
+; --              |   74      03  |
+; -----------------------------------------
+;         |   26  |   F1  |   23  |   CA  |
+;         |  2,x  |  3,x  |  0,x  |  1,x  |
+;
+; Our implementation will arange the stack like this:
+;
+;         |  2,x  |  3,x  |  0,x  |  1,x  | fe,x  | ff,x  |
+;         |   a0  |   a1  |   b0  |   b1  | |a01| | |b01| |
+;
+;               ... computations ensue ...
+;
+;         |   d0  |   d1  |   d2  |   d3  |
+
+    ; first set up |a01| and |b01| past top of stack
+    ; and swap the positions of a1 and b0
+
+    sec
+    ldy 0,x         ; stash Y=b0 so we can swap a1 <-> b0
+    lda 3,x         ; a1
+    sta 0,x         ; a1 -> b0 for a1 x b1
+    sty 3,x         ; b0 -> a1 for a0 x b0
+
+    ldy #1          ; track the sign bit of (a1-a0)(b1-b0), where odd means -ve
+
+    sbc 2,x         ; a1 - a0
+    bcs +           ; no borrow so a1-a0 is positive
+    eor #$ff        ; otherwise negate result
+    adc #1
+    iny             ; flip sign
+    sec             ; reset carry
++
+    sta $fe,x       ; | a1 - a0 |
+
+    lda 1,x         ; b1
+    sbc 3,x         ; b0
+    bcs +
+    eor #$ff
+    adc #1
+    iny             ; flip sign
++
+    sta $ff,x       ; | b1 - b0 |
+    sty sgn         ; y counts 1, 2 or 3 flips, so bit 0 gives sign
+
+    ; now we do three in-place multiplies of the stack values
+    ; to get a0 x b0, a1 x b1 and a01 x b01
+
+    ; we'll cycle x => x-2 (mul) => x (mul) => x + 2 (mul) => x
+    ; to multiply at fe/ff, 0/1, 2/3 relative to original x
+    ; and leave with it unchanged.
+    ; there's probably room for improvement here
+
+    ldy #3
+    dex
+    dex
+
+_mul8x8:
+    ; multiply 0,x by 1,x in place
+    lda 1,x         ; short-circuit if either input is zero
+    beq _z1
+    lda 0,x
+    beq _z0
+
+    dec 1,x         ; decrement multiplicand so we can add with carry set
+
+    lsr             ; shift low bit of multiplier
+    sta 0,x         ; and store it
+
+    lda #0          ; A is now current 8-bit window on result
+    bcc +
+
+    adc 1,x         ; add the multiplicand - 1 + carry=1
+    lsr             ; shift out low bit of result
+                    ; we can skip if A is still zero since it C=0 already
++
+    ror 0,x
+    bcc +
+    adc 1,x
++
+!for i, 1, 6 {
+    ror             ; shift out low bit of result window
+    ror 0,x         ; roll it in to multiplier, fetching next bit
+    bcc +
+    adc 1,x
++
+}
+
+    ror
+    ror 0,x
+_z0:                ; exit case for 0,x is zero, when A is also zero
+    sta 1,x         ; store the high byte
+
+_mul_end:
+
+    dey
+    beq _loop_end
+    inx
+    inx
+    jmp _mul8x8
+
+_z1:
+    sta 0,x         ; exit case when 1,x is 0
+    jmp _mul_end    ; just set 0,x to 0
+
+_loop_end:
+    dex
+    dex
+
+; After the in-place multiplies we've got this layout, with sign s01 from the parity bit of sgn
+;
+;             |  2,x  |  3,x  |  0,x  |  1,x  | fe,x  | ff,x  |
+;             |    a0 x b0    |    a1 x b1    |  |a01 x b01|  |
+;             |   v0      v1      v2     v3      v4      v5
+;
+; And still need:
+;
+;         +           |    a0 x b0    |
+;         +           |    a1 x b1    |
+;         -s01        |  |a01 x b01|  |
+;
+; to finally arrive at:
+;
+;             |   d0  |   d1  |   d2  |   d3  |
+;
+; In terms of the values we currently have:
+;
+;     d0 = v0 (done!)
+;     d1 = v1 + v0 + v2 +/- v4
+;     d2 = v2 + v1 + v3 +/- v5 (+ carries)
+;     d3 = v3 (+ carries)
+;
+; Note the shared v1+v2 term in both d1 and d2
+
+    clc
+    lda 3,x
+    adc 0,x         ; v1 + v2
+    tay
+    ; carry is tricky, since it should increment both d2 (from d1)
+    ; and d3 (from d2).  incrementing v3 accomplishes both
+    ; since we'll add it to d2 momentarily
+    bcc +
+    inc 1,x         ; d3 ++
+    clc
++
+    adc 2,x
+    sta 3,x         ; v0 + (v1 + v2) => d1
+    tya
+    adc 1,x
+    sta 0,x         ; v3 + (v1 + v2) => d2
+    bcc +
+    inc 1,x         ; carry to d3
++
+
+    ; Finally add or subtract | a01 x b01 | based on sgn
+
+    lda 3,x         ; start with d1 in either case
+    ror sgn         ; sign bit to carry (with clc for add, sec for subtract)
+    bcc _add
+
+    ; subtract:  d1/d2 -= | a01 x b01 |
+    sbc $fe,x
+    sta 3,x
+    lda 0,x
+    sbc $ff,x
+    sta 0,x
+    bcs +
+    dec 1,x         ; borrow from d3
++
+    rts
+
+_add:
+    ; add: d1/d2 += | a01 x b01 |
+    adc $fe,x
+    sta 3,x
+    lda 0,x
+    adc $ff,x
+    sta 0,x
+    bcc +
+    inc 1,x         ; carry to d3
++
+    rts

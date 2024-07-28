@@ -127,6 +127,7 @@ I have tested the following routines:
 | [mult86.a](tests/mult86.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [Repose at 6502.org](http://forum.6502.org/viewtopic.php?p=106519#p106519) (2024), based on mult15 |
 | [mult87.a](tests/mult87.a)   | 8x8=16   | [4 bit multiply](#5-four-bit-multiply)                            | [MVittiS at GitHub](https://github.com/MVittiS/Fast6502Mult/blob/master/mult4packed.s) (2018) |
 | [mult88.a](tests/mult88.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [Acornsoft LISP](https://stardot.org.uk/forums/viewtopic.php?p=395940#p395940) (1982) |
+| [mult89.a](tests/mult89.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) with [Karatsuba algorithm](https://en.wikipedia.org/wiki/Karatsuba_algorithm) | [pdragon](http://forum.6502.org/viewtopic.php?p=108840#p108840) (2024) |
 
 ### Signed multiply
 
@@ -301,6 +302,7 @@ To see the results of the smaller routines more clearly, here is a zoomed in vie
 | [mult85.a](tests/mult85.a) | 540.50         | 38             |                                                                              |
 | [mult86.a](tests/mult86.a) | 187.07         | 2170           | :1st_place_medal: fastest                                                    |
 | [mult88.a](tests/mult88.a) | 1231.00        | 36             |                                                                              |
+| [mult89.a](tests/mult89.a) | 557.02         | 192            |                                                                              |
 
 ### Signed multiply
 
