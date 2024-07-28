@@ -2,8 +2,8 @@
 ; from pdragon on the 6502 forum (http://forum.6502.org/viewtopic.php?p=108840#p108840)
 ; (converted to 6502 from 65C02)
 ; 16 bit x 16 bit unsigned multiply, 32 bit result
-; Average cycles: 557.02
-; 192 bytes
+; Average cycles: 525.55
+; 183 bytes
 
 *   = $200
 
@@ -18,7 +18,7 @@ b1  = $05   ;
 a0  = $06   ; input (2 bytes)
 a1  = $07   ;
 
-    ldx #b0
+    ldx #b0     ; NOTE: the label b0 (i.e. value 4), not the address $b0
 
 karatsuba:
 
@@ -143,52 +143,39 @@ karatsuba:
     dex
 
 _mul8x8:
-    ; multiply 0,x by 1,x in place
-    lda 1,x         ; short-circuit if either input is zero
-    beq _z1
-    lda 0,x
-    beq _z0
-
-    dec 1,x         ; decrement multiplicand so we can add with carry set
-
-    lsr             ; shift low bit of multiplier
-    sta 0,x         ; and store it
+    ; multiply 0,x by 1,x in place [see mult39.a]
+    lsr 0,x
 
     lda #0          ; A is now current 8-bit window on result
     bcc +
 
-    adc 1,x         ; add the multiplicand - 1 + carry=1
+    lda 1,x         ; add the multiplicand - 1 + carry=1
     lsr             ; shift out low bit of result
                     ; we can skip if A is still zero since it C=0 already
 +
     ror 0,x
     bcc +
+    clc
     adc 1,x
 +
 !for i, 1, 6 {
     ror             ; shift out low bit of result window
     ror 0,x         ; roll it in to multiplier, fetching next bit
     bcc +
+    clc
     adc 1,x
 +
 }
 
     ror
     ror 0,x
-_z0:                ; exit case for 0,x is zero, when A is also zero
     sta 1,x         ; store the high byte
-
-_mul_end:
 
     dey
     beq _loop_end
     inx
     inx
     jmp _mul8x8
-
-_z1:
-    sta 0,x         ; exit case when 1,x is 0
-    jmp _mul_end    ; just set 0,x to 0
 
 _loop_end:
     dex
