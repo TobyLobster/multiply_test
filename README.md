@@ -105,7 +105,7 @@ I have tested the following routines:
 | [mult64.a](tests/mult64.a)   | 16x16=32 | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications and unrolling by TobyLobster (2023) |
 | [mult65.a](tests/mult65.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
 | [mult66.a](tests/mult66.a)   | 8x8=16   | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023), based on [Nick Jameson's 3D Demo](https://github.com/simondotm/bbc-micro-3d/tree/master/source) for the BBC Micro (1994) |
-| [mult67.a](tests/mult67.a)   | 16x16=32 | [tables of squares](#3-tables-of-squares)                         | [julie_m at stardot](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587) (Note: preserves carry) (2023) |
+| [mult67.a](tests/mult67.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [julie_m at stardot](https://stardot.org.uk/forums/viewtopic.php?p=380587#p380587) (Note: preserves carry) (2023) |
 | [mult68.a](tests/mult68.a)   | 8x8=16   | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Programming The 6502*](https://archive.org/details/Programming_the_6502_OCR/page/n89/mode/2up) by Rodnay Zaks (1983) |
 | [mult69.a](tests/mult69.a)   | 16x16=32 | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/363/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
 | [mult70.a](tests/mult70.a)   | 8x8=16   | [repeated addition](#8-repeated-addition)                         | [*Machine Language Routines for the Commodore 64 and 128*](https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128/page/357/mode/2up*) by Todd D Heimarck and Patrick Parrish (1987) |
@@ -167,7 +167,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult13.a](tests/omult13.a) | 16x8=16  (*partial result*, div 128)          | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Stellar 7*, for the Apple II](https://6502disassembly.com/a2-stellar7/ROCK1.html) (1983) |
 | [omult14.a](tests/omult14.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [FastBasic](https://github.com/dmsc/fastbasic/blob/master/src/interp/mul.asm) BASIC interpreter for the Atari 8-bit computers (2017) |
 | [omult15.a](tests/omult15.a) | 16x16=16 (*partial result,low 16 bits only*)  | [modified shift&nbsp;and&nbsp;add](#2-modified-shift-and-add)     | [Dr Jefyll](http://forum.6502.org/viewtopic.php?f=9&t=689&start=0#p19958) (2012) with modifications by TobyLobster (2023) |
-| [omult16.a](tests/omult16.a) | 16x16=16 (*partial result,low 16 bits only*)  | [tables of squares](#3-tables-of-squares)                         | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236) multidimensional array access code (1981) |
+| [omult16.a](tests/omult16.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [BBC BASIC ROM](https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236) multidimensional array access code (1981) |
 | [omult17.a](tests/omult17.a) | 16x8=16  (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*How to program microcomputers*](https://archive.org/details/howtoprogrammicr00bard/page/192/mode/2up) by William T Barden (1977) |
 | [omult18.a](tests/omult18.a) | mxn=n+m (*variable size multiply*)            | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Microcomputing* magazine (June 1981)](https://archive.org/details/kilobaudmagazine-1981-06/page/n113/mode/2up) article by Leo J Scanlon |
 | [omult19.a](tests/omult19.a) | 24x24=48                                      | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Graphics Extension ROM*](http://www.computinghistory.org.uk/det/18670/Graphics%20Extension%20ROM%20for%20the%20BBC%20Microcomputer/) by Acornsoft (1985) at $beb5 |
@@ -183,6 +183,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult29.a](tests/omult29.a) | 16x8=16 (*partial result, low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | [*Splitting the Atom (The Acorn Recommended Advanced User Guide)*](https://site.acornatom.nl/boeken/splitting-the-atom.pdf) by J.R. Stevenson and John C. Rockett (early 1980s) |
 | [omult30.a](tests/omult30.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023) |
 | [omult31.a](tests/omult31.a) | 24x8=24 (*partial result, high 24 bits only*) | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023) |
+| [omult32.a](tests/omult32.a) | 16x16=16 (*partial result, low 16 bits only*) | [tables of squares](#3-tables-of-squares)                         | [Colin Leroy-Mira](https://github.com/TobyLobster/multiply_test/pull/8) (2025) |
 
 ## The Results
 
@@ -329,39 +330,40 @@ Here are some example signed multiply routines. The signed routines are usually 
 Other miscellaneous multiply routines with something 'specialised' about it e.g. only returning an approximate result, or with different bit depths.
 A decent variable bit length multiply is available in omult23.a, but for other maths operations, see [*BBC Micro Machine Code Portfolio*](https://archive.org/details/bbc-micro-machine-code-portfolio/page/87/mode/2up) by Bruce Smith (1984).
 
-| Source                       | Average cycles | Memory (bytes) | Notes                                                                              |
-| ---------------------------- | -------------: | -------------: | ---------------------------------------------------------------------------------- |
-| [omult1.a](tests/omult1.a)   | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
-| [omult2.a](tests/omult2.a)   | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                               |
-| [omult3.a](tests/omult3.a)   | 128.00         | 24             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                              |
-| [omult4.a](tests/omult3.a)   | 686.88         | 70             | 24 x 8 bit *sign-magnitude* multiply, 32 bit result                                |
-| [omult5.a](tests/omult5.a)   | 492.96         | 196            | 16 x 16 bit *signed/sign-magnitude* multiply, 16 bit signed *approximate* result   |
-| [omult6.a](tests/omult6.a)   | 153.46         | 38             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
-| [omult7.a](tests/omult7.a)   | 46.72          | 802            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
-| [omult8.a](tests/omult8.a)   | 49.20          | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
-| [omult9.a](tests/omult9.a)   | 22.97          | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                  |
-| [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                             |
-| [omult11.a](tests/omult11.a) | 43.00          | 547            | 8 x 8 bit unsigned multiply, *ONLY approximate high 8 bit* result                  |
-| [omult12.a](tests/omult12.a) | 181.04         | 27             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                               |
-| [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                           |
-| [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
-| [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                            |
-| [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow) |
-| [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
-| [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
+| Source                       | Average cycles | Memory (bytes) | Notes                                                                                             |
+| ---------------------------- | -------------: | -------------: | ------------------------------------------------------------------------------------------------- |
+| [omult1.a](tests/omult1.a)   | 649.00         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result  (Note: omult16.a is faster at same size) |
+| [omult2.a](tests/omult2.a)   | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                              |
+| [omult3.a](tests/omult3.a)   | 128.00         | 24             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                                             |
+| [omult4.a](tests/omult3.a)   | 686.88         | 70             | 24 x 8 bit *sign-magnitude* multiply, 32 bit result                                               |
+| [omult5.a](tests/omult5.a)   | 492.96         | 196            | 16 x 16 bit *signed/sign-magnitude* multiply, 16 bit signed *approximate* result                  |
+| [omult6.a](tests/omult6.a)   | 153.46         | 38             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow)                |
+| [omult7.a](tests/omult7.a)   | 46.72          | 802            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                                 |
+| [omult8.a](tests/omult8.a)   | 49.20          | 1075           | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                                 |
+| [omult9.a](tests/omult9.a)   | 22.97          | 780            | 8 x 8 bit unsigned multiply, 8 bit high byte *approximate* result                                 |
+| [omult10.a](tests/omult10.a) | 909.00         | 50             | 16 x 32 bit unsigned multiply, 32 bit low bytes result                                            |
+| [omult11.a](tests/omult11.a) | 43.00          | 547            | 8 x 8 bit unsigned multiply, *ONLY approximate high 8 bit* result                                 |
+| [omult12.a](tests/omult12.a) | 181.04         | 27             | 8 x 8 bit unsigned multiply, *ONLY low 8 bit* result                                              |
+| [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                          |
+| [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
+| [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
+| [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow)                |
+| [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                                            |
+| [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)                     |
 | [omult19.a](tests/omult19.a) | 2169.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult20.a](tests/omult20.a) | 2741.00        | 66             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult21.a](tests/omult21.a) | 1014.00        | 49             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
 | [omult22.a](tests/omult22.a) | 1653.00        | 59             | 32 x 32 bit unsigned multiply, 64 bit result (tested over millions of random inputs, and all 16 bit inputs) |
-| [omult23.a](tests/omult23.a) | 1381.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)      |
+| [omult23.a](tests/omult23.a) | 1381.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)                     |
 | [omult24.a](tests/omult24.a) | 1356.94        | 61             | 24 x 24 bit unsigned multiply, *ONLY low 24 bit* result (tested over millions of random inputs, and all 16 bit inputs) |
-| [omult25.a](tests/omult25.a) | 60.00          | 16             | 3 x 8 bit unsigned multiply, *ONLY high 8 bit* result                              |
-| [omult26.a](tests/omult26.a) | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                              |
-| [omult27.a](tests/omult27.a) | 444.00         | 22             | 16 x 8 bit unsigned multiply, *ONLY high 16 bit* result                            |
-| [omult28.a](tests/omult28.a) | 897.00         | 24             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
-| [omult29.a](tests/omult29.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                             |
-| [omult30.a](tests/omult30.a) | 310.00         | 40             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
-| [omult31.a](tests/omult31.a) | 168.90         | 2162           | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                            |
+| [omult25.a](tests/omult25.a) | 60.00          | 16             | 3 x 8 bit unsigned multiply, *ONLY high 8 bit* result                                             |
+| [omult26.a](tests/omult26.a) | 145.00         | 16             | 8 x 8 bit unsigned multiply, *ONLY high 8 bit* result                                             |
+| [omult27.a](tests/omult27.a) | 444.00         | 22             | 16 x 8 bit unsigned multiply, *ONLY high 16 bit* result                                           |
+| [omult28.a](tests/omult28.a) | 897.00         | 24             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                                           |
+| [omult29.a](tests/omult29.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                                            |
+| [omult30.a](tests/omult30.a) | 310.00         | 40             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                                           |
+| [omult31.a](tests/omult31.a) | 168.90         | 2162           | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                                           |
+| [omult32.a](tests/omult32.a) | 138.35         | 2144           | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                                           |
 
 ## The Algorithms
 

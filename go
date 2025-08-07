@@ -5,7 +5,7 @@ mkdir -p build
 function test() {
     cp tests/$1.c build/parameters.c
     acme -o build/TESTME -r build/report.txt tests/$1.a
-    clang -O3 -Wno-unknown-warning-option -I../Z/API -I/usr/local/include/libpng16 -lpng -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
+    clang -O3 -Wno-unknown-warning-option -I../Z/API -lpng -o build/tester -DCPU_6502_STATIC -DCPU_6502_USE_LOCAL_HEADER source/tester.c source/6502.c source/disassembler.c
     echo $1
     time build/tester -t$1 -l0x200 -e$2 -n19 -r "$3" -ibuild/TESTME -oresults/results_$1.json
 }
@@ -110,7 +110,7 @@ function test() {
 #test "smult9" 0x200
 #test "smult10" 0x9ff
 #test "smult11" 0xb00
-test "smult12" 0xa00
+#test "smult12" 0xa00
 
 #test "omult1" 0x200
 #test "omult2" 0x200
@@ -149,3 +149,4 @@ test "smult12" 0xa00
 #test "omult29" 0x200
 #test "omult30" 0x200
 #test "omult31" 0xa00
+test "omult32" 0xa00
