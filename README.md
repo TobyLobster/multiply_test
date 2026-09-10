@@ -184,6 +184,7 @@ Specialised multiply routines often find their niche in games. Partial results (
 | [omult30.a](tests/omult30.a) | 24x8=24 (*partial result, high 24 bits only*) | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | TobyLobster (2023) |
 | [omult31.a](tests/omult31.a) | 24x8=24 (*partial result, high 24 bits only*) | [tables of squares](#3-tables-of-squares)                         | TobyLobster (2023) |
 | [omult32.a](tests/omult32.a) | 16x16=16 (*partial result, low 16 bits only*) | [tables of squares](#3-tables-of-squares)                         | [Colin Leroy-Mira](https://github.com/TobyLobster/multiply_test/pull/8) (2025) |
+| [omult33.a](tests/omult33.a) | 16x16=16 (*partial result,low 16 bits only*)  | [shift&nbsp;and&nbsp;add](#1-binary-multiplication-shift-and-add) | Modified version of omult16 |
 
 ## The Results
 
@@ -347,7 +348,7 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                          |
 | [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
 | [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
-| [omult16.a](tests/omult16.a) | 223.66         | 32             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow)                |
+| [omult16.a](tests/omult16.a) | 223.66         | 32             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (overflow not properly detected)          |
 | [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                                            |
 | [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)                     |
 | [omult19.a](tests/omult19.a) | 2169.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |
@@ -364,6 +365,7 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult30.a](tests/omult30.a) | 310.00         | 40             | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                                           |
 | [omult31.a](tests/omult31.a) | 168.90         | 2162           | 24 x 8 bit unsigned multiply, *ONLY high 24 bit* result                                           |
 | [omult32.a](tests/omult32.a) | 138.35         | 2144           | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result                                           |
+| [omult33.a](tests/omult33.a) | 91.95          | 36             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (fixed so overflow is properly detected)  |
 
 ## The Algorithms
 

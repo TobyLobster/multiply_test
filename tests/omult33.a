@@ -1,12 +1,12 @@
-; omult16.a
+; omult33.a
 ; from BBC BASIC 2 ROM, https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236
 ; used for calculating multidimensional array size and array access.
 ;
-; BUG: Carry is not always correctly set if there is an overflow. See omult33 for the fix.
+; FIXED: Carry is now set correctly on exit if there is an overflow.
 ;
 ; 16 bit x 16 bit multiply, 16 bit result (low bytes).
-; Average cycles: 223.66
-; 32 bytes
+; Average cycles: 91.95
+; 36 bytes
 
 multiplicand = $02
 multiplier   = $04
@@ -42,7 +42,10 @@ skip
     ; Continue this process until the multiplicand becomes zero
     lda multiplicand
     ora multiplicand+1
-    bne loop
-    ; Exit
+    beq done            ; nothing left to add
+    bcc loop            ; no overflow, next bit
 overflow
+    rts
+done
+    clc
     rts
