@@ -347,7 +347,7 @@ A decent variable bit length multiply is available in omult23.a, but for other m
 | [omult13.a](tests/omult13.a) | 202.01         | 179            | 16 signed x 8 bit sign-magnitude, 16 bit result, div 128                                          |
 | [omult14.a](tests/omult14.a) | 575.00         | 43             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
 | [omult15.a](tests/omult15.a) | 390.00         | 47             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (Note: omult6.a is faster and smaller)    |
-| [omult16.a](tests/omult16.a) | 223.66         | 32             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow)                |
+| [omult16.a](tests/omult16.a) | 223.69         | 33             | 16 x 16 bit unsigned multiply, *ONLY low 16 bit* result (or carry set on overflow)                |
 | [omult17.a](tests/omult17.a) | 267.00         | 34             | 16 x 8 bit unsigned multiply, *ONLY low 16 bit* result                                            |
 | [omult18.a](tests/omult18.a) | 2036.00        | 76             | variable m x n byte unsigned multiply (all 16 bit x 16 bit multiplies tested)                     |
 | [omult19.a](tests/omult19.a) | 2169.00        | 48             | 24 x 24 bit unsigned multiply, 48 bit result (tested over millions of random inputs, and all 16 bit inputs) |

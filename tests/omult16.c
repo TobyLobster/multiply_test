@@ -34,12 +34,8 @@ int is_correct(thread_context_t* threadContext, uint64_t input, uint64_t actual_
     uint64_t e = (x * y);
     *expected = e;
 
-    if (actual_result == 65536) {
-        if ((e < 32768) && (e != 0)) {
-            return 0;
-        } else {
-            return -1;
-        }
+    if ((actual_result == 65536) && (e > 65535)) {
+        return -1;
     }
     return actual_result == (e & 65535);
 }

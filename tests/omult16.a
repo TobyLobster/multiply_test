@@ -2,9 +2,9 @@
 ; from BBC BASIC 2 ROM, https://archive.org/details/BBCMicroCompendium/page/302/mode/1up?q=9236
 ; used for calculating multidimensional array access
 ;
-; 16 bit x 16 bit multiply, 16 bit result (low bytes). On exit, carry is set if (a) result is 32768 or more, or (b) multiplicand is zero and multiplier has high bit set)
-; Average cycles: 223.66
-; 32 bytes
+; 16 bit x 16 bit multiply, 16 bit result (low bytes), (carry set if overflow?)
+; Average cycles: 223.69
+; 33 bytes
 
 multiplicand = $02
 multiplier   = $04
@@ -41,6 +41,7 @@ skip
     lda multiplicand
     ora multiplicand+1
     bne loop
+    clc                     ; TOBY: no overflow?
     ; Save the accumulator as the answer
 ;    sty multiplier
 ;    stx multiplier+1
