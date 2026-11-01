@@ -151,3 +151,4 @@ function test() {
 #test "omult31" 0xa00
 #test "omult32" 0xa00
 test "omult33" 0x200
+#test "omult34" 0x200
